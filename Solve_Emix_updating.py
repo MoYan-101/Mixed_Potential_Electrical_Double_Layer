@@ -250,6 +250,63 @@ def default_params() -> Dict[str, Any]:
 # EDL model: cosine expansion + matrix solve
 # -----------------------------
 
+def compute_derived_params(params: Dict[str, Any]) -> Dict[str, Any]:
+    """Derived quantities used by both EDL and no-EDL paths."""
+    p = params
+    R_gas = float(p["R"]); F = float(p["F"]); T = float(p["T"])
+    beta = F / (R_gas * T)
+
+    # epsilon_s
+    if p.get("epsilon_s") is not None:
+        eps_s = float(p["epsilon_s"])
+    else:
+        eps_s = float(p["epsilon_r"]) * float(p["epsilon0"])
+
+    # lambda_D (Eq. (S1-2))
+    if p.get("lambda_D") is not None:
+        lambda_D = float(p["lambda_D"])
+    else:
+        C_tot = float(p["C_tot"])
+        lambda_D = math.sqrt(eps_s * R_gas * T / (2.0 * F**2 * C_tot))
+
+    # geometry (m)
+    L_Au = float(p["L_Au"]); L_gap = float(p["L_gap"]); L_Pd_len = float(p["L_Pd_len"])
+    if not (L_Au > 0 and L_gap > 0 and L_Pd_len > 0):
+        raise ValueError("Geometry lengths must be positive")
+    L_C = L_Au + L_gap
+    L_total = L_C + L_Pd_len
+
+    # dimensionless lengths (Eq. (S1-3))
+    L_tilde = L_total / lambda_D
+    L_Au_tilde = L_Au / lambda_D
+    L_C_tilde = L_C / lambda_D
+
+    # g_i = (lambda_D/epsilon_s) Cdl_i (Eq. (S-11c)), unless overridden
+    def g_from_Cdl(Cdl: float) -> float:
+        return (lambda_D / eps_s) * Cdl
+
+    g_Au = p.get("g_Au"); g_C = p.get("g_C"); g_Pd = p.get("g_Pd")
+    if g_Au is None: g_Au = g_from_Cdl(float(p["Cdl_Au"]))
+    if g_C is None:  g_C  = g_from_Cdl(float(p["Cdl_C"]))
+    if g_Pd is None: g_Pd = g_from_Cdl(float(p["Cdl_Pd"]))
+
+    # pzc (V) -> phi_pzc_tilde (Eq. (S1-1), phi_b=0)
+    pzc_Au = float(p["pzc_Au"]); pzc_C = float(p["pzc_C"]); pzc_Pd = float(p["pzc_Pd"])
+    pzc_Au_tilde = beta * pzc_Au
+    pzc_C_tilde = beta * pzc_C
+    pzc_Pd_tilde = beta * pzc_Pd
+
+    return dict(
+        R=R_gas, F=F, T=T, beta=beta,
+        epsilon_s=eps_s, lambda_D=lambda_D,
+        L_Au=L_Au, L_gap=L_gap, L_Pd_len=L_Pd_len,
+        L_C=L_C, L_total=L_total,
+        L_tilde=L_tilde, L_Au_tilde=L_Au_tilde, L_C_tilde=L_C_tilde,
+        g_Au=g_Au, g_C=g_C, g_Pd=g_Pd,
+        pzc_Au=pzc_Au, pzc_C=pzc_C, pzc_Pd=pzc_Pd,
+        pzc_Au_tilde=pzc_Au_tilde, pzc_C_tilde=pzc_C_tilde, pzc_Pd_tilde=pzc_Pd_tilde,
+    )
+
 class EDLModel:
     """
     Linear EDL model (Debye–Hückel) with lateral heterogeneity.
@@ -524,8 +581,8 @@ def full_mode_currents(E: float, edl: EDLModel, params: Dict[str, Any], return_p
     mask_Au = (x >= 0.0) & (x <= L_Au + 1e-12)
     mask_Pd = (x >= L_C - 1e-12) & (x <= L + 1e-12)
 
-    K_Au = float(np.trapz(safe_exp(-Gamma1 * phi_tilde[mask_Au]), x[mask_Au]))  # Eq. (S3-12)
-    K_Pd = float(np.trapz(safe_exp(Gamma2 * phi_tilde[mask_Pd]), x[mask_Pd]))   # Eq. (S3-11)
+    K_Au = float(np.trapezoid(safe_exp(-Gamma1 * phi_tilde[mask_Au]), x[mask_Au]))  # Eq. (S3-12)
+    K_Pd = float(np.trapezoid(safe_exp(Gamma2 * phi_tilde[mask_Pd]), x[mask_Pd]))   # Eq. (S3-11)
 
     # Note: integration is over d x̃ as in the PDFs. If you need per-depth current (A/m),
     # multiply these by λ_D (m): I_per_depth = λ_D * I_here. (TODO check your exact experimental mapping.)
