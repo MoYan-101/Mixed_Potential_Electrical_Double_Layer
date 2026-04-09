@@ -35,7 +35,7 @@ import json
 import math
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Tuple, Optional, Callable, cast
 
 import numpy as np
 import pandas as pd
@@ -51,6 +51,8 @@ except Exception:
 import scipy.linalg as la
 from scipy.optimize import root_scalar
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 # -----------------------------
 # Utilities
@@ -64,6 +66,17 @@ def safe_exp(x: np.ndarray | float, clip: float = 700.0) -> np.ndarray | float:
 def ensure_dir(p: Path) -> Path:
     p.mkdir(parents=True, exist_ok=True)
     return p
+
+
+def trapz_compat(y: np.ndarray | float, x: np.ndarray | float) -> float:
+    """Compatibility wrapper: use np.trapezoid if available, else np.trapz."""
+    y_arr = np.asarray(y, dtype=float)
+    x_arr = np.asarray(x, dtype=float)
+    func = getattr(np, "trapezoid", None)
+    if func is None:
+        func = getattr(np, "trapz")
+    trapz_func = cast(Callable[[np.ndarray, np.ndarray], float], func)
+    return float(trapz_func(y_arr, x_arr))
 
 
 def J_n(n: int, a: float, b: float, rho_n: float) -> float:
@@ -118,6 +131,54 @@ def flatten_dict(d: Dict[str, Any], prefix: str = "") -> Dict[str, Any]:
     return out
 
 
+LAMBDA_D_DEP_KEYS = {"C_tot", "epsilon_r", "epsilon0", "epsilon_s", "T", "R", "F"}
+
+
+def apply_param_overrides(
+    base_params: Dict[str, Any],
+    overrides: Optional[Dict[str, Any]],
+    reset_lambda_D: bool = True,
+) -> Dict[str, Any]:
+    """
+    Return a NEW params dict with overrides applied.
+
+    Beginner note:
+    - If you change C_tot / epsilon_r / T, the Debye length should be recalculated.
+    - To avoid mistakes, this function auto-sets lambda_D=None when needed,
+      unless you explicitly provide "lambda_D" in overrides.
+    """
+    p = copy.deepcopy(base_params)
+    if not overrides:
+        return p
+
+    unknown = sorted(set(overrides) - set(base_params))
+    if unknown:
+        raise KeyError(f"Unknown parameter override(s): {', '.join(unknown)}")
+
+    for k, v in overrides.items():
+        p[k] = v
+
+    if reset_lambda_D and "lambda_D" not in overrides:
+        if any(k in overrides for k in LAMBDA_D_DEP_KEYS):
+            # Safety: force recompute if user changed inputs that affect lambda_D.
+            p["lambda_D"] = None
+
+    return p
+
+
+def load_overrides_json(path: str | Path) -> Dict[str, Any]:
+    """
+    Load a JSON file that only contains parameter overrides.
+    Example JSON:
+        {"L_gap": 20e-9, "C_tot": 200.0}
+    """
+    with Path(path).open("r", encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, dict):
+        raise ValueError("JSON overrides must be a dict at the top level.")
+    return data
+
+
 HOVER_PARAM_KEYS = [
     "C_tot", "lambda_D", "epsilon_r", "T",
     "L_Au", "L_gap", "L_Pd_len",
@@ -128,6 +189,7 @@ HOVER_PARAM_KEYS = [
 ]
 
 _PLOTLY_WARNED = False
+_NO_EDL_WARNED = False
 
 
 def format_hover_params(params: Dict[str, Any], keys: Optional[List[str]] = None) -> str:
@@ -193,8 +255,8 @@ def default_params() -> Dict[str, Any]:
         epsilon_s=None,             # override if desired
 
         # electrolyte
-        C_tot=100.0,                # mol/m^3
-        lambda_D=None,              # optional override
+        C_tot=0.1,                 # mol/m^3
+        lambda_D=None,              # optional override; set to None to auto-recompute
 
         # geometry
         L_Au=11e-9,                 # m
@@ -203,7 +265,7 @@ def default_params() -> Dict[str, Any]:
 
         # interfacial electrostatics (Cdl or g)
         Cdl_Au=120e-6,              # F/m^2
-        Cdl_C=0.2,                  # F/m^2
+        Cdl_C=1.0,                  # F/m^2
         Cdl_Pd=37.7e-6,             # F/m^2
         g_Au=None, g_C=None, g_Pd=None,  # if set, overrides Cdl_* via Eq. (S-11c)
 
@@ -215,11 +277,11 @@ def default_params() -> Dict[str, Any]:
         # kinetics
         it0_1=8.85e-5,              # A/m^2
         it0_2=3.878e-4,             # A/m^2
-        alpha1=0.3,
+        alpha1=0.5,
         alpha2=0.37,
         z_R1=-1.0,
         z_O2=1.0,
-        E1_eq=0.0,                  # V
+        E1_eq=0.1,                  # V
         E2_eq=0.834,                # V
 
         # numerics
@@ -232,18 +294,79 @@ def default_params() -> Dict[str, Any]:
         use_edl=True,                       # True=with EDL, False=no EDL
         use_affine_phi2=True,              # Eq. (D5-3)
         use_closed_form_when_affine=True,  # Eq. (D5-6)/(D5-8)
+        do_self_checks=False,              # run optional self-checks (slow)
+        do_convergence_check=False,        # run optional grid/mode convergence check (slow)
 
         # what to run
         do_ofat=True,
-        do_heatmaps=True,
-        do_sensitivities=True,
+        do_heatmaps=False,
+        do_sensitivities=False,
 
         # scan sizes
         ofat_n=15,
         heatmap_nx=25,
         heatmap_ny=25,
         scan_mode="MEAN",  # "MEAN" or "BOTH"
+        ofat_L_gap_min=0.0,        # m, allow L_gap=0 in OFAT
+        ofat_L_gap_max=1.0e-2,     # m, default up to cm-scale
     )
+
+
+def validate_params(params: Dict[str, Any]) -> None:
+    """Validate parameter completeness and basic physical ranges."""
+    required_keys = set(default_params())
+    missing = sorted(required_keys - set(params))
+    if missing:
+        raise KeyError(f"Missing required parameter(s): {', '.join(missing)}")
+
+    def require_finite(name: str) -> float:
+        val = float(params[name])
+        if not math.isfinite(val):
+            raise ValueError(f"{name} must be finite")
+        return val
+
+    for name in ("R", "F", "T", "epsilon0", "epsilon_r", "L_Au", "L_gap", "L_Pd_len", "it0_1", "it0_2", "xtol"):
+        require_finite(name)
+
+    if require_finite("R") <= 0 or require_finite("F") <= 0 or require_finite("T") <= 0:
+        raise ValueError("R, F, and T must be positive")
+    if require_finite("epsilon0") <= 0 or require_finite("epsilon_r") <= 0:
+        raise ValueError("epsilon0 and epsilon_r must be positive")
+    if params.get("epsilon_s") is not None and float(params["epsilon_s"]) <= 0:
+        raise ValueError("epsilon_s must be positive when provided")
+
+    if params.get("lambda_D") is None:
+        if require_finite("C_tot") <= 0:
+            raise ValueError("C_tot must be positive when lambda_D is auto-calculated")
+    elif float(params["lambda_D"]) <= 0:
+        raise ValueError("lambda_D must be positive when provided")
+
+    if require_finite("L_Au") <= 0 or require_finite("L_gap") < 0 or require_finite("L_Pd_len") <= 0:
+        raise ValueError("Geometry lengths must satisfy L_Au>0, L_gap>=0, L_Pd_len>0")
+
+    for name in ("Cdl_Au", "Cdl_C", "Cdl_Pd"):
+        if require_finite(name) < 0:
+            raise ValueError(f"{name} must be non-negative")
+    for name in ("g_Au", "g_C", "g_Pd"):
+        if params.get(name) is not None and float(params[name]) < 0:
+            raise ValueError(f"{name} must be non-negative when provided")
+
+    for name in ("alpha1", "alpha2"):
+        alpha = require_finite(name)
+        if not (0.0 <= alpha <= 1.0):
+            raise ValueError(f"{name} must be within [0, 1]")
+
+    for name in ("pzc_Au", "pzc_C", "pzc_Pd", "z_R1", "z_O2", "E1_eq", "E2_eq"):
+        require_finite(name)
+
+    if int(params["N_modes"]) < 1:
+        raise ValueError("N_modes must be >= 1")
+    if int(params["Nx"]) < 2:
+        raise ValueError("Nx must be >= 2")
+    if float(params["xtol"]) <= 0:
+        raise ValueError("xtol must be positive")
+    if int(params["max_bracket_expands"]) < 0:
+        raise ValueError("max_bracket_expands must be >= 0")
 
 
 # -----------------------------
@@ -252,6 +375,7 @@ def default_params() -> Dict[str, Any]:
 
 def compute_derived_params(params: Dict[str, Any]) -> Dict[str, Any]:
     """Derived quantities used by both EDL and no-EDL paths."""
+    validate_params(params)
     p = params
     R_gas = float(p["R"]); F = float(p["F"]); T = float(p["T"])
     beta = F / (R_gas * T)
@@ -271,8 +395,8 @@ def compute_derived_params(params: Dict[str, Any]) -> Dict[str, Any]:
 
     # geometry (m)
     L_Au = float(p["L_Au"]); L_gap = float(p["L_gap"]); L_Pd_len = float(p["L_Pd_len"])
-    if not (L_Au > 0 and L_gap > 0 and L_Pd_len > 0):
-        raise ValueError("Geometry lengths must be positive")
+    if not (L_Au > 0 and L_gap >= 0 and L_Pd_len > 0):
+        raise ValueError("Geometry lengths must be positive (L_gap can be zero)")
     L_C = L_Au + L_gap
     L_total = L_C + L_Pd_len
 
@@ -336,6 +460,7 @@ class EDLModel:
 
     def __init__(self, params: Dict[str, Any]):
         self.params = copy.deepcopy(params)
+        validate_params(self.params)
         self.derived: Dict[str, Any] = {}
         self.pre: Dict[str, Any] = {}
         self._build()
@@ -360,8 +485,8 @@ class EDLModel:
 
         # geometry (m)
         L_Au = float(p["L_Au"]); L_gap = float(p["L_gap"]); L_Pd_len = float(p["L_Pd_len"])
-        if not (L_Au > 0 and L_gap > 0 and L_Pd_len > 0):
-            raise ValueError("Geometry lengths must be positive")
+        if not (L_Au > 0 and L_gap >= 0 and L_Pd_len > 0):
+            raise ValueError("Geometry lengths must be positive (L_gap can be zero)")
         L_C = L_Au + L_gap
         L_total = L_C + L_Pd_len
 
@@ -581,16 +706,16 @@ def full_mode_currents(E: float, edl: EDLModel, params: Dict[str, Any], return_p
     mask_Au = (x >= 0.0) & (x <= L_Au + 1e-12)
     mask_Pd = (x >= L_C - 1e-12) & (x <= L + 1e-12)
 
-    K_Au = float(np.trapezoid(safe_exp(-Gamma1 * phi_tilde[mask_Au]), x[mask_Au]))  # Eq. (S3-12)
-    K_Pd = float(np.trapezoid(safe_exp(Gamma2 * phi_tilde[mask_Pd]), x[mask_Pd]))   # Eq. (S3-11)
+    K_Au = trapz_compat(safe_exp(-Gamma1 * phi_tilde[mask_Au]), x[mask_Au])  # Eq. (S3-12)
+    K_Pd = trapz_compat(safe_exp(Gamma2 * phi_tilde[mask_Pd]), x[mask_Pd])   # Eq. (S3-11)
 
-    # Note: integration is over d x̃ as in the PDFs. If you need per-depth current (A/m),
-    # multiply these by λ_D (m): I_per_depth = λ_D * I_here. (TODO check your exact experimental mapping.)
+    # Note: these are integrals over d x~ rather than over physical dx.
+    # Multiply by lambda_D (m) to obtain current per unit depth in A/m.
     I_Au = float(it0_1 * safe_exp((1.0 - alpha1) * beta * eta1) * K_Au)
     I_Pd = float(-it0_2 * safe_exp(-alpha2 * beta * eta2) * K_Pd)
 
     residual = I_Au + I_Pd  # Eq. (S3-7b)
-    i_mix = abs(I_Au)       # definition used here: |∫_Au i1 d x̃| (at Emix equals |∫_Pd i2 d x̃|)
+    i_mix = abs(I_Au)       # definition used here: |int_Au i1 d x_tilde|
 
     out: Dict[str, Any] = dict(I_Au=I_Au, I_Pd=I_Pd, residual=residual, i_mix=i_mix, K_Au=K_Au, K_Pd=K_Pd)
 
@@ -879,6 +1004,12 @@ def run_case(
     else:
         use_edl = bool(use_edl)
         p["use_edl"] = use_edl
+
+    if not use_edl:
+        global _NO_EDL_WARNED
+        if not _NO_EDL_WARNED:
+            print("WARNING: use_edl=False skips the EDL PDE solve and uses a no-EDL comparison model.")
+            _NO_EDL_WARNED = True
 
     # EDL entry points:
     # - currents_mean_field(...): phi2_1/phi2_2 in the Frumkin term (-Gamma*beta*phi2)
@@ -1302,7 +1433,7 @@ def plot_compare_polarization_curve(
     plt.axvline(E_mix_edl, linestyle="--", color="C0")
     plt.axvline(E_mix_no, linestyle="--", color="C1")
     plt.xlabel("E [V]")
-    plt.ylabel("I_total [A/m^2]")
+    plt.ylabel("I_total = int i dx_tilde [A/m^2]")
     plt.title(title)
     plt.legend()
     plt.tight_layout()
@@ -1323,7 +1454,7 @@ def plot_compare_emix_imix(
     axes[0].set_ylabel("E_mix [V]")
     axes[0].set_title("E_mix")
     axes[1].bar(["with_edl", "no_edl"], [i_mix_edl, i_mix_no])
-    axes[1].set_ylabel("i_mix [A/m^2]")
+    axes[1].set_ylabel("i_mix = |int i dx_tilde| [A/m^2]")
     axes[1].set_title("i_mix")
     fig.suptitle(title)
     fig.tight_layout()
@@ -1472,7 +1603,11 @@ def compare_edl_effects(
             )
 
         if save_fig:
-            fig_dir = ensure_dir(out_dir / "figures")
+            fig_dir_main = ensure_dir(out_dir / "figures")
+            fig_dir_with = ensure_dir(out_dir / "with_edl" / "figures")
+            fig_dir_no = ensure_dir(out_dir / "no_edl" / "figures")
+            fig_dirs = [fig_dir_main, fig_dir_with, fig_dir_no]
+
             tag = _case_tag_from_params(p0)
             title = f"EDL compare ({mode})"
 
@@ -1490,38 +1625,39 @@ def compare_edl_effects(
                 curve_edl = compute_polarization_curve(p0, mode=mode, use_edl=True, E_values=E_values, use_affine_phi2=use_affine_phi2)
                 curve_no = compute_polarization_curve(p0, mode=mode, use_edl=False, E_values=E_values, use_affine_phi2=use_affine_phi2)
 
-            plot_compare_polarization_curve(
-                curve_edl=curve_edl,
-                curve_no=curve_no,
-                E_mix_edl=float(res_edl["E_mix"]),
-                E_mix_no=float(res_no["E_mix"]),
-                out_path=fig_dir / f"compare_polcurve_{tag}.png",
-                title=title,
-            )
-
-            plot_compare_emix_imix(
-                E_mix_edl=float(res_edl["E_mix"]),
-                i_mix_edl=float(res_edl["i_mix"]),
-                E_mix_no=float(res_no["E_mix"]),
-                i_mix_no=float(res_no["i_mix"]),
-                out_path=fig_dir / f"compare_emix_imix_{tag}.png",
-                title=title,
-            )
-
-            if "phi2_vs_x" in outputs_set:
-                if prof_edl is None or prof_no is None or derived_edl is None or derived_no is None:
-                    prof_edl, derived_edl = build_profiles_for_emix(p0, float(res_edl["E_mix"]), use_edl=True)
-                    prof_no, derived_no = build_profiles_for_emix(p0, float(res_no["E_mix"]), use_edl=False)
-                plot_compare_phi2(
-                    prof_edl=prof_edl,
-                    derived_edl=derived_edl,
-                    prof_no=prof_no,
-                    derived_no=derived_no,
-                    out_path=fig_dir / f"compare_phi2_{tag}.png",
+            for fig_dir in fig_dirs:
+                plot_compare_polarization_curve(
+                    curve_edl=curve_edl,
+                    curve_no=curve_no,
+                    E_mix_edl=float(res_edl["E_mix"]),
+                    E_mix_no=float(res_no["E_mix"]),
+                    out_path=fig_dir / f"compare_polcurve_{tag}.png",
                     title=title,
                 )
 
-            paths["figures_dir"] = str(fig_dir)
+                plot_compare_emix_imix(
+                    E_mix_edl=float(res_edl["E_mix"]),
+                    i_mix_edl=float(res_edl["i_mix"]),
+                    E_mix_no=float(res_no["E_mix"]),
+                    i_mix_no=float(res_no["i_mix"]),
+                    out_path=fig_dir / f"compare_emix_imix_{tag}.png",
+                    title=title,
+                )
+
+                if "phi2_vs_x" in outputs_set:
+                    if prof_edl is None or prof_no is None or derived_edl is None or derived_no is None:
+                        prof_edl, derived_edl = build_profiles_for_emix(p0, float(res_edl["E_mix"]), use_edl=True)
+                        prof_no, derived_no = build_profiles_for_emix(p0, float(res_no["E_mix"]), use_edl=False)
+                    plot_compare_phi2(
+                        prof_edl=prof_edl,
+                        derived_edl=derived_edl,
+                        prof_no=prof_no,
+                        derived_no=derived_no,
+                        out_path=fig_dir / f"compare_phi2_{tag}.png",
+                        title=title,
+                    )
+
+            paths["figures_dir"] = str(fig_dir_main)
 
         out["paths"] = paths
 
@@ -1548,16 +1684,16 @@ def make_summary_row(run_tag: str, params: Dict[str, Any], result: Dict[str, Any
     """Row for results_summary.csv (includes full parameters + key outputs)."""
     row = dict(run=run_tag, **flatten_dict(params))
     row.update(
-        mode=result.get("mode"),
-        E_mix=result.get("E_mix"),
-        i_mix=result.get("i_mix"),
-        residual=result.get("residual"),
-        converged=result.get("converged"),
-        method=result.get("method"),
-        iterations=result.get("iterations"),
-        lambda_D=result.get("lambda_D"),
-        g_Au=result.get("g_Au"), g_C=result.get("g_C"), g_Pd=result.get("g_Pd"),
-        a1=result.get("a1"), b1=result.get("b1"), a2=result.get("a2"), b2=result.get("b2"),
+        mode=result.get("mode"), # pyright: ignore[reportArgumentType]
+        E_mix=result.get("E_mix"), # pyright: ignore[reportArgumentType]
+        i_mix=result.get("i_mix"), # pyright: ignore[reportArgumentType]
+        residual=result.get("residual"), # pyright: ignore[reportArgumentType]
+        converged=result.get("converged"), # pyright: ignore[reportArgumentType]
+        method=result.get("method"), # pyright: ignore[reportArgumentType]
+        iterations=result.get("iterations"), # pyright: ignore[reportArgumentType]
+        lambda_D=result.get("lambda_D"), # pyright: ignore[reportArgumentType]
+        g_Au=result.get("g_Au"), g_C=result.get("g_C"), g_Pd=result.get("g_Pd"), # pyright: ignore[reportArgumentType]
+        a1=result.get("a1"), b1=result.get("b1"), a2=result.get("a2"), b2=result.get("b2"), # pyright: ignore[reportArgumentType]
     )
     if extra:
         row.update(extra)
@@ -1574,13 +1710,15 @@ def make_summary_row(run_tag: str, params: Dict[str, Any], result: Dict[str, Any
 def make_ofat_specs(p0: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     """Default OFAT scan specs (editable)."""
     n = int(p0["ofat_n"])
+    L_gap_min = float(p0.get("ofat_L_gap_min", 0.0))
+    L_gap_max = float(p0.get("ofat_L_gap_max", 1.0e-2))
     return {
         "C_tot":      {"type": "log",    "span": 10.0, "n": n},
         "lambda_D":   {"type": "log",    "span": 10.0, "n": n},
         "epsilon_r":  {"type": "linear", "span": 20.0, "n": n},
         "T":          {"type": "linear", "span": 30.0, "n": n},
         "L_Au":       {"type": "log",    "span": 10.0, "n": n},
-        "L_gap":      {"type": "log",    "span": 10.0, "n": n},
+        "L_gap":      {"type": "linear", "min": L_gap_min, "max": L_gap_max, "n": n},
         "L_Pd_len":   {"type": "log",    "span": 10.0, "n": n},
         "Cdl_Au":     {"type": "log",    "span": 10.0, "n": n},
         "Cdl_C":      {"type": "log",    "span": 10.0, "n": n},
@@ -1600,7 +1738,18 @@ def make_ofat_specs(p0: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
 
 
 def make_scan_values(p0_val: float, spec: Dict[str, Any]) -> np.ndarray:
-    kind = spec["type"]; span = float(spec["span"]); n = int(spec["n"])
+    kind = spec["type"]; n = int(spec["n"])
+    if "min" in spec or "max" in spec:
+        vmin = float(spec.get("min", p0_val))
+        vmax = float(spec.get("max", p0_val))
+        if vmax < vmin:
+            raise ValueError("scan spec max must be >= min")
+        if kind == "log":
+            if vmin <= 0 or vmax <= 0:
+                raise ValueError("log scan requires positive min/max")
+            return np.logspace(np.log10(vmin), np.log10(vmax), n)
+        return np.linspace(vmin, vmax, n)
+    span = float(spec["span"])
     if kind == "log":
         if p0_val <= 0:
             raise ValueError("log scan requires positive baseline value")
@@ -1619,6 +1768,9 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, modes: List[str], summa
         p0 = base_params.get(pname)
         if pname == "lambda_D" and (p0 is None):
             p0 = EDLModel(base_params).derived["lambda_D"]
+
+        if p0 is None:
+            continue
 
         vals = make_scan_values(float(p0), spec)
         if pname in ("alpha1", "alpha2"):
@@ -1651,7 +1803,7 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, modes: List[str], summa
         dfp_plot = pd.DataFrame(rows_param_plot)
 
         # plots
-        for metric, ylab in [("E_mix", "E_mix [V]"), ("i_mix", "i_mix [A/m^2]")]:
+        for metric, ylab in [("E_mix", "E_mix [V]"), ("i_mix", "i_mix = |int i dx_tilde| [A/m^2]")]:
             plt.figure()
             for mode in modes:
                 sub = dfp[dfp["mode"] == mode]
@@ -1702,7 +1854,7 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, mode: str, summary_
     x_edges = make_edges(C_vals, "log"); y_edges = make_edges(delta_vals, "linear")
     X, Y = np.meshgrid(x_edges, y_edges)
 
-    for Z, name, cbarlab in [(Emix, "Emix", "E_mix [V]"), (imix, "imix", "i_mix [A/m^2]")]:
+    for Z, name, cbarlab in [(Emix, "Emix", "E_mix [V]"), (imix, "imix", "i_mix = |int i dx_tilde| [A/m^2]")]:
         plt.figure()
         plt.pcolormesh(X, Y, Z, shading="auto")
         plt.xscale("log")
@@ -1739,7 +1891,7 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, mode: str, summary_
     x_edges = make_edges(gfac_vals, "log"); y_edges = make_edges(i0fac_vals, "log")
     X, Y = np.meshgrid(x_edges, y_edges)
 
-    for Z, name, cbarlab in [(Emix2, "Emix", "E_mix [V]"), (imix2, "imix", "i_mix [A/m^2]")]:
+    for Z, name, cbarlab in [(Emix2, "Emix", "E_mix [V]"), (imix2, "imix", "i_mix = |int i dx_tilde| [A/m^2]")]:
         plt.figure()
         plt.pcolormesh(X, Y, Z, shading="auto")
         plt.xscale("log"); plt.yscale("log")
@@ -1832,27 +1984,145 @@ def compute_sensitivities(base_params: Dict[str, Any], out_dir: Path, mode: str,
 
 
 # -----------------------------
-# Main
+# Self-checks (optional)
 # -----------------------------
 
-def main() -> None:
-    params = default_params()
+def run_self_checks(
+    params: Optional[Dict[str, Any]] = None,
+    E_test: float = 0.35,
+    rel_tol: float = 1e-8,
+    bc_tol: float = 1e-3,
+    robin_tol: float = 5e-2,
+    phi2_tol: float = 1e-6,
+    farfield_ratio: float = 1e-3,
+    run_convergence: bool = False,
+    raise_on_fail: bool = False,
+    print_summary: bool = True,
+) -> Dict[str, Any]:
+    """
+    Run physics-based self-checks for the EDL model.
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_dir = ensure_dir(Path("./results") / timestamp)
+    Note: these checks are optional and may add runtime.
+    """
+    p = default_params() if params is None else copy.deepcopy(params)
+    results: Dict[str, Any] = {}
+
+    def _record(name: str, ok: bool, value: Any) -> None:
+        results[name] = dict(ok=bool(ok), value=value)
+        if not ok and raise_on_fail:
+            raise AssertionError(f"Self-check failed: {name} -> {value}")
+
+    # Test 1 & 2: mixed potential consistency (FULL mode)
+    case = run_case(p, mode="FULL", return_profiles=True, use_edl=True)
+    I_Au = float(case["I_Au"]); I_Pd = float(case["I_Pd"])
+    resid = I_Au + I_Pd
+    scale = abs(I_Au) + abs(I_Pd) + 1e-30
+    rel_resid = abs(resid) / scale
+    _record("mixed_potential_zero_current", rel_resid < rel_tol, rel_resid)
+    _record("internal_current_balance",
+            (abs(resid) < rel_tol * scale)
+            and (abs(abs(I_Au) - abs(I_Pd)) < rel_tol * scale)
+            and (float(case["i_mix"]) >= 0.0),
+            dict(residual=resid, I_Au=I_Au, I_Pd=I_Pd, i_mix=float(case["i_mix"])))
+
+    # Test 3: sidewall Neumann condition (x~ = 0, L~)
+    edl = EDLModel(p)
+    x, phi = edl.phi_tilde_surface(E_test)
+    dx = x[1] - x[0]
+    dphi_left = (phi[1] - phi[0]) / dx
+    dphi_right = (phi[-1] - phi[-2]) / dx
+    _record("sidewall_neumann",
+            (abs(dphi_left) < bc_tol) and (abs(dphi_right) < bc_tol),
+            dict(dphi_left=float(dphi_left), dphi_right=float(dphi_right)))
+
+    # Test 4: Robin BC at y~ = 0 (avoid segment boundaries)
+    beta = edl.derived["beta"]
+    phiM_t = beta * E_test
+    A = edl.pre["A_M"] * phiM_t - edl.pre["A_pzc"]
+    rho = edl.pre["rho"]
+    gamma = edl.pre["gamma"]
+    cos_mat = np.cos(np.outer(x, rho))
+    phi0 = cos_mat @ A
+    dphi_dy0 = -(cos_mat @ (gamma * A))
+
+    L_Au = edl.derived["L_Au_tilde"]
+    L_C = edl.derived["L_C_tilde"]
+    g = np.where(x <= L_Au, edl.derived["g_Au"], np.where(x <= L_C, edl.derived["g_C"], edl.derived["g_Pd"]))
+    pzc = np.where(x <= L_Au, edl.derived["pzc_Au_tilde"], np.where(x <= L_C, edl.derived["pzc_C_tilde"], edl.derived["pzc_Pd_tilde"]))
+    rhs = -g * (phiM_t - phi0 - pzc)
+
+    mask = (np.abs(x - L_Au) > 5 * dx) & (np.abs(x - L_C) > 5 * dx)
+    err = float(np.max(np.abs(dphi_dy0[mask] - rhs[mask])))
+    _record("robin_bc_residual", err < robin_tol, err)
+
+    # Test 5: far-field decay (y~ -> infinity)
+    def phi_y(y: float) -> np.ndarray:
+        return cos_mat @ (A * np.exp(-gamma * y))
+
+    m0 = float(np.max(np.abs(phi_y(0.0))))
+    m10 = float(np.max(np.abs(phi_y(10.0))))
+    _record("far_field_decay", m10 < farfield_ratio * m0, dict(m0=m0, m10=m10))
+
+    # Test 6: affine vs direct segment-mean phi2
+    phi2_aff = edl.segment_mean_phi2(E_test, use_affine_phi2=True)
+    phi2_dir = edl.segment_mean_phi2(E_test, use_affine_phi2=False)
+    diff = max(abs(phi2_aff[0] - phi2_dir[0]), abs(phi2_aff[1] - phi2_dir[1]))
+    _record("phi2_affine_vs_direct", diff < phi2_tol, diff)
+
+    # Test 7: Debye–Hückel linearization (warn only)
+    max_phi = float(np.max(np.abs(case["phi_tilde"])))
+    ok_linear = max_phi < 1.0
+    if not ok_linear:
+        print(f"WARNING: |phi_tilde| is not << 1 (max={max_phi:.6g}). DH linearization may be invalid.")
+    _record("debye_huckel_linearization", ok_linear, max_phi)
+
+    # Test 8: grid/mode convergence (optional, no assert)
+    if run_convergence:
+        conv_rows: List[Dict[str, Any]] = []
+        Nx = max(int(p.get("Nx", 1200)), 2000)
+        for Nm in [40, 80, 160]:
+            pvar = copy.deepcopy(p)
+            pvar["N_modes"] = Nm
+            pvar["Nx"] = Nx
+            res = run_case(pvar, mode="FULL", return_profiles=False, use_edl=True)
+            conv_rows.append(dict(N_modes=Nm, Nx=Nx, E_mix=float(res["E_mix"]), i_mix=float(res["i_mix"])))
+        results["convergence_scan"] = conv_rows
+
+    if print_summary:
+        print("\n=== Self-check summary ===")
+        for name, item in results.items():
+            if name == "convergence_scan":
+                print("convergence_scan:", item)
+                continue
+            print(f"{name}: ok={item['ok']}, value={item['value']}")
+
+    return results
+
+
+# -----------------------------
+# Full workflow helper
+# -----------------------------
+
+def run_full_workflow(params: Dict[str, Any], out_dir: str | Path, print_summary: bool = True) -> Dict[str, Any]:
+    """
+    Run the same workflow as main(), but with user-provided params and output folder.
+    This is used by run_cases.py to batch-run multiple parameter sets.
+    """
+    p = copy.deepcopy(params)
+    out_dir = ensure_dir(Path(out_dir))
     ensure_dir(out_dir / "figures")
 
     summary_rows: List[Dict[str, Any]] = []
 
     # Baseline FULL + MEAN (required)
-    case_full = run_case(params, mode="FULL", return_profiles=True)
-    case_mean = run_case(params, mode="MEAN", return_profiles=False)
+    case_full = run_case(p, mode="FULL", return_profiles=True)
+    case_mean = run_case(p, mode="MEAN", return_profiles=False)
 
-    summary_rows.append(make_summary_row("baseline:FULL", params, case_full))
-    summary_rows.append(make_summary_row("baseline:MEAN", params, case_mean))
+    summary_rows.append(make_summary_row("baseline:FULL", p, case_full))
+    summary_rows.append(make_summary_row("baseline:MEAN", p, case_mean))
 
     # Save baseline profiles (FULL)
-    R_gas = float(params["R"]); F = float(params["F"]); T = float(params["T"])
+    R_gas = float(p["R"]); F = float(p["F"]); T = float(p["T"])
     scale = R_gas * T / F
     x_tilde = case_full["x_tilde"]
     x_m = x_tilde * case_full["lambda_D"]
@@ -1873,33 +2143,56 @@ def main() -> None:
         lambda_D=case_full["lambda_D"],
     )
 
-    plot_baseline_profiles(case_full, params, out_dir)
+    plot_baseline_profiles(case_full, p, out_dir)
 
-    # Print comparison (required)
-    df_cmp = pd.DataFrame([
-        dict(mode="FULL", E_mix=case_full["E_mix"], i_mix=case_full["i_mix"], residual=case_full["residual"], method=case_full["method"]),
-        dict(mode="MEAN", E_mix=case_mean["E_mix"], i_mix=case_mean["i_mix"], residual=case_mean["residual"], method=case_mean["method"]),
-    ])
-    print("\n=== Baseline comparison (FULL vs MEAN) ===")
-    print(df_cmp.to_string(index=False))
+    # Print comparison (optional)
+    if print_summary:
+        df_cmp = pd.DataFrame([
+            dict(mode="FULL", E_mix=case_full["E_mix"], i_mix=case_full["i_mix"], residual=case_full["residual"], method=case_full["method"]),
+            dict(mode="MEAN", E_mix=case_mean["E_mix"], i_mix=case_mean["i_mix"], residual=case_mean["residual"], method=case_mean["method"]),
+        ])
+        print("\n=== Baseline comparison (FULL vs MEAN) ===")
+        print(df_cmp.to_string(index=False))
+
+    # Optional self-checks
+    if bool(p.get("do_self_checks", False)):
+        run_self_checks(
+            p,
+            run_convergence=bool(p.get("do_convergence_check", False)),
+            raise_on_fail=False,
+            print_summary=True,
+        )
 
     # OFAT
-    if bool(params.get("do_ofat", True)):
-        scan_mode = str(params.get("scan_mode", "MEAN")).upper()
+    if bool(p.get("do_ofat", True)):
+        scan_mode = str(p.get("scan_mode", "MEAN")).upper()
         modes = ["MEAN", "FULL"] if scan_mode == "BOTH" else ["MEAN"]
-        run_ofat(params, out_dir=out_dir, modes=modes, summary_rows=summary_rows)
+        run_ofat(p, out_dir=out_dir, modes=modes, summary_rows=summary_rows)
 
     # Heatmaps
-    if bool(params.get("do_heatmaps", True)):
-        run_heatmaps(params, out_dir=out_dir, mode="MEAN", summary_rows=summary_rows)
+    if bool(p.get("do_heatmaps", True)):
+        run_heatmaps(p, out_dir=out_dir, mode="MEAN", summary_rows=summary_rows)
 
     # Sensitivities
-    if bool(params.get("do_sensitivities", True)):
-        compute_sensitivities(params, out_dir=out_dir, mode="MEAN", summary_rows=summary_rows, rel_step=0.01)
+    if bool(p.get("do_sensitivities", True)):
+        compute_sensitivities(p, out_dir=out_dir, mode="MEAN", summary_rows=summary_rows, rel_step=0.01)
 
     # Save master summary (required)
     pd.DataFrame(summary_rows).to_csv(out_dir / "results_summary.csv", index=False)
 
+    return dict(out_dir=str(out_dir), case_full=case_full, case_mean=case_mean)
+
+
+# -----------------------------
+# Main
+# -----------------------------
+
+def main() -> None:
+    params = default_params()
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    out_dir = SCRIPT_DIR / "results" / timestamp
+    run_full_workflow(params, out_dir=out_dir, print_summary=True)
     print(f"\nAll results saved under: {out_dir.resolve()}")
 
 
