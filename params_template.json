@@ -36,13 +36,21 @@
   "use_closed_form_when_affine": true,
   "do_self_checks": false,
   "do_convergence_check": false,
+  "dh_warn_threshold": 1.0,
+  "dh_violation_action": "warn",
   "do_ofat": true,
   "do_heatmaps": false,
   "do_sensitivities": false,
   "ofat_n": 15,
   "heatmap_nx": 25,
   "heatmap_ny": 25,
-  "scan_mode": "MEAN",
+  "scan_mode": "BOTH",
+  "heatmap_mode": "BOTH",
+  "sensitivity_mode": "BOTH",
+  "ofat_C_tot_min": 0.1,
+  "ofat_C_tot_max": 10000.0,
+  "heatmap_C_tot_min": 0.1,
+  "heatmap_C_tot_max": 10000.0,
   "ofat_L_gap_min": 0.0,
-  "ofat_L_gap_max": 1e-02
+  "ofat_L_gap_max": 1e-06
 }
