@@ -43,7 +43,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
+from matplotlib.colors import TwoSlopeNorm
 from matplotlib.figure import Figure
+from matplotlib.ticker import MaxNLocator
 
 try:
     import plotly.graph_objects as go  # pyright: ignore[reportMissingImports]
@@ -65,6 +67,8 @@ NATURE_COLORS = {
 NATURE_SINGLE_FIGSIZE = (3.35, 2.55)
 NATURE_WIDE_FIGSIZE = (4.5, 2.9)
 NATURE_DOUBLE_FIGSIZE = (6.9, 2.9)
+LEGEND_WITH_EDL = "with EDL"
+LEGEND_WITHOUT_EDL = "without EDL"
 
 
 def _configure_matplotlib() -> None:
@@ -235,6 +239,7 @@ def load_overrides_json(path: str | Path) -> Dict[str, Any]:
 
 HOVER_PARAM_KEYS = [
     "C_tot", "lambda_D", "epsilon_r", "T",
+    "pH",
     "L_Au", "L_gap", "L_Pd_len",
     "Cdl_Au", "Cdl_C", "Cdl_Pd",
     "pzc_Au", "pzc_C", "pzc_Pd",
@@ -250,6 +255,7 @@ _DH_WARNED = False
 def format_hover_params(params: Dict[str, Any], keys: Optional[List[str]] = None) -> str:
     """Format parameter dict for Plotly hover text."""
     flat = flatten_dict(params)
+    rxn = _effective_reaction_params(params)
     if keys is None:
         keys = sorted(flat.keys())
     lines: List[str] = []
@@ -264,6 +270,10 @@ def format_hover_params(params: Dict[str, Any], keys: Optional[List[str]] = None
             lines.append(f"{key}={val:.6g}")
         else:
             lines.append(f"{key}={val}")
+    lines.append(f"E1_eq_eff={rxn['E1_eq_eff']:.6g}")
+    lines.append(f"E2_eq_eff={rxn['E2_eq_eff']:.6g}")
+    lines.append(f"it0_1_eff={rxn['it0_1_eff']:.6g}")
+    lines.append(f"it0_2_eff={rxn['it0_2_eff']:.6g}")
     return "<br>".join(lines)
 
 
@@ -359,24 +369,42 @@ def write_plotly_html(fig, path: Path) -> None:
 
 
 PLOT_AXIS_LABELS = {
-    "phi2": "Solution reaction-plane potential, phi2(x) [V]",
-    "metal_potential": "Metal potential, E_m [V]",
-    "local_current_density": "Local current density, i(x) [A/m^2]",
-    "E_mix": "Mixed potential, E_mix [V]",
-    "overpotential": "Local overpotential, eta(x) [V]",
-    "i_mix_norm": "Normalized mixed current, i_mix_norm [A/m^2]",
-    "i_mix_phys": "Mixed current per unit depth, i_mix_phys [A/m]",
-    "i_mix_abs": "Mixed current, i_mix [A]",
-    "I_net_norm": "Normalized net current, I_net_norm [A/m^2]",
-    "I_net_phys": "Net current per unit depth, I_net [A/m]",
-    "I_net_abs": "Net current, I_net [A]",
-    "S_E": "S_E [-]",
-    "S_I_norm": "S_I_norm [-]",
-    "S_I_phys": "S_I_phys [-]",
-    "S_I_abs": "S_I_abs [-]",
+    "phi2": r"Solution reaction-plane potential, $\phi_2(x)$ [V]",
+    "metal_potential": r"Metal potential, $E_{\mathrm{m}}$ [V]",
+    "local_current_density": r"Local current density, $i(x)$ [A/m$^2$]",
+    "E_mix": r"Mixed potential, $E_{\mathrm{mix}}$ [V]",
+    "overpotential": r"Local overpotential, $\eta(x)$ [V]",
+    "i_mix_norm": r"Normalized mixed current, $i_{\mathrm{mix}}$ [A/m$^2$]",
+    "i_mix_phys": r"Mixed current per unit depth, $i_{\mathrm{mix}}$ [A/m]",
+    "i_mix_abs": r"Mixed current, $i_{\mathrm{mix}}$ [A]",
+    "i_mix_avg": r"Average mixed current density, $\bar{i}_{\mathrm{mix}}$ [A/m$^2$]",
+    "I_net_norm": r"Normalized net current, $I_{\mathrm{net}}$ [A/m$^2$]",
+    "I_net_phys": r"Net current per unit depth, $I_{\mathrm{net}}$ [A/m]",
+    "I_net_abs": r"Net current, $I_{\mathrm{net}}$ [A]",
+    "I_net_avg": r"Average net current density, $\bar{I}_{\mathrm{net}}$ [A/m$^2$]",
+    "S_E": r"$S_E$ [-]",
+    "S_I_norm": r"$S_{I,\mathrm{norm}}$ [-]",
+    "S_I_phys": r"$S_{I,\mathrm{phys}}$ [-]",
+    "S_I_abs": r"$S_{I,\mathrm{abs}}$ [-]",
+}
+
+CURRENT_AXIS_KEYS = {
+    "local_current_density",
+    "i_mix_norm",
+    "i_mix_phys",
+    "i_mix_abs",
+    "i_mix_avg",
+    "I_net_norm",
+    "I_net_phys",
+    "I_net_abs",
+    "I_net_avg",
 }
 
 MOLAR_TO_MOL_PER_M3 = 1000.0
+LENGTH_TO_NM = 1e9
+CDL_TO_UF_PER_CM2 = 100.0
+MIN_PHYSICAL_CDL_UF_PER_CM2 = 1.0
+MIN_PHYSICAL_CDL_F_PER_M2 = MIN_PHYSICAL_CDL_UF_PER_CM2 / CDL_TO_UF_PER_CM2
 
 
 def concentration_M_to_mol_per_m3(value_M: float) -> float:
@@ -390,6 +418,10 @@ def concentration_mol_per_m3_to_M(value_mol_per_m3: float) -> float:
 def _display_param_value(name: str, value: float) -> float:
     if name == "C_tot":
         return concentration_mol_per_m3_to_M(value)
+    if name in {"lambda_D", "L_Au", "L_gap", "L_Pd_len"}:
+        return float(value) * LENGTH_TO_NM
+    if name in {"Cdl_Au", "Cdl_C", "Cdl_Pd"}:
+        return float(value) * CDL_TO_UF_PER_CM2
     return float(value)
 
 
@@ -397,31 +429,36 @@ def _display_param_values(name: str, values: np.ndarray) -> np.ndarray:
     arr = np.asarray(values, dtype=float)
     if name == "C_tot":
         return arr / MOLAR_TO_MOL_PER_M3
+    if name in {"lambda_D", "L_Au", "L_gap", "L_Pd_len"}:
+        return arr * LENGTH_TO_NM
+    if name in {"Cdl_Au", "Cdl_C", "Cdl_Pd"}:
+        return arr * CDL_TO_UF_PER_CM2
     return arr
 
 
 PARAM_AXIS_LABELS = {
-    "C_tot": "Electrolyte concentration, C_tot [M]",
-    "lambda_D": "lambda_D [m]",
-    "epsilon_r": "epsilon_r [-]",
+    "C_tot": r"Electrolyte concentration, $C_{\mathrm{tot}}$ [M]",
+    "lambda_D": r"$\lambda_D$ [nm]",
+    "epsilon_r": r"$\varepsilon_r$ [-]",
     "T": "T [K]",
-    "L_Au": "L_Au [m]",
-    "L_gap": "L_gap [m]",
-    "L_Pd_len": "L_Pd_len [m]",
-    "Cdl_Au": "Cdl_Au [F/m^2]",
-    "Cdl_C": "Cdl_C [F/m^2]",
-    "Cdl_Pd": "Cdl_Pd [F/m^2]",
-    "pzc_Au": "pzc_Au [V]",
-    "pzc_C": "pzc_C [V]",
-    "pzc_Pd": "pzc_Pd [V]",
-    "it0_1": "it0_1 [A/m^2]",
-    "it0_2": "it0_2 [A/m^2]",
-    "alpha1": "alpha1 [-]",
-    "alpha2": "alpha2 [-]",
-    "E1_eq": "E1_eq [V]",
-    "E2_eq": "E2_eq [V]",
-    "z_R1": "z_R1 [-]",
-    "z_O2": "z_O2 [-]",
+    "pH": "pH [-]",
+    "L_Au": r"$L_{\mathrm{Au}}$ [nm]",
+    "L_gap": r"$L_{\mathrm{support}}$ [nm]",
+    "L_Pd_len": r"$L_{\mathrm{Pd}}$ [nm]",
+    "Cdl_Au": r"$C_{\mathrm{dl,Au}}$ [$\mu$F/cm$^2$]",
+    "Cdl_C": r"$C_{\mathrm{dl,support}}$ [$\mu$F/cm$^2$]",
+    "Cdl_Pd": r"$C_{\mathrm{dl,Pd}}$ [$\mu$F/cm$^2$]",
+    "pzc_Au": r"$\mathrm{pzc}_{\mathrm{Au}}$ [V]",
+    "pzc_C": r"$\mathrm{pzc}_{\mathrm{support}}$ [V]",
+    "pzc_Pd": r"$\mathrm{pzc}_{\mathrm{Pd}}$ [V]",
+    "it0_1": r"$i_{0,1}$ [A/m$^2$]",
+    "it0_2": r"$i_{0,2}$ [A/m$^2$]",
+    "alpha1": r"$\alpha_1$ [-]",
+    "alpha2": r"$\alpha_2$ [-]",
+    "E1_eq": r"$E_{\mathrm{eq},1}$ [V]",
+    "E2_eq": r"$E_{\mathrm{eq},2}$ [V]",
+    "z_R1": r"$z_{\mathrm{R},1}$ [-]",
+    "z_O2": r"$z_{\mathrm{O},2}$ [-]",
 }
 
 
@@ -431,6 +468,89 @@ def _plot_axis_label(name: str) -> str:
 
 def _param_axis_label(name: str) -> str:
     return PARAM_AXIS_LABELS.get(name, name)
+
+
+def _delta_pzc_label() -> str:
+    return r"$\Delta \mathrm{pzc} = \mathrm{pzc}_{\mathrm{Au}} - \mathrm{pzc}_{\mathrm{Pd}}$ [V]"
+
+
+def _pzc_gap_label() -> str:
+    return r"$\mathrm{pzc}_{\mathrm{support}}$ [V]"
+
+
+def _format_signed_float_tag(value: float, decimals: int = 3) -> str:
+    return f"{value:+.{decimals}f}".replace("+", "p").replace("-", "m").replace(".", "p")
+
+
+def _split_label_unit(label: str) -> Tuple[str, str]:
+    if label.endswith("]") and " [" in label:
+        base, unit = label.rsplit(" [", 1)
+        return base, unit[:-1]
+    return label, ""
+
+
+def _label_symbol(label: str) -> str:
+    base, _ = _split_label_unit(label)
+    return base.split(", ")[-1]
+
+
+def _label_with_power_of_ten(label: str, exponent: int) -> str:
+    if exponent == 0:
+        return label
+    base, unit = _split_label_unit(label)
+    if unit:
+        return f"{base} [$10^{{{exponent}}}$ {unit}]"
+    return f"{label} [$10^{{{exponent}}}$]"
+
+
+def _scientific_exponent(values: Any, step: int = 3) -> int:
+    arr = np.asarray(values, dtype=float)
+    finite = arr[np.isfinite(arr)]
+    finite = finite[np.abs(finite) > 0.0]
+    if finite.size == 0:
+        return 0
+    max_abs = float(np.max(np.abs(finite)))
+    raw_exp = int(math.floor(math.log10(max_abs)))
+    scaled_exp = int(step * math.floor(raw_exp / step))
+    return 0 if abs(scaled_exp) < step else scaled_exp
+
+
+def _scale_by_exponent(values: Any, exponent: int) -> np.ndarray:
+    arr = np.asarray(values, dtype=float)
+    if exponent == 0:
+        return arr
+    return arr / (10.0 ** exponent)
+
+
+def _scaled_current_display(axis_key: str, *values: Any) -> Tuple[List[np.ndarray], str, int]:
+    if axis_key not in CURRENT_AXIS_KEYS:
+        raise ValueError(f"Unsupported current axis key: {axis_key}")
+    exponent = _scientific_exponent(np.concatenate([np.ravel(np.asarray(v, dtype=float)) for v in values if np.size(v) > 0]))
+    scaled = [_scale_by_exponent(v, exponent) for v in values]
+    label = _label_with_power_of_ten(_plot_axis_label(axis_key), exponent)
+    return scaled, label, exponent
+
+
+def _style_colorbar(
+    cbar,
+    label: str,
+    ticks: Optional[np.ndarray | List[float]] = None,
+    use_max_locator: bool = True,
+) -> None:
+    cbar.set_label(label)
+    cbar.ax.tick_params(length=2.8, width=0.7, pad=2, labelsize=7.5)
+    cbar.outline.set_linewidth(0.8)
+    if ticks is not None:
+        cbar.set_ticks(np.asarray(ticks, dtype=float))
+    elif use_max_locator:
+        cbar.locator = MaxNLocator(nbins=5)
+    cbar.update_ticks()
+
+
+def _ofat_x_values(dfp: pd.DataFrame, pname: str) -> np.ndarray:
+    if pname == "C_tot" and "value_M" in dfp.columns:
+        return np.asarray(dfp["value_M"], dtype=float)
+    return _display_param_values(pname, np.asarray(dfp["value"], dtype=float))
 
 
 def _expand_mode_selection(mode_setting: str, allow_both: bool = True) -> List[str]:
@@ -475,7 +595,7 @@ def default_params() -> Dict[str, Any]:
         epsilon_s=None,             # override if desired
 
         # electrolyte
-        C_tot=0.1,                  # mol/m^3 of each ion; 0.1 mol/m^3 = 0.1 mM, while 0.1 M would be 100.0
+        C_tot=10.0,                 # mol/m^3 of each ion; 10.0 corresponds to 10 mM
         lambda_D=None,              # optional override; set to None to auto-recompute
 
         # geometry
@@ -485,9 +605,9 @@ def default_params() -> Dict[str, Any]:
         out_of_plane_width=1.0,     # m, unit out-of-plane width by default
 
         # interfacial electrostatics (Cdl or g)
-        Cdl_Au=120e-6,              # F/m^2
-        Cdl_C=1.0,                  # F/m^2
-        Cdl_Pd=37.7e-6,             # F/m^2
+        Cdl_Au=0.23,                # F/m^2 = 23 uF/cm^2; displayed as uF/cm^2 in figures/tables
+        Cdl_C=0.1,                  # F/m^2 = 10 uF/cm^2; displayed as uF/cm^2 in figures/tables
+        Cdl_Pd=0.377,               # F/m^2 = 37.7 uF/cm^2; displayed as uF/cm^2 in figures/tables
         g_Au=None, g_C=None, g_Pd=None,  # if set, overrides Cdl_* via Eq. (S-11c)
 
         # pzc (V)
@@ -504,6 +624,12 @@ def default_params() -> Dict[str, Any]:
         z_O2=1.0,
         E1_eq=0.1,                  # V
         E2_eq=0.834,                # V
+        pH=7.0,                     # baseline pH
+        pH_ref=7.0,                 # reference pH at which E*_eq and it0_* are defined
+        E1_eq_pH_slope_V_per_pH=0.0, # E1_eq(pH) = E1_eq + slope * (pH - pH_ref)
+        E2_eq_pH_slope_V_per_pH=-(math.log(10.0) * 8.314 * 298.0 / 96485.0), # reaction 2 treated as H+ + e- -> 1/2 H2
+        it0_1_pH_order=0.0,         # it0_1(pH) = it0_1 * 10^(-order * (pH - pH_ref))
+        it0_2_pH_order=1.0,         # reaction 2 treated as first-order in H+
 
         # numerics
         N_modes=80,
@@ -522,20 +648,28 @@ def default_params() -> Dict[str, Any]:
 
         # what to run
         do_ofat=True,
-        do_heatmaps=False,
+        do_heatmaps=True,
         do_sensitivities=False,
 
         # scan sizes
         ofat_n=15,
+        ofat_L_gap_n=15,
         heatmap_nx=25,
         heatmap_ny=25,
         scan_mode="BOTH",  # "MEAN" or "BOTH"
         heatmap_mode="BOTH",       # "MEAN", "FULL", or "BOTH"
         sensitivity_mode="BOTH",   # "MEAN", "FULL", or "BOTH"
+        ofat_pH_min=0.0,
+        ofat_pH_max=14.0,
         ofat_C_tot_min=concentration_M_to_mol_per_m3(1.0e-4),    # 0.1 mM
         ofat_C_tot_max=concentration_M_to_mol_per_m3(10.0),      # 10 M
         heatmap_C_tot_min=concentration_M_to_mol_per_m3(1.0e-4), # 0.1 mM
         heatmap_C_tot_max=concentration_M_to_mol_per_m3(10.0),   # 10 M
+        heatmap_L_min=2e-9,        # m, 2 nm lower bound for Au/Pd length heatmaps
+        heatmap_L_max=1000e-9,     # m, 1000 nm upper bound for Au/Pd length heatmaps
+        heatmap_Cdl_C_min=0.01,      # F/m^2 = 1 uF/cm^2
+        heatmap_Cdl_C_max=10.0,      # F/m^2
+        heatmap_pzc_C_offsets=[-0.10, 0.0, 0.10],  # V offsets around baseline pzc_C
         ofat_L_gap_min=0.0,        # m, allow L_gap=0 in OFAT
         ofat_L_gap_max=1000e-9,    # m, default OFAT range for nanoscale/sub-micron gaps
     )
@@ -554,7 +688,7 @@ def validate_params(params: Dict[str, Any]) -> None:
             raise ValueError(f"{name} must be finite")
         return val
 
-    for name in ("R", "F", "T", "epsilon0", "epsilon_r", "L_Au", "L_gap", "L_Pd_len", "it0_1", "it0_2", "xtol"):
+    for name in ("R", "F", "T", "epsilon0", "epsilon_r", "L_Au", "L_gap", "L_Pd_len", "it0_1", "it0_2", "xtol", "pH", "pH_ref"):
         require_finite(name)
 
     if require_finite("R") <= 0 or require_finite("F") <= 0 or require_finite("T") <= 0:
@@ -589,7 +723,10 @@ def validate_params(params: Dict[str, Any]) -> None:
         if not (0.0 <= alpha <= 1.0):
             raise ValueError(f"{name} must be within [0, 1]")
 
-    for name in ("pzc_Au", "pzc_C", "pzc_Pd", "z_R1", "z_O2", "E1_eq", "E2_eq"):
+    for name in (
+        "pzc_Au", "pzc_C", "pzc_Pd", "z_R1", "z_O2", "E1_eq", "E2_eq",
+        "E1_eq_pH_slope_V_per_pH", "E2_eq_pH_slope_V_per_pH", "it0_1_pH_order", "it0_2_pH_order",
+    ):
         require_finite(name)
     if require_finite("out_of_plane_width") <= 0:
         raise ValueError("out_of_plane_width must be positive")
@@ -598,21 +735,43 @@ def validate_params(params: Dict[str, Any]) -> None:
         raise ValueError("N_modes must be >= 1")
     if int(params["Nx"]) < 2:
         raise ValueError("Nx must be >= 2")
+    if int(params.get("ofat_n", 1)) < 2:
+        raise ValueError("ofat_n must be >= 2")
+    if int(params.get("ofat_L_gap_n", 1)) < 2:
+        raise ValueError("ofat_L_gap_n must be >= 2")
     if float(params["xtol"]) <= 0:
         raise ValueError("xtol must be positive")
     if int(params["max_bracket_expands"]) < 0:
         raise ValueError("max_bracket_expands must be >= 0")
     if float(params.get("dh_warn_threshold", 1.0)) <= 0:
         raise ValueError("dh_warn_threshold must be positive")
+    if require_finite("heatmap_L_min") <= 0 or require_finite("heatmap_L_max") <= 0:
+        raise ValueError("heatmap_L_min and heatmap_L_max must be positive")
+    if float(params["heatmap_L_max"]) <= float(params["heatmap_L_min"]):
+        raise ValueError("heatmap_L_max must be larger than heatmap_L_min")
     if str(params.get("dh_violation_action", "warn")).lower() not in {"ignore", "warn", "raise"}:
         raise ValueError("dh_violation_action must be one of: ignore, warn, raise")
-    for name in ("ofat_C_tot_min", "ofat_C_tot_max", "heatmap_C_tot_min", "heatmap_C_tot_max"):
+    for name in ("ofat_pH_min", "ofat_pH_max"):
+        require_finite(name)
+    if float(params.get("ofat_pH_max", 14.0)) < float(params.get("ofat_pH_min", 0.0)):
+        raise ValueError("ofat_pH_max must be >= ofat_pH_min")
+    for name in (
+        "ofat_C_tot_min", "ofat_C_tot_max", "heatmap_C_tot_min", "heatmap_C_tot_max",
+        "heatmap_Cdl_C_min", "heatmap_Cdl_C_max",
+    ):
         if require_finite(name) <= 0:
             raise ValueError(f"{name} must be positive")
     if float(params.get("ofat_C_tot_max", 1.0)) < float(params.get("ofat_C_tot_min", 1.0)):
         raise ValueError("ofat_C_tot_max must be >= ofat_C_tot_min")
     if float(params.get("heatmap_C_tot_max", 1.0)) < float(params.get("heatmap_C_tot_min", 1.0)):
         raise ValueError("heatmap_C_tot_max must be >= heatmap_C_tot_min")
+    if float(params.get("heatmap_Cdl_C_max", 1.0)) < float(params.get("heatmap_Cdl_C_min", 1.0)):
+        raise ValueError("heatmap_Cdl_C_max must be >= heatmap_Cdl_C_min")
+    pzc_offsets = params.get("heatmap_pzc_C_offsets", [-0.10, 0.0, 0.10])
+    if not isinstance(pzc_offsets, list) or len(pzc_offsets) == 0:
+        raise ValueError("heatmap_pzc_C_offsets must be a non-empty list")
+    if not all(np.isfinite(float(v)) for v in pzc_offsets):
+        raise ValueError("heatmap_pzc_C_offsets must contain only finite values")
     if str(params.get("scan_mode", "BOTH")).upper() not in {"MEAN", "FULL", "BOTH"}:
         raise ValueError("scan_mode must be MEAN, FULL, or BOTH")
     for mode_key in ("heatmap_mode", "sensitivity_mode"):
@@ -852,21 +1011,58 @@ class EDLModel:
 # Kinetics and mixed potential
 # -----------------------------
 
+def _effective_reaction_params(params: Dict[str, Any]) -> Dict[str, float]:
+    pH = float(params.get("pH", params.get("pH_ref", 7.0)))
+    pH_ref = float(params.get("pH_ref", pH))
+    delta_pH = pH - pH_ref
+
+    E1_eq_base = float(params["E1_eq"])
+    E2_eq_base = float(params["E2_eq"])
+    E1_slope = float(params.get("E1_eq_pH_slope_V_per_pH", 0.0))
+    E2_slope = float(params.get("E2_eq_pH_slope_V_per_pH", 0.0))
+    order1 = float(params.get("it0_1_pH_order", 0.0))
+    order2 = float(params.get("it0_2_pH_order", 0.0))
+
+    E1_eq_eff = E1_eq_base + E1_slope * delta_pH
+    E2_eq_eff = E2_eq_base + E2_slope * delta_pH
+    it0_1_eff = float(params["it0_1"]) * safe_exp(-math.log(10.0) * order1 * delta_pH)
+    it0_2_eff = float(params["it0_2"]) * safe_exp(-math.log(10.0) * order2 * delta_pH)
+
+    return dict(
+        pH=pH,
+        pH_ref=pH_ref,
+        delta_pH=delta_pH,
+        E1_eq_eff=float(E1_eq_eff),
+        E2_eq_eff=float(E2_eq_eff),
+        it0_1_eff=float(it0_1_eff),
+        it0_2_eff=float(it0_2_eff),
+        E1_eq_pH_slope_V_per_pH=E1_slope,
+        E2_eq_pH_slope_V_per_pH=E2_slope,
+        it0_1_pH_order=order1,
+        it0_2_pH_order=order2,
+    )
+
+
 def _kinetics_context(E: float, params: Dict[str, Any]) -> Dict[str, float]:
     R_gas = float(params["R"]); F = float(params["F"]); T = float(params["T"])
     beta = F / (R_gas * T)
     alpha1 = float(params["alpha1"]); alpha2 = float(params["alpha2"])
     z_R1 = float(params["z_R1"]); z_O2 = float(params["z_O2"])
-    eta1 = E - float(params["E1_eq"])
-    eta2 = E - float(params["E2_eq"])
+    rxn = _effective_reaction_params(params)
+    eta1 = E - rxn["E1_eq_eff"]
+    eta2 = E - rxn["E2_eq_eff"]
     return dict(
         beta=beta,
-        it0_1=float(params["it0_1"]),
-        it0_2=float(params["it0_2"]),
+        it0_1=rxn["it0_1_eff"],
+        it0_2=rxn["it0_2_eff"],
         alpha1=alpha1,
         alpha2=alpha2,
         eta1=eta1,
         eta2=eta2,
+        E1_eq_eff=rxn["E1_eq_eff"],
+        E2_eq_eff=rxn["E2_eq_eff"],
+        pH=rxn["pH"],
+        pH_ref=rxn["pH_ref"],
         Gamma1=(1.0 - alpha1) + z_R1,
         Gamma2=alpha2 - z_O2,
     )
@@ -906,6 +1102,7 @@ def _build_run_output(
         a2=float(a2),
         b2=float(b2),
         lambda_D=float(derived["lambda_D"]),
+        reactive_length_m=float(derived["L_Au"] + derived["L_Pd_len"]),
         g_Au=float(derived["g_Au"]),
         g_C=float(derived["g_C"]),
         g_Pd=float(derived["g_Pd"]),
@@ -915,8 +1112,11 @@ def _build_run_output(
     )
 
 
-def _attach_current_unit_outputs(out: Dict[str, Any], lambda_D: float, out_of_plane_width: float) -> None:
+def _attach_current_unit_outputs(out: Dict[str, Any], lambda_D: float, out_of_plane_width: float, reactive_length_m: float) -> None:
     out["out_of_plane_width_m"] = float(out_of_plane_width)
+    out["reactive_length_m"] = float(reactive_length_m)
+    reactive_area_m2 = float(reactive_length_m) * float(out_of_plane_width)
+    out["reactive_area_m2"] = reactive_area_m2
     for base_key in ("I_Au", "I_Pd", "residual", "i_mix"):
         if base_key not in out:
             continue
@@ -925,6 +1125,7 @@ def _attach_current_unit_outputs(out: Dict[str, Any], lambda_D: float, out_of_pl
         phys = lambda_D * val
         out[f"{base_key}_phys_A_per_m"] = phys
         out[f"{base_key}_abs_A"] = out_of_plane_width * phys
+        out[f"{base_key}_avg_A_per_m2"] = (out[f"{base_key}_abs_A"] / reactive_area_m2) if reactive_area_m2 > 0.0 else float("nan")
 
 
 def _compute_dh_status_from_phi(phi_tilde: np.ndarray, params: Dict[str, Any]) -> Dict[str, Any]:
@@ -1112,9 +1313,10 @@ def mean_mode_residual_no_edl(E: float, derived: Dict[str, Any], params: Dict[st
 def emix_closed_form_no_edl(derived: Dict[str, Any], params: Dict[str, Any]) -> float:
     """Closed-form Emix for no-EDL mean-field model (phi2_1=phi2_2=0)."""
     R_gas = float(params["R"]); F = float(params["F"]); T = float(params["T"])
-    it0_1 = float(params["it0_1"]); it0_2 = float(params["it0_2"])
+    rxn = _effective_reaction_params(params)
+    it0_1 = rxn["it0_1_eff"]; it0_2 = rxn["it0_2_eff"]
     alpha1 = float(params["alpha1"]); alpha2 = float(params["alpha2"])
-    E1_eq = float(params["E1_eq"]); E2_eq = float(params["E2_eq"])
+    E1_eq = rxn["E1_eq_eff"]; E2_eq = rxn["E2_eq_eff"]
 
     kappa = 1.0 - alpha1 + alpha2
     L_Au = float(derived["L_Au_tilde"])
@@ -1136,6 +1338,7 @@ def solve_emix_no_edl(
 ) -> Tuple[float, float, Dict[str, Any]]:
     """Root-find Emix for no-EDL kinetics (phi2_1=phi2_2=0)."""
     mode = mode.upper()
+    rxn = _effective_reaction_params(params)
     if mode == "FULL":
         f = lambda E: float(full_mode_currents_no_edl(E, derived, params, return_profiles=False)["residual"])
     elif mode == "MEAN":
@@ -1144,8 +1347,8 @@ def solve_emix_no_edl(
         raise ValueError("mode must be FULL or MEAN")
     E_mix, info = _solve_root_problem(
         f=f,
-        E1_eq=float(params["E1_eq"]),
-        E2_eq=float(params["E2_eq"]),
+        E1_eq=rxn["E1_eq_eff"],
+        E2_eq=rxn["E2_eq_eff"],
         xtol=xtol,
         max_bracket_expands=max_bracket_expands,
         E_guess=E_guess,
@@ -1184,10 +1387,11 @@ def emix_closed_form_affine(edl: EDLModel, params: Dict[str, Any]) -> float:
     TODO: verify whether your SI's E0 definition already includes the length ratio term.
     """
     R_gas = float(params["R"]); F = float(params["F"]); T = float(params["T"])
-    it0_1 = float(params["it0_1"]); it0_2 = float(params["it0_2"])
+    rxn = _effective_reaction_params(params)
+    it0_1 = rxn["it0_1_eff"]; it0_2 = rxn["it0_2_eff"]
     alpha1 = float(params["alpha1"]); alpha2 = float(params["alpha2"])
     z_R1 = float(params["z_R1"]); z_O2 = float(params["z_O2"])
-    E1_eq = float(params["E1_eq"]); E2_eq = float(params["E2_eq"])
+    E1_eq = rxn["E1_eq_eff"]; E2_eq = rxn["E2_eq_eff"]
 
     kappa = 1.0 - alpha1 + alpha2
     rho = (1.0 - alpha1) + z_R1
@@ -1220,6 +1424,7 @@ def solve_emix(
 ) -> Tuple[float, float, Dict[str, Any]]:
     """Root-find Emix from zero-net-current condition (Eq. (S3-7b)/(S3-13b))."""
     mode = mode.upper()
+    rxn = _effective_reaction_params(params)
     if mode == "FULL":
         f = lambda E: float(full_mode_currents(E, edl, params, return_profiles=False)["residual"])
     elif mode == "MEAN":
@@ -1228,8 +1433,8 @@ def solve_emix(
         raise ValueError("mode must be FULL or MEAN")
     E_mix, info = _solve_root_problem(
         f=f,
-        E1_eq=float(params["E1_eq"]),
-        E2_eq=float(params["E2_eq"]),
+        E1_eq=rxn["E1_eq_eff"],
+        E2_eq=rxn["E2_eq_eff"],
         xtol=xtol,
         max_bracket_expands=max_bracket_expands,
         E_guess=E_guess,
@@ -1296,6 +1501,7 @@ def run_case(
     use_closed = bool(p.get("use_closed_form_when_affine", True))
     if return_profiles and mode != "FULL":
         raise ValueError("return_profiles=True only supported for FULL mode")
+    rxn = _effective_reaction_params(p)
 
     if use_edl:
         edl = EDLModel(p)
@@ -1352,7 +1558,12 @@ def run_case(
             _, phi_tilde_for_dh = edl.phi_tilde_surface(float(E_mix))
 
         out.update(_compute_dh_status_from_phi(np.asarray(phi_tilde_for_dh, dtype=float), p))
-        _attach_current_unit_outputs(out, float(edl.derived["lambda_D"]), float(p.get("out_of_plane_width", 1.0)))
+        _attach_current_unit_outputs(
+            out,
+            float(edl.derived["lambda_D"]),
+            float(p.get("out_of_plane_width", 1.0)),
+            float(edl.derived["L_Au"] + edl.derived["L_Pd_len"]),
+        )
     else:
         derived = compute_derived_params(p)
         L_Au_tilde = float(derived["L_Au_tilde"])
@@ -1399,8 +1610,14 @@ def run_case(
             out["phi2_2_meanV"] = 0.0
 
         out.update(max_abs_phi_tilde=0.0, dh_warn_threshold=float(p.get("dh_warn_threshold", 1.0)), debye_huckel_ok=True)
-        _attach_current_unit_outputs(out, float(derived["lambda_D"]), float(p.get("out_of_plane_width", 1.0)))
+        _attach_current_unit_outputs(
+            out,
+            float(derived["lambda_D"]),
+            float(p.get("out_of_plane_width", 1.0)),
+            float(derived["L_Au"] + derived["L_Pd_len"]),
+        )
 
+    out.update(rxn)
     _handle_dh_violation(out, p, mode=mode, use_edl=use_edl)
 
     return out
@@ -1423,6 +1640,7 @@ def plot_baseline_profiles(case_full: Dict[str, Any], params: Dict[str, Any], ou
 
     i1 = case_full["i1"]
     i2 = case_full["i2"]
+    (i1_plot, i2_plot), i_label, _ = _scaled_current_display("local_current_density", i1, i2)
 
     L_Au_nm = case_full["L_Au_tilde"] * case_full["lambda_D"] * 1e9
     L_C_nm = case_full["L_C_tilde"] * case_full["lambda_D"] * 1e9
@@ -1434,10 +1652,10 @@ def plot_baseline_profiles(case_full: Dict[str, Any], params: Dict[str, Any], ou
     _finalize_figure(fig_phi, fig_dir / "baseline_phi2.png")
 
     fig_i, ax_i = _new_figure()
-    ax_i.plot(x_nm, i1, label="i1 (Au)", color=NATURE_COLORS["blue"])
-    ax_i.plot(x_nm, i2, label="i2 (Pd)", color=NATURE_COLORS["orange"])
+    ax_i.plot(x_nm, i1_plot, label="i1 (Au)", color=NATURE_COLORS["blue"])
+    ax_i.plot(x_nm, i2_plot, label="i2 (Pd)", color=NATURE_COLORS["orange"])
     _add_vertical_boundaries(ax_i, L_Au_nm, L_C_nm)
-    _style_axes(ax_i, "x [nm]", _plot_axis_label("local_current_density"), "Local current density profiles")
+    _style_axes(ax_i, "x [nm]", i_label, "Local current density profiles")
     ax_i.legend(loc="best")
     _finalize_figure(fig_i, fig_dir / "baseline_currents.png")
 
@@ -1528,6 +1746,8 @@ def plot_ofat_html(
         return
     if dfp_plot.empty:
         return
+    x_col = "value_M" if pname == "C_tot" and "value_M" in dfp_plot.columns else "value"
+    x_label = _param_axis_label(pname)
 
     fig = go.Figure()
     for mode in modes:
@@ -1536,18 +1756,18 @@ def plot_ofat_html(
             continue
         fig.add_trace(
             go.Scatter(
-                x=sub["value"],
+                x=sub[x_col],
                 y=sub[metric],
                 mode="lines+markers",
                 name=mode,
                 line=dict(width=2.2),
                 marker=dict(size=6),
                 text=sub["hover_params"],
-                hovertemplate=f"{pname}=%{{x:.6g}}<br>{metric}=%{{y:.6g}}<br>%{{text}}<extra>{mode}</extra>",
+                hovertemplate=f"{x_label}=%{{x:.6g}}<br>{metric}=%{{y:.6g}}<br>%{{text}}<extra>{mode}</extra>",
             )
         )
 
-    _style_plotly_figure(fig, f"OFAT: {metric} vs {pname}", _param_axis_label(pname), ylab)
+    _style_plotly_figure(fig, f"{metric} vs {pname}", x_label, ylab)
     if xscale == "log":
         fig.update_xaxes(type="log")
     write_plotly_html(fig, fig_dir / f"ofat_{pname}_{metric}.html")
@@ -1611,8 +1831,9 @@ def _polarization_E_values(params: Dict[str, Any], solver_settings: Dict[str, An
     n_E = int(solver_settings.get("n_E", 200))
     if E_min is None or E_max is None:
         span = float(solver_settings.get("E_span", 0.5))
-        E1_eq = float(params["E1_eq"])
-        E2_eq = float(params["E2_eq"])
+        rxn = _effective_reaction_params(params)
+        E1_eq = rxn["E1_eq_eff"]
+        E2_eq = rxn["E2_eq_eff"]
         E_min = min(E1_eq, E2_eq) - span
         E_max = max(E1_eq, E2_eq) + span
     return np.linspace(float(E_min), float(E_max), n_E)
@@ -1654,6 +1875,7 @@ def compute_polarization_curve(
     I_total = np.zeros_like(E_values, dtype=float)
     lambda_D = float(compute_derived_params(params)["lambda_D"])
     out_of_plane_width = float(params.get("out_of_plane_width", 1.0))
+    reactive_length_m = float(params["L_Au"]) + float(params["L_Pd_len"])
 
     if use_edl:
         edl = EDLModel(params)
@@ -1698,6 +1920,7 @@ def compute_polarization_curve(
         I_total=I_total,
         I_total_phys_A_per_m=lambda_D * I_total,
         I_total_abs_A=out_of_plane_width * lambda_D * I_total,
+        I_total_avg_A_per_m2=(out_of_plane_width * lambda_D * I_total) / (reactive_length_m * out_of_plane_width),
         I_Au=I_Au,
         I_Au_phys_A_per_m=lambda_D * I_Au,
         I_Au_abs_A=out_of_plane_width * lambda_D * I_Au,
@@ -1715,32 +1938,38 @@ def plot_compare_polarization_curve(
     out_path: Path,
     title: str,
 ) -> None:
+    (I_edl_plot, I_no_plot), y_label, _ = _scaled_current_display(
+        "I_net_avg",
+        curve_edl["I_total_avg_A_per_m2"],
+        curve_no["I_total_avg_A_per_m2"],
+    )
     fig, ax = _new_figure(NATURE_WIDE_FIGSIZE)
-    ax.plot(curve_edl["E"], curve_edl["I_total_abs_A"], label="with EDL (FULL)", color=NATURE_COLORS["blue"])
-    ax.plot(curve_no["E"], curve_no["I_total_abs_A"], label="without EDL", color=NATURE_COLORS["orange"])
+    ax.plot(curve_edl["E"], I_edl_plot, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    ax.plot(curve_no["E"], I_no_plot, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
     ax.axhline(0.0, color=NATURE_COLORS["black"], linewidth=0.9)
     ax.axvline(E_mix_edl, linestyle=(0, (3, 2)), linewidth=1.0, color=NATURE_COLORS["blue"], alpha=0.9)
     ax.axvline(E_mix_no, linestyle=(0, (3, 2)), linewidth=1.0, color=NATURE_COLORS["orange"], alpha=0.9)
-    _style_axes(ax, "E [V]", _plot_axis_label("I_net_abs"), title)
+    _style_axes(ax, "E [V]", y_label, title)
     ax.legend(loc="best")
     _finalize_figure(fig, out_path)
 
 
 def plot_compare_emix_imix(
     E_mix_edl: float,
-    i_mix_abs_edl: float,
+    i_mix_avg_edl: float,
     E_mix_no: float,
-    i_mix_abs_no: float,
+    i_mix_avg_no: float,
     out_path: Path,
     title: str,
 ) -> None:
+    (i_mix_plot,), i_label, _ = _scaled_current_display("i_mix_avg", np.array([i_mix_avg_edl, i_mix_avg_no], dtype=float))
     fig, axes = plt.subplots(1, 2, figsize=NATURE_DOUBLE_FIGSIZE)
-    labels = ["with_edl", "no_edl"]
+    labels = [LEGEND_WITH_EDL, LEGEND_WITHOUT_EDL]
     colors = [NATURE_COLORS["blue"], NATURE_COLORS["orange"]]
     axes[0].bar(labels, [E_mix_edl, E_mix_no], color=colors, edgecolor=NATURE_COLORS["black"])
-    axes[1].bar(labels, [i_mix_abs_edl, i_mix_abs_no], color=colors, edgecolor=NATURE_COLORS["black"])
-    _style_axes(axes[0], "", _plot_axis_label("E_mix"), "E_mix")
-    _style_axes(axes[1], "", _plot_axis_label("i_mix_abs"), "i_mix")
+    axes[1].bar(labels, i_mix_plot, color=colors, edgecolor=NATURE_COLORS["black"])
+    _style_axes(axes[0], "", _plot_axis_label("E_mix"), r"$E_{\mathrm{mix}}$")
+    _style_axes(axes[1], "", i_label, r"$i_{\mathrm{mix}}$")
     for ax in axes:
         ax.tick_params(axis="x", rotation=0)
     fig.suptitle(title, x=0.02, y=1.02, ha="left", fontsize=9, fontweight="semibold")
@@ -1765,8 +1994,8 @@ def plot_compare_phi2(
     L_C_nm = float(derived_edl["L_C_tilde"]) * float(derived_edl["lambda_D"]) * 1e9
 
     fig, ax = _new_figure()
-    ax.plot(x_nm, phi2_edl, label="with EDL (FULL)", color=NATURE_COLORS["blue"])
-    ax.plot(x_nm, phi2_no, label="without EDL (phi2=0 by model)", color=NATURE_COLORS["orange"])
+    ax.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    ax.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
     _add_vertical_boundaries(ax, L_Au_nm, L_C_nm)
     _style_axes(ax, "x [nm]", _plot_axis_label("phi2"), title)
     ax.legend(loc="best")
@@ -1784,6 +2013,7 @@ def plot_compare_potentials_overpotential(
     out_path: Path,
     title: str,
 ) -> None:
+    rxn = _effective_reaction_params(params)
     scale_edl = float(derived_edl["R"]) * float(derived_edl["T"]) / float(derived_edl["F"])
     scale_no = float(derived_no["R"]) * float(derived_no["T"]) / float(derived_no["F"])
     x_nm = prof_edl["x_tilde"] * float(derived_edl["lambda_D"]) * 1e9
@@ -1797,8 +2027,8 @@ def plot_compare_potentials_overpotential(
     eta_no = np.full_like(x_nm, np.nan, dtype=float)
     mask_Au = np.asarray(prof_edl["mask_Au"], dtype=bool)
     mask_Pd = np.asarray(prof_edl["mask_Pd"], dtype=bool)
-    E1_eq = float(params["E1_eq"])
-    E2_eq = float(params["E2_eq"])
+    E1_eq = rxn["E1_eq_eff"]
+    E2_eq = rxn["E2_eq_eff"]
     eta_edl[mask_Au] = float(E_mix_edl) - E1_eq - phi2_edl[mask_Au]
     eta_edl[mask_Pd] = float(E_mix_edl) - E2_eq - phi2_edl[mask_Pd]
     eta_no[mask_Au] = float(E_mix_no) - E1_eq - phi2_no[mask_Au]
@@ -1809,24 +2039,209 @@ def plot_compare_potentials_overpotential(
 
     fig, axes = plt.subplots(1, 3, figsize=(10.3, 2.9))
 
-    axes[0].plot(x_nm, metal_edl, label="with EDL (FULL)", color=NATURE_COLORS["blue"])
-    axes[0].plot(x_nm, metal_no, label="without EDL", color=NATURE_COLORS["orange"])
+    axes[0].plot(x_nm, metal_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    axes[0].plot(x_nm, metal_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
     _add_vertical_boundaries(axes[0], L_Au_nm, L_C_nm)
     _style_axes(axes[0], "x [nm]", _plot_axis_label("metal_potential"), "Metal potential")
     axes[0].legend(loc="best")
 
-    axes[1].plot(x_nm, phi2_edl, label="with EDL (FULL)", color=NATURE_COLORS["blue"])
-    axes[1].plot(x_nm, phi2_no, label="without EDL", color=NATURE_COLORS["orange"])
+    axes[1].plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    axes[1].plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
     _add_vertical_boundaries(axes[1], L_Au_nm, L_C_nm)
     _style_axes(axes[1], "x [nm]", _plot_axis_label("phi2"), "Reaction-plane potential")
 
-    axes[2].plot(x_nm, eta_edl, label="with EDL (FULL)", color=NATURE_COLORS["blue"])
-    axes[2].plot(x_nm, eta_no, label="without EDL", color=NATURE_COLORS["orange"])
+    axes[2].plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    axes[2].plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
     _add_vertical_boundaries(axes[2], L_Au_nm, L_C_nm)
     _style_axes(axes[2], "x [nm]", _plot_axis_label("overpotential"), "Local overpotential")
 
     fig.suptitle(title, x=0.02, y=1.02, ha="left", fontsize=9, fontweight="semibold")
     _finalize_figure(fig, out_path)
+
+
+def _add_panel_label(ax: Axes, label: str) -> None:
+    ax.text(
+        -0.17,
+        1.04,
+        label,
+        transform=ax.transAxes,
+        fontsize=13,
+        fontweight="bold",
+        ha="left",
+        va="bottom",
+        color=NATURE_COLORS["black"],
+        clip_on=False,
+    )
+
+
+def _style_publication_axes(ax: Axes, xlabel: str, ylabel: str, title: str) -> None:
+    _style_axes(ax, xlabel, ylabel, title)
+    ax.title.set_fontsize(12.5)
+    ax.xaxis.label.set_fontsize(11.5)
+    ax.yaxis.label.set_fontsize(11.5)
+    ax.tick_params(labelsize=10.5, length=4.0, width=0.9, pad=3.0)
+
+
+def plot_publication_compare_panels(
+    prof_edl: Dict[str, Any],
+    derived_edl: Dict[str, Any],
+    prof_no: Dict[str, Any],
+    derived_no: Dict[str, Any],
+    params: Dict[str, Any],
+    E_mix_edl: float,
+    E_mix_no: float,
+    out_base: Path,
+    i_mix_abs_edl: Optional[float] = None,
+    i_mix_abs_no: Optional[float] = None,
+) -> Dict[str, str]:
+    """
+    Publication-style 2x2 compare figure:
+    (a) compact bar-chart summary of mixed potential and mixed current
+    (b) reaction-plane potential
+    (c) local overpotential
+    (d) local current density profile
+
+    The first three panels compare with/without EDL. The local current-density
+    panel shows the spatially resolved with-EDL solution at the converged
+    mixed potential.
+    """
+    out_base = Path(out_base)
+    ensure_dir(out_base.parent)
+
+    rxn = _effective_reaction_params(params)
+    scale_edl = float(derived_edl["R"]) * float(derived_edl["T"]) / float(derived_edl["F"])
+    scale_no = float(derived_no["R"]) * float(derived_no["T"]) / float(derived_no["F"])
+
+    x_nm = np.asarray(prof_edl["x_tilde"], dtype=float) * float(derived_edl["lambda_D"]) * 1e9
+    phi2_edl = scale_edl * np.asarray(prof_edl["phi_tilde"], dtype=float)
+    phi2_no = scale_no * np.asarray(prof_no["phi_tilde"], dtype=float)
+
+    metal_edl = np.full_like(x_nm, float(E_mix_edl), dtype=float)
+    metal_no = np.full_like(x_nm, float(E_mix_no), dtype=float)
+
+    eta_edl = np.full_like(x_nm, np.nan, dtype=float)
+    eta_no = np.full_like(x_nm, np.nan, dtype=float)
+    mask_Au = np.asarray(prof_edl["mask_Au"], dtype=bool)
+    mask_Pd = np.asarray(prof_edl["mask_Pd"], dtype=bool)
+    E1_eq = float(rxn["E1_eq_eff"])
+    E2_eq = float(rxn["E2_eq_eff"])
+    eta_edl[mask_Au] = float(E_mix_edl) - E1_eq - phi2_edl[mask_Au]
+    eta_edl[mask_Pd] = float(E_mix_edl) - E2_eq - phi2_edl[mask_Pd]
+    eta_no[mask_Au] = float(E_mix_no) - E1_eq - phi2_no[mask_Au]
+    eta_no[mask_Pd] = float(E_mix_no) - E2_eq - phi2_no[mask_Pd]
+
+    i1 = np.asarray(prof_edl["i1"], dtype=float)
+    i2 = np.asarray(prof_edl["i2"], dtype=float)
+    (i1_plot, i2_plot), i_label, _ = _scaled_current_display("local_current_density", i1, i2)
+    reactive_area_m2 = (float(params["L_Au"]) + float(params["L_Pd_len"])) * float(params.get("out_of_plane_width", 1.0))
+    i_mix_avg_vals = np.array(
+        [
+            np.nan if i_mix_abs_edl is None else float(i_mix_abs_edl) / reactive_area_m2,
+            np.nan if i_mix_abs_no is None else float(i_mix_abs_no) / reactive_area_m2,
+        ],
+        dtype=float,
+    )
+    (i_mix_abs_plot,), i_mix_abs_label, _ = _scaled_current_display("i_mix_avg", i_mix_avg_vals)
+
+    L_Au_nm = float(derived_edl["L_Au_tilde"]) * float(derived_edl["lambda_D"]) * 1e9
+    L_C_nm = float(derived_edl["L_C_tilde"]) * float(derived_edl["lambda_D"]) * 1e9
+
+    fig = plt.figure(figsize=(10.6, 6.5))
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.0, 1.0], wspace=0.34, hspace=0.46)
+    gs_a = gs[0, 0].subgridspec(1, 3, width_ratios=[1.0, 0.82, 1.0], wspace=0.0)
+
+    ax_a1 = fig.add_subplot(gs_a[0, 0])
+    ax_a2 = fig.add_subplot(gs_a[0, 2])
+    ax_b = fig.add_subplot(gs[0, 1])
+    ax_c = fig.add_subplot(gs[1, 0])
+    ax_d = fig.add_subplot(gs[1, 1])
+
+    labels = [LEGEND_WITH_EDL, LEGEND_WITHOUT_EDL]
+    categories = np.array([0.0, 1.0], dtype=float)
+    width = 0.56
+    bar_colors = [NATURE_COLORS["blue"], NATURE_COLORS["orange"]]
+
+    ax_a1.bar(
+        categories,
+        [float(E_mix_edl), float(E_mix_no)],
+        width=width,
+        color=bar_colors,
+        edgecolor=NATURE_COLORS["black"],
+        linewidth=0.8,
+        zorder=3,
+    )
+    _style_publication_axes(ax_a1, "", r"$E_{\mathrm{mix}}$ [V]", r"$E_{\mathrm{mix}}$")
+    ax_a1.set_xticks(categories)
+    ax_a1.set_xticklabels(labels, rotation=45, ha="right", rotation_mode="anchor")
+    ax_a1.set_xlim(-0.6, 1.6)
+    ax_a1.yaxis.labelpad = 5.0
+    ax_a1.tick_params(axis="x", labelsize=9.5)
+
+    ax_a2.bar(
+        categories,
+        i_mix_abs_plot,
+        width=width,
+        color=bar_colors,
+        edgecolor=NATURE_COLORS["black"],
+        linewidth=0.8,
+        zorder=3,
+    )
+    i_mix_abs_label_short = i_mix_abs_label.replace("Average mixed current density, ", "")
+    _style_publication_axes(ax_a2, "", i_mix_abs_label_short, r"$i_{\mathrm{mix}}$")
+    ax_a2.set_xticks(categories)
+    ax_a2.set_xticklabels(labels, rotation=45, ha="right", rotation_mode="anchor")
+    ax_a2.set_xlim(-0.6, 1.6)
+    ax_a2.yaxis.set_label_position("left")
+    ax_a2.yaxis.tick_left()
+    ax_a2.tick_params(axis="y", labelleft=True, left=True, labelright=False, right=False, pad=3.5)
+    ax_a2.tick_params(axis="x", labelsize=9.5)
+    ax_a2.yaxis.labelpad = 5.0
+    ax_a2.yaxis.set_label_coords(-0.21, 0.5)
+
+    ax_b.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    ax_b.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    _add_vertical_boundaries(ax_b, L_Au_nm, L_C_nm)
+    _style_publication_axes(ax_b, "x [nm]", r"Reaction-plane potential, $\phi_{\mathrm{RP}}(x)$ [V]", "Reaction-plane potential")
+    ax_b.yaxis.labelpad = 5.0
+    ax_b.legend(loc="upper right", bbox_to_anchor=(0.98, 0.90), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
+
+    ax_c.plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    ax_c.plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    _add_vertical_boundaries(ax_c, L_Au_nm, L_C_nm)
+    _style_publication_axes(ax_c, "x [nm]", _plot_axis_label("overpotential"), "Local overpotential")
+    ax_c.yaxis.labelpad = 5.0
+    ax_c.legend(loc="center right", bbox_to_anchor=(0.98, 0.50), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
+
+    ax_d.plot(x_nm, i1_plot, label="i1 (Au)", color=NATURE_COLORS["green"])
+    ax_d.plot(x_nm, i2_plot, label="i2 (Pd)", color=NATURE_COLORS["gold"])
+    _add_vertical_boundaries(ax_d, L_Au_nm, L_C_nm)
+    _style_publication_axes(ax_d, "x [nm]", i_label, "Local current density")
+    ax_d.yaxis.labelpad = 5.0
+    ax_d.legend(loc="upper right", bbox_to_anchor=(0.98, 0.98), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
+    fig.subplots_adjust(left=0.08, right=0.98, bottom=0.12, top=0.93, wspace=0.34, hspace=0.46)
+
+    panel_specs = [("a", ax_a1), ("b", ax_b), ("c", ax_c), ("d", ax_d)]
+    for label, ax in panel_specs:
+        pos = ax.get_position()
+        fig.text(
+            pos.x0 - 0.028,
+            pos.y1 + 0.014,
+            label,
+            fontsize=13,
+            fontweight="bold",
+            ha="left",
+            va="bottom",
+            color=NATURE_COLORS["black"],
+        )
+
+    png_path = out_base.with_suffix(".png")
+    pdf_path = out_base.with_suffix(".pdf")
+    svg_path = out_base.with_suffix(".svg")
+    fig.savefig(png_path, dpi=600)
+    fig.savefig(pdf_path)
+    fig.savefig(svg_path)
+    plt.close(fig)
+    return {"png": str(png_path), "pdf": str(pdf_path), "svg": str(svg_path)}
 
 
 def _safe_ratio_pct(numerator: float, denominator: float) -> Tuple[float, float]:
@@ -1850,18 +2265,25 @@ def _make_edl_comparison_metrics(res_edl: Dict[str, Any], res_no: Dict[str, Any]
         float(res_edl["i_mix_abs_A"]),
         float(res_no["i_mix_abs_A"]),
     )
+    ratio_i_mix_avg, pct_i_mix_avg = _safe_ratio_pct(
+        float(res_edl["i_mix_avg_A_per_m2"]),
+        float(res_no["i_mix_avg_A_per_m2"]),
+    )
     return dict(
         mode=mode,
         delta_E_mix=float(res_edl["E_mix"] - res_no["E_mix"]),
         delta_i_mix_norm_A_per_m2=float(res_edl["i_mix_norm_A_per_m2"] - res_no["i_mix_norm_A_per_m2"]),
         delta_i_mix_phys_A_per_m=float(res_edl["i_mix_phys_A_per_m"] - res_no["i_mix_phys_A_per_m"]),
         delta_i_mix_abs_A=float(res_edl["i_mix_abs_A"] - res_no["i_mix_abs_A"]),
+        delta_i_mix_avg_A_per_m2=float(res_edl["i_mix_avg_A_per_m2"] - res_no["i_mix_avg_A_per_m2"]),
         ratio_i_mix=float(ratio_i_mix),
         pct_i_mix=float(pct_i_mix),
         ratio_i_mix_phys=float(ratio_i_mix_phys),
         pct_i_mix_phys=float(pct_i_mix_phys),
         ratio_i_mix_abs=float(ratio_i_mix_abs),
         pct_i_mix_abs=float(pct_i_mix_abs),
+        ratio_i_mix_avg=float(ratio_i_mix_avg),
+        pct_i_mix_avg=float(pct_i_mix_avg),
         max_abs_phi_tilde_with_edl=float(res_edl["max_abs_phi_tilde"]),
         debye_huckel_ok_with_edl=bool(res_edl["debye_huckel_ok"]),
     )
@@ -1942,6 +2364,7 @@ def compare_edl_effects(
         if save_data:
             with_dir = ensure_dir(out_dir / "with_edl")
             no_dir = ensure_dir(out_dir / "no_edl")
+            csv_dir = ensure_dir(out_dir / "csv")
             ensure_dir(with_dir / "figures")
             ensure_dir(no_dir / "figures")
 
@@ -1949,19 +2372,31 @@ def compare_edl_effects(
             with params_path.open("w", encoding="utf-8") as f:
                 json.dump(p0, f, indent=2, sort_keys=True, default=str)
 
-            summary_path = out_dir / "summary_compare.csv"
+            summary_path = csv_dir / "summary_compare.csv"
             df_sum = pd.DataFrame([dict(
+                pH=res_edl["pH"],
+                pH_ref=res_edl["pH_ref"],
+                delta_pH=res_edl["delta_pH"],
+                E1_eq_eff=res_edl["E1_eq_eff"],
+                E2_eq_eff=res_edl["E2_eq_eff"],
+                it0_1_eff=res_edl["it0_1_eff"],
+                it0_2_eff=res_edl["it0_2_eff"],
                 E_mix_with=res_edl["E_mix"],
                 i_mix_with=res_edl["i_mix"],
                 i_mix_norm_with=res_edl["i_mix_norm_A_per_m2"],
                 i_mix_phys_with=res_edl["i_mix_phys_A_per_m"],
                 i_mix_abs_with=res_edl["i_mix_abs_A"],
+                i_mix_avg_with=res_edl["i_mix_avg_A_per_m2"],
                 E_mix_no=res_no["E_mix"],
                 i_mix_no=res_no["i_mix"],
                 i_mix_norm_no=res_no["i_mix_norm_A_per_m2"],
                 i_mix_phys_no=res_no["i_mix_phys_A_per_m"],
                 i_mix_abs_no=res_no["i_mix_abs_A"],
+                i_mix_avg_no=res_no["i_mix_avg_A_per_m2"],
                 delta_E_mix=comparison["delta_E_mix"],
+                delta_i_mix_avg_A_per_m2=comparison["delta_i_mix_avg_A_per_m2"],
+                ratio_i_mix_avg=comparison["ratio_i_mix_avg"],
+                pct_i_mix_avg=comparison["pct_i_mix_avg"],
                 ratio_i_mix=comparison["ratio_i_mix"],
                 pct_i_mix=comparison["pct_i_mix"],
                 ratio_i_mix_phys=comparison["ratio_i_mix_phys"],
@@ -1994,7 +2429,7 @@ def compare_edl_effects(
             fig_dirs = [fig_dir_main, fig_dir_with, fig_dir_no]
 
             tag = _case_tag_from_params(p0)
-            title = f"EDL compare ({mode})"
+            title = "EDL compare"
 
             if curve_edl is None or curve_no is None:
                 E_values = _compare_polarization_E_values(
@@ -2018,9 +2453,9 @@ def compare_edl_effects(
 
                 plot_compare_emix_imix(
                     E_mix_edl=float(res_edl["E_mix"]),
-                    i_mix_abs_edl=float(res_edl["i_mix_abs_A"]),
+                    i_mix_avg_edl=float(res_edl["i_mix_avg_A_per_m2"]),
                     E_mix_no=float(res_no["E_mix"]),
-                    i_mix_abs_no=float(res_no["i_mix_abs_A"]),
+                    i_mix_avg_no=float(res_no["i_mix_avg_A_per_m2"]),
                     out_path=fig_dir / f"compare_emix_imix_{tag}.png",
                     title=title,
                 )
@@ -2082,19 +2517,30 @@ def make_summary_row(run_tag: str, params: Dict[str, Any], result: Dict[str, Any
         i_mix_norm_A_per_m2=result.get("i_mix_norm_A_per_m2"), # pyright: ignore[reportArgumentType]
         i_mix_phys_A_per_m=result.get("i_mix_phys_A_per_m"), # pyright: ignore[reportArgumentType]
         i_mix_abs_A=result.get("i_mix_abs_A"), # pyright: ignore[reportArgumentType]
+        i_mix_avg_A_per_m2=result.get("i_mix_avg_A_per_m2"), # pyright: ignore[reportArgumentType]
         residual=result.get("residual"), # pyright: ignore[reportArgumentType]
         residual_norm_A_per_m2=result.get("residual_norm_A_per_m2"), # pyright: ignore[reportArgumentType]
         residual_phys_A_per_m=result.get("residual_phys_A_per_m"), # pyright: ignore[reportArgumentType]
         residual_abs_A=result.get("residual_abs_A"), # pyright: ignore[reportArgumentType]
+        residual_avg_A_per_m2=result.get("residual_avg_A_per_m2"), # pyright: ignore[reportArgumentType]
         converged=result.get("converged"), # pyright: ignore[reportArgumentType]
         method=result.get("method"), # pyright: ignore[reportArgumentType]
         iterations=result.get("iterations"), # pyright: ignore[reportArgumentType]
         lambda_D=result.get("lambda_D"), # pyright: ignore[reportArgumentType]
         out_of_plane_width_m=result.get("out_of_plane_width_m"), # pyright: ignore[reportArgumentType]
+        reactive_length_m=result.get("reactive_length_m"), # pyright: ignore[reportArgumentType]
+        reactive_area_m2=result.get("reactive_area_m2"), # pyright: ignore[reportArgumentType]
         g_Au=result.get("g_Au"), g_C=result.get("g_C"), g_Pd=result.get("g_Pd"), # pyright: ignore[reportArgumentType]
         a1=result.get("a1"), b1=result.get("b1"), a2=result.get("a2"), b2=result.get("b2"), # pyright: ignore[reportArgumentType]
         max_abs_phi_tilde=result.get("max_abs_phi_tilde"), # pyright: ignore[reportArgumentType]
         debye_huckel_ok=result.get("debye_huckel_ok"), # pyright: ignore[reportArgumentType]
+        pH=result.get("pH"), # pyright: ignore[reportArgumentType]
+        pH_ref=result.get("pH_ref"), # pyright: ignore[reportArgumentType]
+        delta_pH=result.get("delta_pH"), # pyright: ignore[reportArgumentType]
+        E1_eq_eff=result.get("E1_eq_eff"), # pyright: ignore[reportArgumentType]
+        E2_eq_eff=result.get("E2_eq_eff"), # pyright: ignore[reportArgumentType]
+        it0_1_eff=result.get("it0_1_eff"), # pyright: ignore[reportArgumentType]
+        it0_2_eff=result.get("it0_2_eff"), # pyright: ignore[reportArgumentType]
     )
     if extra:
         row.update(extra)
@@ -2115,21 +2561,35 @@ def make_summary_row(run_tag: str, params: Dict[str, Any], result: Dict[str, Any
 def make_ofat_specs(p0: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     """Default OFAT scan specs (editable)."""
     n = int(p0["ofat_n"])
+    n_lgap = int(p0.get("ofat_L_gap_n", n))
+    pH_min = float(p0.get("ofat_pH_min", 0.0))
+    pH_max = float(p0.get("ofat_pH_max", 14.0))
     C_tot_min = float(p0.get("ofat_C_tot_min", concentration_M_to_mol_per_m3(1.0e-4)))
     C_tot_max = float(p0.get("ofat_C_tot_max", concentration_M_to_mol_per_m3(10.0)))
     L_gap_min = float(p0.get("ofat_L_gap_min", 0.0))
     L_gap_max = float(p0.get("ofat_L_gap_max", 1.0e-2))
+    def cdl_scan_bounds(key: str) -> Tuple[float, float]:
+        baseline = float(p0[key])
+        # Use a fixed physically meaningful lower bound of 1 uF/cm^2 for OFAT,
+        # so all Cdl scans start from the same experimental floor.
+        vmin = MIN_PHYSICAL_CDL_F_PER_M2
+        vmax = max(vmin * 10.0, baseline * 10.0)
+        return vmin, vmax
+    Cdl_Au_min, Cdl_Au_max = cdl_scan_bounds("Cdl_Au")
+    Cdl_C_min, Cdl_C_max = cdl_scan_bounds("Cdl_C")
+    Cdl_Pd_min, Cdl_Pd_max = cdl_scan_bounds("Cdl_Pd")
     return {
+        "pH":         {"type": "linear", "min": pH_min, "max": pH_max, "n": n},
         "C_tot":      {"type": "log",    "min": C_tot_min, "max": C_tot_max, "n": n},
         "lambda_D":   {"type": "log",    "span": 10.0, "n": n},
         "epsilon_r":  {"type": "linear", "span": 20.0, "n": n},
         "T":          {"type": "linear", "span": 30.0, "n": n},
         "L_Au":       {"type": "log",    "span": 10.0, "n": n},
-        "L_gap":      {"type": "linear", "min": L_gap_min, "max": L_gap_max, "n": n},
+        "L_gap":      {"type": "linear", "min": L_gap_min, "max": L_gap_max, "n": n_lgap},
         "L_Pd_len":   {"type": "log",    "span": 10.0, "n": n},
-        "Cdl_Au":     {"type": "log",    "span": 10.0, "n": n},
-        "Cdl_C":      {"type": "log",    "span": 10.0, "n": n},
-        "Cdl_Pd":     {"type": "log",    "span": 10.0, "n": n},
+        "Cdl_Au":     {"type": "log",    "min": Cdl_Au_min, "max": Cdl_Au_max, "n": n},
+        "Cdl_C":      {"type": "log",    "min": Cdl_C_min, "max": Cdl_C_max, "n": n},
+        "Cdl_Pd":     {"type": "log",    "min": Cdl_Pd_min, "max": Cdl_Pd_max, "n": n},
         "pzc_Au":     {"type": "linear", "span": 0.2,  "n": n},
         "pzc_C":      {"type": "linear", "span": 0.2,  "n": n},
         "pzc_Pd":     {"type": "linear", "span": 0.2,  "n": n},
@@ -2181,17 +2641,19 @@ def plot_ofat_edl_comparison_html(
         return
     if dfp_plot.empty:
         return
-    x_col = "value_M" if pname == "C_tot" and "value_M" in dfp_plot.columns else "value"
     x_label = _param_axis_label(pname)
+    x_vals = _ofat_x_values(dfp_plot, pname)
+    title_metric = _label_symbol(ylab)
+    title_param = _label_symbol(x_label)
 
     fig = go.Figure()
     for label, column, color in [
-        ("with EDL (FULL)", with_col, NATURE_COLORS["blue"]),
-        ("without EDL", no_col, NATURE_COLORS["orange"]),
+        (LEGEND_WITH_EDL, with_col, NATURE_COLORS["blue"]),
+        (LEGEND_WITHOUT_EDL, no_col, NATURE_COLORS["orange"]),
     ]:
         fig.add_trace(
             go.Scatter(
-                x=dfp_plot[x_col],
+                x=x_vals,
                 y=dfp_plot[column],
                 mode="lines+markers",
                 name=label,
@@ -2202,7 +2664,7 @@ def plot_ofat_edl_comparison_html(
             )
         )
 
-    _style_plotly_figure(fig, f"OFAT comparison: {metric_label} vs {pname}", x_label, ylab)
+    _style_plotly_figure(fig, rf"{title_metric} vs {title_param}", x_label, ylab)
     if xscale == "log":
         fig.update_xaxes(type="log")
     write_plotly_html(fig, fig_dir / f"ofat_compare_{pname}_{metric_label}.html")
@@ -2217,16 +2679,23 @@ def _plot_ofat_edl_comparison(
     ylab: str,
     spec_type: str,
     fig_dir: Path,
+    y_axis_key: Optional[str] = None,
 ) -> None:
     fig, ax = _new_figure(NATURE_WIDE_FIGSIZE)
-    x_col = "value_M" if pname == "C_tot" and "value_M" in dfp.columns else "value"
-    ax.plot(dfp[x_col], dfp[with_col], marker="o", linestyle="-", label="with EDL (FULL)", color=NATURE_COLORS["blue"], markersize=4.5)
-    ax.plot(dfp[x_col], dfp[no_col], marker="o", linestyle="-", label="without EDL", color=NATURE_COLORS["orange"], markersize=4.5)
+    x_vals = _ofat_x_values(dfp, pname)
+    y_with = np.asarray(dfp[with_col], dtype=float)
+    y_no = np.asarray(dfp[no_col], dtype=float)
+    if y_axis_key is not None:
+        (y_with, y_no), ylab, _ = _scaled_current_display(y_axis_key, y_with, y_no)
+    ax.plot(x_vals, y_with, marker="o", linestyle="-", label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"], markersize=4.5)
+    ax.plot(x_vals, y_no, marker="o", linestyle="-", label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"], markersize=4.5)
+    title_metric = _label_symbol(ylab)
+    title_param = _label_symbol(_param_axis_label(pname))
     _style_axes(
         ax,
         _param_axis_label(pname),
         ylab,
-        f"OFAT comparison: {metric_label} vs {pname}",
+        rf"{title_metric} vs {title_param}",
         xscale="log" if spec_type == "log" else None,
     )
     ax.legend(loc="best")
@@ -2242,6 +2711,103 @@ def _heatmap_vmin_vmax(Z_with: np.ndarray, Z_no: np.ndarray) -> Tuple[Optional[f
     return float(np.min(finite)), float(np.max(finite))
 
 
+def _safe_ratio(numerator: np.ndarray, denominator: np.ndarray, atol: float = 1e-30) -> np.ndarray:
+    ratio = np.full_like(numerator, np.nan, dtype=float)
+    valid = np.isfinite(numerator) & np.isfinite(denominator) & (np.abs(denominator) > atol)
+    np.divide(numerator, denominator, out=ratio, where=valid)
+    return ratio
+
+
+def _safe_log10_abs(values: np.ndarray, floor: float = 1e-30) -> np.ndarray:
+    arr = np.asarray(values, dtype=float)
+    out = np.full_like(arr, np.nan, dtype=float)
+    valid = np.isfinite(arr) & (np.abs(arr) > floor)
+    out[valid] = np.log10(np.abs(arr[valid]))
+    return out
+
+
+def _plot_heatmap_single(
+    Z: np.ndarray,
+    x_edges: np.ndarray,
+    y_edges: np.ndarray,
+    xlabel: str,
+    ylabel: str,
+    cbarlab: str,
+    title: str,
+    out_path: Path,
+    cmap: str = "viridis",
+    xscale: Optional[str] = None,
+    yscale: Optional[str] = None,
+    center: Optional[float] = None,
+    symmetric_about_center: bool = False,
+    vmin: Optional[float] = None,
+    vmax: Optional[float] = None,
+    norm: Optional[Any] = None,
+    cbar_ticks: Optional[np.ndarray | List[float]] = None,
+    cbar_use_max_locator: bool = True,
+    baseline_point: Optional[Tuple[float, float]] = None,
+) -> None:
+    fig = plt.figure(figsize=(4.35, 3.25))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 0.05], wspace=0.18)
+    ax = fig.add_subplot(gs[0, 0])
+    cax = fig.add_subplot(gs[0, 1])
+    X, Y = np.meshgrid(x_edges, y_edges)
+    finite = Z[np.isfinite(Z)]
+    mesh_kwargs: Dict[str, Any] = {"shading": "auto", "cmap": cmap}
+
+    if norm is not None:
+        mesh_kwargs["norm"] = norm
+    elif vmin is not None or vmax is not None:
+        if vmin is not None:
+            mesh_kwargs["vmin"] = float(vmin)
+        if vmax is not None:
+            mesh_kwargs["vmax"] = float(vmax)
+    elif finite.size > 0:
+        zmin = float(np.min(finite))
+        zmax = float(np.max(finite))
+        if center is not None and symmetric_about_center:
+            span = max(abs(zmin - center), abs(zmax - center))
+            if span == 0.0:
+                span = max(1e-12, abs(center) * 1e-6, 1e-12)
+            mesh_kwargs["vmin"] = center - span
+            mesh_kwargs["vmax"] = center + span
+        elif center is not None and zmin < center < zmax:
+            mesh_kwargs["norm"] = TwoSlopeNorm(vmin=zmin, vcenter=center, vmax=zmax)
+        elif zmin == zmax:
+            eps = max(1e-12, abs(zmin) * 1e-6, 1e-12)
+            mesh_kwargs["vmin"] = zmin - eps
+            mesh_kwargs["vmax"] = zmax + eps
+        else:
+            mesh_kwargs["vmin"] = zmin
+            mesh_kwargs["vmax"] = zmax
+
+    mesh = ax.pcolormesh(X, Y, Z, **mesh_kwargs)
+    _style_axes(ax, xlabel, ylabel, title, xscale=xscale, yscale=yscale)
+    if xscale is None:
+        ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
+    if yscale is None:
+        ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
+    if baseline_point is not None:
+        bx, by = baseline_point
+        ax.plot(
+            [bx],
+            [by],
+            marker="*",
+            markersize=9.0,
+            markerfacecolor="white",
+            markeredgecolor=NATURE_COLORS["black"],
+            markeredgewidth=0.9,
+            color=NATURE_COLORS["black"],
+            linestyle="None",
+            zorder=6,
+        )
+    cbar = fig.colorbar(mesh, cax=cax)
+    _style_colorbar(cbar, cbarlab, ticks=cbar_ticks, use_max_locator=cbar_use_max_locator)
+    fig.subplots_adjust(left=0.12, right=0.95, bottom=0.17, top=0.90)
+    fig.savefig(out_path)
+    plt.close(fig)
+
+
 def _plot_heatmap_edl_comparison(
     Z_with: np.ndarray,
     Z_no: np.ndarray,
@@ -2255,29 +2821,102 @@ def _plot_heatmap_edl_comparison(
     xscale: Optional[str] = None,
     yscale: Optional[str] = None,
 ) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(7.4, 3.1))
+    fig = plt.figure(figsize=(8.8, 3.55))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 0.045], wspace=0.18)
+    axes = [fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])]
+    cax = fig.add_subplot(gs[0, 2])
     X, Y = np.meshgrid(x_edges, y_edges)
     vmin, vmax = _heatmap_vmin_vmax(Z_with, Z_no)
     mesh = None
     for ax, panel_title, Z in zip(
         axes,
-        ["with EDL (FULL)", "without EDL"],
+        [LEGEND_WITH_EDL, LEGEND_WITHOUT_EDL],
         [Z_with, Z_no],
     ):
         mesh = ax.pcolormesh(X, Y, Z, shading="auto", cmap="viridis", vmin=vmin, vmax=vmax)
         _style_axes(ax, xlabel, ylabel, panel_title, xscale=xscale, yscale=yscale)
+        if xscale is None:
+            ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
+        if yscale is None:
+            ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
     fig.suptitle(title, x=0.02, y=1.03, ha="left", fontsize=9, fontweight="semibold")
     if mesh is not None:
-        cbar = fig.colorbar(mesh, ax=list(axes), pad=0.02)
-        cbar.set_label(cbarlab)
-    fig.subplots_adjust(left=0.10, right=0.90, bottom=0.18, top=0.80, wspace=0.28)
+        cbar = fig.colorbar(mesh, cax=cax)
+        _style_colorbar(cbar, cbarlab)
+    fig.subplots_adjust(left=0.09, right=0.96, bottom=0.18, top=0.80)
+    fig.savefig(out_path)
+    plt.close(fig)
+
+
+def _plot_heatmap_slice_panels(
+    Z_panels: List[np.ndarray],
+    panel_titles: List[str],
+    x_edges: np.ndarray,
+    y_edges: np.ndarray,
+    xlabel: str,
+    ylabel: str,
+    cbarlab: str,
+    title: str,
+    out_path: Path,
+    cmap: str = "viridis",
+    xscale: Optional[str] = None,
+    yscale: Optional[str] = None,
+    center: Optional[float] = None,
+    symmetric_about_center: bool = False,
+) -> None:
+    n_panels = len(Z_panels)
+    if n_panels == 0:
+        return
+    fig = plt.figure(figsize=(3.05 * n_panels + 0.9, 3.4))
+    gs = fig.add_gridspec(1, n_panels + 1, width_ratios=[1.0] * n_panels + [0.05], wspace=0.20)
+    axes = [fig.add_subplot(gs[0, i]) for i in range(n_panels)]
+    cax = fig.add_subplot(gs[0, n_panels])
+    X, Y = np.meshgrid(x_edges, y_edges)
+
+    finite_blocks = [np.asarray(Z, dtype=float)[np.isfinite(Z)] for Z in Z_panels]
+    finite_blocks = [blk for blk in finite_blocks if blk.size > 0]
+    mesh_kwargs: Dict[str, Any] = {"shading": "auto", "cmap": cmap}
+    if finite_blocks:
+        finite = np.concatenate(finite_blocks)
+        zmin = float(np.min(finite))
+        zmax = float(np.max(finite))
+        if center is not None and symmetric_about_center:
+            span = max(abs(zmin - center), abs(zmax - center))
+            if span == 0.0:
+                span = max(1e-12, abs(center) * 1e-6, 1e-12)
+            mesh_kwargs["vmin"] = center - span
+            mesh_kwargs["vmax"] = center + span
+        elif center is not None and zmin < center < zmax:
+            mesh_kwargs["norm"] = TwoSlopeNorm(vmin=zmin, vcenter=center, vmax=zmax)
+        elif zmin == zmax:
+            eps = max(1e-12, abs(zmin) * 1e-6, 1e-12)
+            mesh_kwargs["vmin"] = zmin - eps
+            mesh_kwargs["vmax"] = zmax + eps
+        else:
+            mesh_kwargs["vmin"] = zmin
+            mesh_kwargs["vmax"] = zmax
+
+    mesh = None
+    for idx, (ax, Z, panel_title) in enumerate(zip(axes, Z_panels, panel_titles)):
+        mesh = ax.pcolormesh(X, Y, Z, **mesh_kwargs)
+        _style_axes(ax, xlabel, ylabel if idx == 0 else "", panel_title, xscale=xscale, yscale=yscale)
+        if xscale is None:
+            ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
+        if yscale is None:
+            ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
+    if mesh is not None:
+        cbar = fig.colorbar(mesh, cax=cax)
+        _style_colorbar(cbar, cbarlab)
+    fig.suptitle(title, x=0.02, y=1.02, ha="left", fontsize=9, fontweight="semibold")
+    fig.subplots_adjust(left=0.08, right=0.96, bottom=0.18, top=0.82)
     fig.savefig(out_path)
     plt.close(fig)
 
 
 def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict[str, Any]]) -> None:
-    """OFAT comparison scan: with EDL (FULL) vs without EDL across parameter values."""
+    """OFAT comparison scan: with EDL vs without EDL across parameter values."""
     fig_dir = ensure_dir(out_dir / "figures")
+    csv_dir = ensure_dir(out_dir / "csv")
     specs = make_ofat_specs(base_params)
 
     for pname, spec in specs.items():
@@ -2309,29 +2948,39 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict
             res_no = pair["no_edl"]
             comp = pair["comparison"]
 
-            rows_param.append(
-                dict(
-                    param=pname,
-                    value=float(v),
-                    value_M=_display_param_value(pname, float(v)),
-                    E_mix_with_edl_FULL=res_edl["E_mix"],
-                    E_mix_without_edl=res_no["E_mix"],
-                    delta_E_mix=comp["delta_E_mix"],
-                    i_mix_phys_with_edl_FULL_A_per_m=res_edl["i_mix_phys_A_per_m"],
-                    i_mix_phys_without_edl_A_per_m=res_no["i_mix_phys_A_per_m"],
-                    delta_i_mix_phys_A_per_m=comp["delta_i_mix_phys_A_per_m"],
-                    i_mix_abs_with_edl_FULL_A=res_edl["i_mix_abs_A"],
-                    i_mix_abs_without_edl_A=res_no["i_mix_abs_A"],
-                    delta_i_mix_abs_A=comp["delta_i_mix_abs_A"],
-                    ratio_i_mix_abs=comp["ratio_i_mix_abs"],
-                    pct_i_mix_abs=comp["pct_i_mix_abs"],
-                    ratio_i_mix_phys=comp["ratio_i_mix_phys"],
-                    pct_i_mix_phys=comp["pct_i_mix_phys"],
-                    max_abs_phi_tilde_with_edl=res_edl["max_abs_phi_tilde"],
-                    debye_huckel_ok_with_edl=res_edl["debye_huckel_ok"],
-                    hover_params=format_hover_params(pvar, keys=HOVER_PARAM_KEYS),
-                )
+            row_param = dict(
+                param=pname,
+                value=float(v),
+                pH=res_edl["pH"],
+                E1_eq_eff=res_edl["E1_eq_eff"],
+                E2_eq_eff=res_edl["E2_eq_eff"],
+                it0_1_eff=res_edl["it0_1_eff"],
+                it0_2_eff=res_edl["it0_2_eff"],
+                E_mix_with_edl_FULL=res_edl["E_mix"],
+                E_mix_without_edl=res_no["E_mix"],
+                delta_E_mix=comp["delta_E_mix"],
+                i_mix_phys_with_edl_FULL_A_per_m=res_edl["i_mix_phys_A_per_m"],
+                i_mix_phys_without_edl_A_per_m=res_no["i_mix_phys_A_per_m"],
+                delta_i_mix_phys_A_per_m=comp["delta_i_mix_phys_A_per_m"],
+                i_mix_abs_with_edl_FULL_A=res_edl["i_mix_abs_A"],
+                i_mix_abs_without_edl_A=res_no["i_mix_abs_A"],
+                delta_i_mix_abs_A=comp["delta_i_mix_abs_A"],
+                i_mix_avg_with_edl_FULL_A_per_m2=res_edl["i_mix_avg_A_per_m2"],
+                i_mix_avg_without_edl_A_per_m2=res_no["i_mix_avg_A_per_m2"],
+                delta_i_mix_avg_A_per_m2=comp["delta_i_mix_avg_A_per_m2"],
+                ratio_i_mix_avg=comp["ratio_i_mix_avg"],
+                pct_i_mix_avg=comp["pct_i_mix_avg"],
+                ratio_i_mix_abs=comp["ratio_i_mix_abs"],
+                pct_i_mix_abs=comp["pct_i_mix_abs"],
+                ratio_i_mix_phys=comp["ratio_i_mix_phys"],
+                pct_i_mix_phys=comp["pct_i_mix_phys"],
+                max_abs_phi_tilde_with_edl=res_edl["max_abs_phi_tilde"],
+                debye_huckel_ok_with_edl=res_edl["debye_huckel_ok"],
+                hover_params=format_hover_params(pvar, keys=HOVER_PARAM_KEYS),
             )
+            if pname == "C_tot":
+                row_param["value_M"] = concentration_mol_per_m3_to_M(float(v))
+            rows_param.append(row_param)
             extra_with = {"scan_param": pname, "scan_value": float(v), "use_edl_case": "with_edl_FULL"}
             extra_no = {"scan_param": pname, "scan_value": float(v), "use_edl_case": "without_edl"}
             if pname == "C_tot":
@@ -2341,7 +2990,7 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict
             summary_rows.append(make_summary_row(f"ofat_compare:{pname}:without_edl", pvar, res_no, extra=extra_no))
 
         dfp = pd.DataFrame(rows_param)
-        dfp.to_csv(out_dir / f"ofat_compare_{pname}.csv", index=False)
+        dfp.to_csv(csv_dir / f"ofat_compare_{pname}.csv", index=False)
 
         _plot_ofat_edl_comparison(
             dfp,
@@ -2356,12 +3005,13 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict
         _plot_ofat_edl_comparison(
             dfp,
             pname,
-            with_col="i_mix_abs_with_edl_FULL_A",
-            no_col="i_mix_abs_without_edl_A",
-            metric_label="i_mix_abs_A",
-            ylab=_plot_axis_label("i_mix_abs"),
+            with_col="i_mix_avg_with_edl_FULL_A_per_m2",
+            no_col="i_mix_avg_without_edl_A_per_m2",
+            metric_label="i_mix_avg_A_per_m2",
+            ylab=_plot_axis_label("i_mix_avg"),
             spec_type=spec["type"],
             fig_dir=fig_dir,
+            y_axis_key="i_mix_avg",
         )
         plot_ofat_edl_comparison_html(
             dfp,
@@ -2376,20 +3026,305 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict
         plot_ofat_edl_comparison_html(
             dfp,
             pname,
-            with_col="i_mix_abs_with_edl_FULL_A",
-            no_col="i_mix_abs_without_edl_A",
-            metric_label="i_mix_abs_A",
-            ylab=_plot_axis_label("i_mix_abs"),
+            with_col="i_mix_avg_with_edl_FULL_A_per_m2",
+            no_col="i_mix_avg_without_edl_A_per_m2",
+            metric_label="i_mix_avg_A_per_m2",
+            ylab=_plot_axis_label("i_mix_avg"),
             xscale=spec["type"],
             fig_dir=fig_dir,
         )
 
 
 def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict[str, Any]]) -> None:
-    """2D comparison heatmaps: with EDL (FULL) vs without EDL."""
+    """2D comparison heatmaps: with EDL vs without EDL."""
     fig_dir = ensure_dir(out_dir / "figures")
+    csv_dir = ensure_dir(out_dir / "csv")
     nx = int(base_params["heatmap_nx"])
     ny = int(base_params["heatmap_ny"])
+
+    def _storage_axis_name(name: str) -> str:
+        if name == "C_tot":
+            return "C_tot_M"
+        if name in {"L_Au", "L_gap", "L_Pd_len"}:
+            return f"{name}_nm"
+        if name in {"Cdl_Au", "Cdl_C", "Cdl_Pd"}:
+            return f"{name}_uF_per_cm2"
+        return f"{name}_V" if name.startswith("pzc_") else name
+
+    def _finite_minmax(*arrays: np.ndarray) -> Tuple[Optional[float], Optional[float]]:
+        finite_blocks = []
+        for arr in arrays:
+            finite = np.asarray(arr, dtype=float)
+            finite = finite[np.isfinite(finite)]
+            if finite.size:
+                finite_blocks.append(finite)
+        if not finite_blocks:
+            return None, None
+        finite = np.concatenate(finite_blocks)
+        return float(np.min(finite)), float(np.max(finite))
+
+    def _expand_range(vmin: Optional[float], vmax: Optional[float]) -> Tuple[Optional[float], Optional[float]]:
+        if vmin is None or vmax is None:
+            return None, None
+        if math.isclose(vmin, vmax, rel_tol=0.0, abs_tol=1e-15):
+            eps = max(1e-12, abs(vmin) * 1e-6, 1e-12)
+            return vmin - eps, vmax + eps
+        return vmin, vmax
+
+    def _paired_compare_heatmap_data(
+        *,
+        tag: str,
+        x_name: str,
+        x_vals: np.ndarray,
+        y_name: str,
+        y_vals: np.ndarray,
+        xscale: str,
+        yscale: str,
+        assign_fn: Callable[[Dict[str, Any], float, float], None],
+        title_emix_with: str,
+        title_emix_delta: str,
+        title_imix_with: str,
+        title_imix_delta: str,
+    ) -> Dict[str, Any]:
+        Emix_with = np.full((len(y_vals), len(x_vals)), np.nan)
+        Emix_no = np.full((len(y_vals), len(x_vals)), np.nan)
+        imix_avg_with = np.full((len(y_vals), len(x_vals)), np.nan)
+        imix_avg_no = np.full((len(y_vals), len(x_vals)), np.nan)
+
+        for iy, yv in enumerate(y_vals):
+            for ix, xv in enumerate(x_vals):
+                pvar = copy.deepcopy(base_params)
+                assign_fn(pvar, float(xv), float(yv))
+                pair = run_edl_comparison_pair(pvar, mode="FULL")
+                res_edl = pair["with_edl"]
+                res_no = pair["no_edl"]
+                Emix_with[iy, ix] = res_edl["E_mix"]
+                Emix_no[iy, ix] = res_no["E_mix"]
+                imix_avg_with[iy, ix] = res_edl["i_mix_avg_A_per_m2"]
+                imix_avg_no[iy, ix] = res_no["i_mix_avg_A_per_m2"]
+
+                extra_common = {
+                    x_name: float(xv),
+                    y_name: float(yv),
+                    _storage_axis_name(x_name): float(_display_param_value(x_name, float(xv))),
+                    _storage_axis_name(y_name): float(_display_param_value(y_name, float(yv))),
+                }
+                extra_with = dict(extra_common, use_edl_case="with_edl_FULL")
+                extra_no = dict(extra_common, use_edl_case="without_edl")
+                summary_rows.append(make_summary_row(f"heatmap_compare:{tag}:with_edl_FULL", pvar, res_edl, extra=extra_with))
+                summary_rows.append(make_summary_row(f"heatmap_compare:{tag}:without_edl", pvar, res_no, extra=extra_no))
+
+        x_disp = _display_param_values(x_name, x_vals)
+        y_disp = _display_param_values(y_name, y_vals)
+        df_Emix_with = pd.DataFrame(Emix_with, index=y_disp, columns=x_disp)
+        df_Emix_no = pd.DataFrame(Emix_no, index=y_disp, columns=x_disp)
+        df_Emix_delta = pd.DataFrame(Emix_with - Emix_no, index=y_disp, columns=x_disp)
+        df_imix_with = pd.DataFrame(imix_avg_with, index=y_disp, columns=x_disp)
+        df_imix_no = pd.DataFrame(imix_avg_no, index=y_disp, columns=x_disp)
+        df_delta_imix = pd.DataFrame(imix_avg_with - imix_avg_no, index=y_disp, columns=x_disp)
+        df_log10_imix_with = pd.DataFrame(_safe_log10_abs(imix_avg_with), index=y_disp, columns=x_disp)
+        df_log10_imix_no = pd.DataFrame(_safe_log10_abs(imix_avg_no), index=y_disp, columns=x_disp)
+        imix_ratio = _safe_ratio(imix_avg_with, imix_avg_no)
+        df_imix_ratio = pd.DataFrame(imix_ratio, index=y_disp, columns=x_disp)
+        df_delta_log10_imix = pd.DataFrame(
+            _safe_log10_abs(imix_avg_with) - _safe_log10_abs(imix_avg_no),
+            index=y_disp,
+            columns=x_disp,
+        )
+        for df in (
+            df_Emix_with,
+            df_Emix_no,
+            df_Emix_delta,
+            df_imix_with,
+            df_imix_no,
+            df_delta_imix,
+            df_log10_imix_with,
+            df_log10_imix_no,
+            df_imix_ratio,
+            df_delta_log10_imix,
+        ):
+            df.index.name = _storage_axis_name(y_name)
+            df.columns.name = _storage_axis_name(x_name)
+
+        df_Emix_with.to_csv(csv_dir / f"heatmap_compare_{tag}_Emix_with_edl_FULL.csv")
+        df_Emix_no.to_csv(csv_dir / f"heatmap_compare_{tag}_Emix_without_edl.csv")
+        df_Emix_delta.to_csv(csv_dir / f"heatmap_compare_{tag}_delta_Emix.csv")
+        df_imix_with.to_csv(csv_dir / f"heatmap_compare_{tag}_imix_avg_with_edl_FULL.csv")
+        df_imix_no.to_csv(csv_dir / f"heatmap_compare_{tag}_imix_avg_without_edl.csv")
+        df_delta_imix.to_csv(csv_dir / f"heatmap_compare_{tag}_delta_i_mix_avg.csv")
+        df_log10_imix_with.to_csv(csv_dir / f"heatmap_compare_{tag}_log10_imix_avg_with_edl_FULL.csv")
+        df_log10_imix_no.to_csv(csv_dir / f"heatmap_compare_{tag}_log10_imix_avg_without_edl.csv")
+        df_imix_ratio.to_csv(csv_dir / f"heatmap_compare_{tag}_ratio_i_mix_avg.csv")
+        df_delta_log10_imix.to_csv(csv_dir / f"heatmap_compare_{tag}_delta_log10_i_mix_avg.csv")
+
+        return {
+            "tag": tag,
+            "x_name": x_name,
+            "y_name": y_name,
+            "xscale": xscale,
+            "yscale": yscale,
+            "x_disp": x_disp,
+            "y_disp": y_disp,
+            "x_edges": make_edges(x_disp, xscale),
+            "y_edges": make_edges(y_disp, yscale),
+            "baseline_point": (
+                _display_param_value(x_name, float(base_params[x_name])),
+                _display_param_value(y_name, float(base_params[y_name])),
+            ),
+            "Emix_with": Emix_with,
+            "Emix_no": Emix_no,
+            "delta_Emix": Emix_with - Emix_no,
+            "imix_avg_with": imix_avg_with,
+            "imix_avg_no": imix_avg_no,
+            "delta_imix_avg": imix_avg_with - imix_avg_no,
+            "log10_imix_avg_with": _safe_log10_abs(imix_avg_with),
+            "log10_imix_avg_no": _safe_log10_abs(imix_avg_no),
+            "delta_log10_imix_avg": _safe_log10_abs(imix_avg_with) - _safe_log10_abs(imix_avg_no),
+            "imix_ratio": imix_ratio,
+            "title_emix_with": title_emix_with,
+            "title_emix_delta": title_emix_delta,
+            "title_imix_with": title_imix_with,
+            "title_imix_delta": title_imix_delta,
+        }
+
+    # Only keep the new Au/Pd coupled heatmaps. Legacy support/ionic-strength
+    # heatmaps are intentionally disabled.
+    def _cdl_max(baseline: float) -> float:
+        return max(MIN_PHYSICAL_CDL_F_PER_M2 * 10.0, float(baseline) * 10.0)
+
+    heatmap_data: List[Dict[str, Any]] = []
+
+    Cdl_Au_vals = np.logspace(np.log10(MIN_PHYSICAL_CDL_F_PER_M2), np.log10(_cdl_max(float(base_params["Cdl_Au"]))), nx)
+    Cdl_Pd_vals = np.logspace(np.log10(MIN_PHYSICAL_CDL_F_PER_M2), np.log10(_cdl_max(float(base_params["Cdl_Pd"]))), ny)
+    heatmap_data.append(_paired_compare_heatmap_data(
+        tag="CdlAu_vs_CdlPd",
+        x_name="Cdl_Au",
+        x_vals=Cdl_Au_vals,
+        y_name="Cdl_Pd",
+        y_vals=Cdl_Pd_vals,
+        xscale="log",
+        yscale="log",
+        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("Cdl_Au", xv), pvar.__setitem__("Cdl_Pd", yv)),
+        title_emix_with=r"$E_{\mathrm{mix}}$",
+        title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
+        title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
+        title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
+    ))
+
+    L_heatmap_min = float(base_params["heatmap_L_min"])
+    L_heatmap_max = float(base_params["heatmap_L_max"])
+    L_Au_vals = np.logspace(np.log10(L_heatmap_min), np.log10(L_heatmap_max), nx)
+    L_Pd_vals = np.logspace(np.log10(L_heatmap_min), np.log10(L_heatmap_max), ny)
+    heatmap_data.append(_paired_compare_heatmap_data(
+        tag="LAu_vs_LPd",
+        x_name="L_Au",
+        x_vals=L_Au_vals,
+        y_name="L_Pd_len",
+        y_vals=L_Pd_vals,
+        xscale="log",
+        yscale="log",
+        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("L_Au", xv), pvar.__setitem__("L_Pd_len", yv)),
+        title_emix_with=r"$E_{\mathrm{mix}}$",
+        title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
+        title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
+        title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
+    ))
+
+    pzc_Au0 = float(base_params["pzc_Au"])
+    pzc_Pd0 = float(base_params["pzc_Pd"])
+    pzc_Au_vals = np.linspace(pzc_Au0 - 0.2, pzc_Au0 + 0.2, nx)
+    pzc_Pd_vals = np.linspace(pzc_Pd0 - 0.2, pzc_Pd0 + 0.2, ny)
+    heatmap_data.append(_paired_compare_heatmap_data(
+        tag="pzcAu_vs_pzcPd",
+        x_name="pzc_Au",
+        x_vals=pzc_Au_vals,
+        y_name="pzc_Pd",
+        y_vals=pzc_Pd_vals,
+        xscale="linear",
+        yscale="linear",
+        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("pzc_Au", xv), pvar.__setitem__("pzc_Pd", yv)),
+        title_emix_with=r"$E_{\mathrm{mix}}$",
+        title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
+        title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
+        title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
+    ))
+
+    for entry in heatmap_data:
+        xscale_plot = entry["xscale"] if entry["xscale"] != "linear" else None
+        yscale_plot = entry["yscale"] if entry["yscale"] != "linear" else None
+        (imix_avg_with_plot,), imix_avg_label, _ = _scaled_current_display("i_mix_avg", entry["imix_avg_with"])
+        (delta_imix_avg_plot,), _, delta_imix_exp = _scaled_current_display("i_mix_avg", entry["delta_imix_avg"])
+        delta_imix_abs_label = _label_with_power_of_ten(r"$\Delta \bar{i}_{\mathrm{mix}}$ [A/m$^2$]", delta_imix_exp)
+        for obsolete in (
+            fig_dir / f"heatmap_compare_{entry['tag']}_ratio_i_mix_abs_FULL.png",
+            fig_dir / f"heatmap_compare_{entry['tag']}_log10_imix_abs_with_edl_FULL.png",
+            fig_dir / f"heatmap_compare_{entry['tag']}_delta_log10_i_mix_abs_FULL.png",
+            fig_dir / f"heatmap_compare_{entry['tag']}_imix_abs_with_edl_FULL.png",
+            fig_dir / f"heatmap_compare_{entry['tag']}_delta_i_mix_abs_FULL.png",
+        ):
+            if obsolete.exists():
+                obsolete.unlink()
+
+        _plot_heatmap_single(
+            entry["Emix_with"],
+            entry["x_edges"],
+            entry["y_edges"],
+            xlabel=_param_axis_label(entry["x_name"]),
+            ylabel=_param_axis_label(entry["y_name"]),
+            cbarlab=_plot_axis_label("E_mix"),
+            title=entry["title_emix_with"],
+            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_Emix_with_edl_FULL.png",
+            xscale=xscale_plot,
+            yscale=yscale_plot,
+            baseline_point=entry["baseline_point"],
+        )
+        _plot_heatmap_single(
+            entry["delta_Emix"],
+            entry["x_edges"],
+            entry["y_edges"],
+            xlabel=_param_axis_label(entry["x_name"]),
+            ylabel=_param_axis_label(entry["y_name"]),
+            cbarlab=r"$\Delta E_{\mathrm{mix}}$ [V]",
+            title=entry["title_emix_delta"],
+            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_delta_Emix_FULL.png",
+            cmap="coolwarm",
+            xscale=xscale_plot,
+            yscale=yscale_plot,
+            center=0.0,
+            symmetric_about_center=True,
+            baseline_point=entry["baseline_point"],
+        )
+        _plot_heatmap_single(
+            imix_avg_with_plot,
+            entry["x_edges"],
+            entry["y_edges"],
+            xlabel=_param_axis_label(entry["x_name"]),
+            ylabel=_param_axis_label(entry["y_name"]),
+            cbarlab=imix_avg_label,
+            title=entry["title_imix_with"],
+            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_imix_avg_with_edl_FULL.png",
+            xscale=xscale_plot,
+            yscale=yscale_plot,
+            baseline_point=entry["baseline_point"],
+        )
+        _plot_heatmap_single(
+            delta_imix_avg_plot,
+            entry["x_edges"],
+            entry["y_edges"],
+            xlabel=_param_axis_label(entry["x_name"]),
+            ylabel=_param_axis_label(entry["y_name"]),
+            cbarlab=delta_imix_abs_label,
+            title=entry["title_imix_delta"],
+            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_delta_i_mix_avg_FULL.png",
+            cmap="coolwarm",
+            xscale=xscale_plot,
+            yscale=yscale_plot,
+            center=0.0,
+            symmetric_about_center=True,
+            baseline_point=entry["baseline_point"],
+        )
+
+    return
 
     # --- Pair 1: C_tot vs Δpzc ---
     C_min = float(base_params.get("heatmap_C_tot_min", concentration_M_to_mol_per_m3(1.0e-4)))
@@ -2428,7 +3363,9 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[
     df_imix_with = pd.DataFrame(imix_abs_with, index=delta_vals, columns=C_vals_M)
     df_imix_no = pd.DataFrame(imix_abs_no, index=delta_vals, columns=C_vals_M)
     df_imix_delta = pd.DataFrame(imix_abs_with - imix_abs_no, index=delta_vals, columns=C_vals_M)
-    for df in (df_Emix_with, df_Emix_no, df_Emix_delta, df_imix_with, df_imix_no, df_imix_delta):
+    imix_ratio = _safe_ratio(imix_abs_with, imix_abs_no)
+    df_imix_ratio = pd.DataFrame(imix_ratio, index=delta_vals, columns=C_vals_M)
+    for df in (df_Emix_with, df_Emix_no, df_Emix_delta, df_imix_with, df_imix_no, df_imix_delta, df_imix_ratio):
         df.index.name = "delta_pzc_V"
         df.columns.name = "C_tot_M"
     df_Emix_with.to_csv(out_dir / "heatmap_compare_Ctot_vs_deltapzc_Emix_with_edl_FULL.csv")
@@ -2437,95 +3374,244 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[
     df_imix_with.to_csv(out_dir / "heatmap_compare_Ctot_vs_deltapzc_imix_abs_with_edl_FULL.csv")
     df_imix_no.to_csv(out_dir / "heatmap_compare_Ctot_vs_deltapzc_imix_abs_without_edl.csv")
     df_imix_delta.to_csv(out_dir / "heatmap_compare_Ctot_vs_deltapzc_delta_imix_abs.csv")
+    df_imix_ratio.to_csv(out_dir / "heatmap_compare_Ctot_vs_deltapzc_ratio_i_mix_abs.csv")
 
     x_edges = make_edges(C_vals_M, "log")
     y_edges = make_edges(delta_vals, "linear")
+    (imix_abs_with_plot, imix_abs_no_plot), imix_abs_label, _ = _scaled_current_display("i_mix_abs", imix_abs_with, imix_abs_no)
     _plot_heatmap_edl_comparison(
         Emix_with,
         Emix_no,
         x_edges,
         y_edges,
         xlabel=_param_axis_label("C_tot"),
-        ylabel="delta_pzc = pzc_Au - pzc_Pd [V]",
+        ylabel=_delta_pzc_label(),
         cbarlab=_plot_axis_label("E_mix"),
-        title="EDL comparison: E_mix(C_tot, delta_pzc)",
+        title=r"EDL comparison: $E_{\mathrm{mix}}(C_{\mathrm{tot}}, \Delta \mathrm{pzc})$",
         out_path=fig_dir / "heatmap_compare_Ctot_vs_deltapzc_Emix_FULL.png",
         xscale="log",
     )
     _plot_heatmap_edl_comparison(
-        imix_abs_with,
-        imix_abs_no,
+        imix_abs_with_plot,
+        imix_abs_no_plot,
         x_edges,
         y_edges,
         xlabel=_param_axis_label("C_tot"),
-        ylabel="delta_pzc = pzc_Au - pzc_Pd [V]",
-        cbarlab=_plot_axis_label("i_mix_abs"),
-        title="EDL comparison: i_mix(C_tot, delta_pzc)",
+        ylabel=_delta_pzc_label(),
+        cbarlab=imix_abs_label,
+        title=r"EDL comparison: $i_{\mathrm{mix}}(C_{\mathrm{tot}}, \Delta \mathrm{pzc})$",
         out_path=fig_dir / "heatmap_compare_Ctot_vs_deltapzc_imix_abs_FULL.png",
         xscale="log",
     )
-
-    # --- Pair 2: Cdl_Au multiplier vs it0_1 multiplier ---
-    gfac_vals = np.logspace(-1, 1, nx)
-    i0fac_vals = np.logspace(-1, 1, ny)
-
-    Emix2_with = np.full((ny, nx), np.nan)
-    Emix2_no = np.full((ny, nx), np.nan)
-    imix2_abs_with = np.full((ny, nx), np.nan)
-    imix2_abs_no = np.full((ny, nx), np.nan)
-
-    for iy, i0fac in enumerate(i0fac_vals):
-        for ix, gfac in enumerate(gfac_vals):
-            pvar = copy.deepcopy(base_params)
-            pvar["Cdl_Au"] = float(base_params["Cdl_Au"]) * float(gfac)
-            pvar["it0_1"] = float(base_params["it0_1"]) * float(i0fac)
-            pvar["g_Au"] = None
-            pvar["g_C"] = None
-            pvar["g_Pd"] = None
-            pair = run_edl_comparison_pair(pvar, mode="FULL")
-            res_edl = pair["with_edl"]
-            res_no = pair["no_edl"]
-            Emix2_with[iy, ix] = res_edl["E_mix"]
-            Emix2_no[iy, ix] = res_no["E_mix"]
-            imix2_abs_with[iy, ix] = res_edl["i_mix_abs_A"]
-            imix2_abs_no[iy, ix] = res_no["i_mix_abs_A"]
-            summary_rows.append(make_summary_row("heatmap_compare:gfac_vs_i0fac:with_edl_FULL", pvar, res_edl, extra={"Cdl_Au_multiplier": float(gfac), "it0_1_multiplier": float(i0fac), "use_edl_case": "with_edl_FULL"}))
-            summary_rows.append(make_summary_row("heatmap_compare:gfac_vs_i0fac:without_edl", pvar, res_no, extra={"Cdl_Au_multiplier": float(gfac), "it0_1_multiplier": float(i0fac), "use_edl_case": "without_edl"}))
-
-    pd.DataFrame(Emix2_with, index=i0fac_vals, columns=gfac_vals).to_csv(out_dir / "heatmap_compare_gfac_vs_i0fac_Emix_with_edl_FULL.csv")
-    pd.DataFrame(Emix2_no, index=i0fac_vals, columns=gfac_vals).to_csv(out_dir / "heatmap_compare_gfac_vs_i0fac_Emix_without_edl.csv")
-    pd.DataFrame(Emix2_with - Emix2_no, index=i0fac_vals, columns=gfac_vals).to_csv(out_dir / "heatmap_compare_gfac_vs_i0fac_delta_Emix.csv")
-    pd.DataFrame(imix2_abs_with, index=i0fac_vals, columns=gfac_vals).to_csv(out_dir / "heatmap_compare_gfac_vs_i0fac_imix_abs_with_edl_FULL.csv")
-    pd.DataFrame(imix2_abs_no, index=i0fac_vals, columns=gfac_vals).to_csv(out_dir / "heatmap_compare_gfac_vs_i0fac_imix_abs_without_edl.csv")
-    pd.DataFrame(imix2_abs_with - imix2_abs_no, index=i0fac_vals, columns=gfac_vals).to_csv(out_dir / "heatmap_compare_gfac_vs_i0fac_delta_imix_abs.csv")
-
-    x_edges = make_edges(gfac_vals, "log")
-    y_edges = make_edges(i0fac_vals, "log")
-    _plot_heatmap_edl_comparison(
-        Emix2_with,
-        Emix2_no,
+    _plot_heatmap_single(
+        Emix_with - Emix_no,
         x_edges,
         y_edges,
-        xlabel="Cdl_Au / Cdl_Au,0 [-]",
-        ylabel="it0_1 / it0_1,0 [-]",
-        cbarlab=_plot_axis_label("E_mix"),
-        title="EDL comparison: E_mix(Cdl_Au multiplier, it0_1 multiplier)",
-        out_path=fig_dir / "heatmap_compare_gfac_vs_i0fac_Emix_FULL.png",
+        xlabel=_param_axis_label("C_tot"),
+        ylabel=_delta_pzc_label(),
+        cbarlab=r"$\Delta E_{\mathrm{mix}}$ [V]",
+        title=r"EDL effect: $\Delta E_{\mathrm{mix}}(C_{\mathrm{tot}}, \Delta \mathrm{pzc})$",
+        out_path=fig_dir / "heatmap_compare_Ctot_vs_deltapzc_delta_Emix_FULL.png",
+        cmap="coolwarm",
         xscale="log",
+        center=0.0,
+        symmetric_about_center=True,
+    )
+    _plot_heatmap_single(
+        imix_ratio,
+        x_edges,
+        y_edges,
+        xlabel=_param_axis_label("C_tot"),
+        ylabel=_delta_pzc_label(),
+        cbarlab=r"$i_{\mathrm{mix}}(\mathrm{with\ EDL}) / i_{\mathrm{mix}}(\mathrm{without\ EDL})$ [-]",
+        title=r"EDL effect: $i_{\mathrm{mix}}$ ratio$(C_{\mathrm{tot}}, \Delta \mathrm{pzc})$",
+        out_path=fig_dir / "heatmap_compare_Ctot_vs_deltapzc_ratio_i_mix_abs_FULL.png",
+        cmap="coolwarm",
+        xscale="log",
+        center=1.0,
+    )
+
+    # --- Pair 2: L_gap vs Cdl_C, sliced by support-region pzc ---
+    L_gap_min = float(base_params.get("ofat_L_gap_min", 0.0))
+    L_gap_max = float(base_params.get("ofat_L_gap_max", 1000e-9))
+    L_gap_vals = np.linspace(L_gap_min, L_gap_max, nx)
+    L_gap_vals_nm = L_gap_vals * 1e9
+    Cdl_C_min = float(base_params.get("heatmap_Cdl_C_min", max(1e-6, float(base_params["Cdl_C"]) / 10.0)))
+    Cdl_C_max = float(base_params.get("heatmap_Cdl_C_max", float(base_params["Cdl_C"]) * 10.0))
+    Cdl_C_vals = np.logspace(np.log10(Cdl_C_min), np.log10(Cdl_C_max), ny)
+    pzc_C_offsets = [float(v) for v in cast(List[Any], base_params.get("heatmap_pzc_C_offsets", [-0.10, 0.0, 0.10]))]
+    pzc_C_base = float(base_params["pzc_C"])
+    pzc_C_vals = [pzc_C_base + offset for offset in pzc_C_offsets]
+
+    Emix2_with_panels: List[np.ndarray] = []
+    Emix2_no_panels: List[np.ndarray] = []
+    delta_Emix2_panels: List[np.ndarray] = []
+    ratio_imix2_panels: List[np.ndarray] = []
+    panel_titles = [rf"$\mathrm{{pzc}}_{{\mathrm{{support}}}} = {val:.3f}\ \mathrm{{V}}$" for val in pzc_C_vals]
+
+    for pzc_C_val in pzc_C_vals:
+        Emix2_with = np.full((ny, nx), np.nan)
+        Emix2_no = np.full((ny, nx), np.nan)
+        imix2_abs_with = np.full((ny, nx), np.nan)
+        imix2_abs_no = np.full((ny, nx), np.nan)
+
+        for iy, Cdl_C in enumerate(Cdl_C_vals):
+            for ix, L_gap in enumerate(L_gap_vals):
+                pvar = copy.deepcopy(base_params)
+                pvar["L_gap"] = float(L_gap)
+                pvar["Cdl_C"] = float(Cdl_C)
+                pvar["pzc_C"] = float(pzc_C_val)
+                pair = run_edl_comparison_pair(pvar, mode="FULL")
+                res_edl = pair["with_edl"]
+                res_no = pair["no_edl"]
+                Emix2_with[iy, ix] = res_edl["E_mix"]
+                Emix2_no[iy, ix] = res_no["E_mix"]
+                imix2_abs_with[iy, ix] = res_edl["i_mix_abs_A"]
+                imix2_abs_no[iy, ix] = res_no["i_mix_abs_A"]
+                extra_with = {
+                    "L_gap": float(L_gap),
+                    "L_gap_nm": float(L_gap) * 1e9,
+                    "Cdl_C": float(Cdl_C),
+                    "pzc_C": float(pzc_C_val),
+                    "use_edl_case": "with_edl_FULL",
+                }
+                extra_no = {
+                    "L_gap": float(L_gap),
+                    "L_gap_nm": float(L_gap) * 1e9,
+                    "Cdl_C": float(Cdl_C),
+                    "pzc_C": float(pzc_C_val),
+                    "use_edl_case": "without_edl",
+                }
+                summary_rows.append(make_summary_row("heatmap_compare:Lgap_vs_Cdlgap:with_edl_FULL", pvar, res_edl, extra=extra_with))
+                summary_rows.append(make_summary_row("heatmap_compare:Lgap_vs_Cdlgap:without_edl", pvar, res_no, extra=extra_no))
+
+        tag = _format_signed_float_tag(pzc_C_val)
+        df2_Emix_with = pd.DataFrame(Emix2_with, index=Cdl_C_vals, columns=L_gap_vals_nm)
+        df2_Emix_no = pd.DataFrame(Emix2_no, index=Cdl_C_vals, columns=L_gap_vals_nm)
+        df2_Emix_delta = pd.DataFrame(Emix2_with - Emix2_no, index=Cdl_C_vals, columns=L_gap_vals_nm)
+        df2_imix_with = pd.DataFrame(imix2_abs_with, index=Cdl_C_vals, columns=L_gap_vals_nm)
+        df2_imix_no = pd.DataFrame(imix2_abs_no, index=Cdl_C_vals, columns=L_gap_vals_nm)
+        df2_imix_ratio = pd.DataFrame(_safe_ratio(imix2_abs_with, imix2_abs_no), index=Cdl_C_vals, columns=L_gap_vals_nm)
+        for df in (df2_Emix_with, df2_Emix_no, df2_Emix_delta, df2_imix_with, df2_imix_no, df2_imix_ratio):
+            df.index.name = "Cdl_support_F_per_m2"
+            df.columns.name = "L_gap_nm"
+        df2_Emix_with.to_csv(out_dir / f"heatmap_compare_Lgap_vs_Cdlgap_pzcgap_{tag}_Emix_with_edl_FULL.csv")
+        df2_Emix_no.to_csv(out_dir / f"heatmap_compare_Lgap_vs_Cdlgap_pzcgap_{tag}_Emix_without_edl.csv")
+        df2_Emix_delta.to_csv(out_dir / f"heatmap_compare_Lgap_vs_Cdlgap_pzcgap_{tag}_delta_Emix.csv")
+        df2_imix_with.to_csv(out_dir / f"heatmap_compare_Lgap_vs_Cdlgap_pzcgap_{tag}_imix_abs_with_edl_FULL.csv")
+        df2_imix_no.to_csv(out_dir / f"heatmap_compare_Lgap_vs_Cdlgap_pzcgap_{tag}_imix_abs_without_edl.csv")
+        df2_imix_ratio.to_csv(out_dir / f"heatmap_compare_Lgap_vs_Cdlgap_pzcgap_{tag}_ratio_i_mix_abs.csv")
+
+        Emix2_with_panels.append(Emix2_with)
+        Emix2_no_panels.append(Emix2_no)
+        delta_Emix2_panels.append(Emix2_with - Emix2_no)
+        ratio_imix2_panels.append(_safe_ratio(imix2_abs_with, imix2_abs_no))
+
+    x_edges = make_edges(L_gap_vals_nm, "linear")
+    y_edges = make_edges(Cdl_C_vals, "log")
+    _plot_heatmap_slice_panels(
+        Emix2_with_panels,
+        panel_titles,
+        x_edges,
+        y_edges,
+        xlabel=r"$L_{\mathrm{support}}$ [nm]",
+        ylabel=_param_axis_label("Cdl_C"),
+        cbarlab=_plot_axis_label("E_mix"),
+        title=r"EDL comparison: $E_{\mathrm{mix}}(L_{\mathrm{support}}, C_{\mathrm{dl,support}})$ at sliced $\mathrm{pzc}_{\mathrm{support}}$",
+        out_path=fig_dir / "heatmap_compare_Lgap_vs_Cdlgap_Emix_with_edl_pzcgap_slices.png",
         yscale="log",
     )
-    _plot_heatmap_edl_comparison(
-        imix2_abs_with,
-        imix2_abs_no,
+    _plot_heatmap_slice_panels(
+        Emix2_no_panels,
+        panel_titles,
         x_edges,
         y_edges,
-        xlabel="Cdl_Au / Cdl_Au,0 [-]",
-        ylabel="it0_1 / it0_1,0 [-]",
-        cbarlab=_plot_axis_label("i_mix_abs"),
-        title="EDL comparison: i_mix(Cdl_Au multiplier, it0_1 multiplier)",
-        out_path=fig_dir / "heatmap_compare_gfac_vs_i0fac_imix_abs_FULL.png",
+        xlabel=r"$L_{\mathrm{support}}$ [nm]",
+        ylabel=_param_axis_label("Cdl_C"),
+        cbarlab=_plot_axis_label("E_mix"),
+        title=r"Reference comparison: $E_{\mathrm{mix}}(L_{\mathrm{support}}, C_{\mathrm{dl,support}})$ at sliced $\mathrm{pzc}_{\mathrm{support}}$",
+        out_path=fig_dir / "heatmap_compare_Lgap_vs_Cdlgap_Emix_without_edl_pzcgap_slices.png",
+        yscale="log",
+    )
+    _plot_heatmap_slice_panels(
+        delta_Emix2_panels,
+        panel_titles,
+        x_edges,
+        y_edges,
+        xlabel=r"$L_{\mathrm{support}}$ [nm]",
+        ylabel=_param_axis_label("Cdl_C"),
+        cbarlab=r"$\Delta E_{\mathrm{mix}}$ [V]",
+        title=r"EDL effect: $\Delta E_{\mathrm{mix}}(L_{\mathrm{support}}, C_{\mathrm{dl,support}})$ at sliced $\mathrm{pzc}_{\mathrm{support}}$",
+        out_path=fig_dir / "heatmap_compare_Lgap_vs_Cdlgap_delta_Emix_pzcgap_slices.png",
+        cmap="coolwarm",
+        yscale="log",
+        center=0.0,
+        symmetric_about_center=True,
+    )
+    _plot_heatmap_slice_panels(
+        ratio_imix2_panels,
+        panel_titles,
+        x_edges,
+        y_edges,
+        xlabel=r"$L_{\mathrm{support}}$ [nm]",
+        ylabel=_param_axis_label("Cdl_C"),
+        cbarlab=r"$i_{\mathrm{mix}}(\mathrm{with\ EDL}) / i_{\mathrm{mix}}(\mathrm{without\ EDL})$ [-]",
+        title=r"EDL effect: $i_{\mathrm{mix}}$ ratio$(L_{\mathrm{support}}, C_{\mathrm{dl,support}})$ at sliced $\mathrm{pzc}_{\mathrm{support}}$",
+        out_path=fig_dir / "heatmap_compare_Lgap_vs_Cdlgap_ratio_i_mix_abs_pzcgap_slices.png",
+        cmap="coolwarm",
+        yscale="log",
+        center=1.0,
+    )
+
+    # --- Pair 3-5: Au vs Pd coupled sweeps ---
+    def _cdl_max(baseline: float) -> float:
+        return max(MIN_PHYSICAL_CDL_F_PER_M2 * 10.0, float(baseline) * 10.0)
+
+    Cdl_Au_vals = np.logspace(np.log10(MIN_PHYSICAL_CDL_F_PER_M2), np.log10(_cdl_max(float(base_params["Cdl_Au"]))), nx)
+    Cdl_Pd_vals = np.logspace(np.log10(MIN_PHYSICAL_CDL_F_PER_M2), np.log10(_cdl_max(float(base_params["Cdl_Pd"]))), ny)
+    _paired_compare_heatmap(
+        tag="CdlAu_vs_CdlPd",
+        x_name="Cdl_Au",
+        x_vals=Cdl_Au_vals,
+        y_name="Cdl_Pd",
+        y_vals=Cdl_Pd_vals,
         xscale="log",
         yscale="log",
+        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("Cdl_Au", xv), pvar.__setitem__("Cdl_Pd", yv)),
+        title_emix=r"EDL comparison: $E_{\mathrm{mix}}(C_{\mathrm{dl,Au}}, C_{\mathrm{dl,Pd}})$",
+        title_imix=r"EDL comparison: $i_{\mathrm{mix}}(C_{\mathrm{dl,Au}}, C_{\mathrm{dl,Pd}})$",
+    )
+
+    L_Au_vals = np.linspace(max(1e-9, 0.5 * float(base_params["L_Au"])), 3.0 * float(base_params["L_Au"]), nx)
+    L_Pd_vals = np.linspace(max(1e-9, 0.5 * float(base_params["L_Pd_len"])), 3.0 * float(base_params["L_Pd_len"]), ny)
+    _paired_compare_heatmap(
+        tag="LAu_vs_LPd",
+        x_name="L_Au",
+        x_vals=L_Au_vals,
+        y_name="L_Pd_len",
+        y_vals=L_Pd_vals,
+        xscale="linear",
+        yscale="linear",
+        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("L_Au", xv), pvar.__setitem__("L_Pd_len", yv)),
+        title_emix=r"EDL comparison: $E_{\mathrm{mix}}(L_{\mathrm{Au}}, L_{\mathrm{Pd}})$",
+        title_imix=r"EDL comparison: $i_{\mathrm{mix}}(L_{\mathrm{Au}}, L_{\mathrm{Pd}})$",
+    )
+
+    pzc_Au0 = float(base_params["pzc_Au"])
+    pzc_Pd0 = float(base_params["pzc_Pd"])
+    pzc_Au_vals = np.linspace(pzc_Au0 - 0.2, pzc_Au0 + 0.2, nx)
+    pzc_Pd_vals = np.linspace(pzc_Pd0 - 0.2, pzc_Pd0 + 0.2, ny)
+    _paired_compare_heatmap(
+        tag="pzcAu_vs_pzcPd",
+        x_name="pzc_Au",
+        x_vals=pzc_Au_vals,
+        y_name="pzc_Pd",
+        y_vals=pzc_Pd_vals,
+        xscale="linear",
+        yscale="linear",
+        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("pzc_Au", xv), pvar.__setitem__("pzc_Pd", yv)),
+        title_emix=r"EDL comparison: $E_{\mathrm{mix}}(\mathrm{pzc}_{\mathrm{Au}}, \mathrm{pzc}_{\mathrm{Pd}})$",
+        title_imix=r"EDL comparison: $i_{\mathrm{mix}}(\mathrm{pzc}_{\mathrm{Au}}, \mathrm{pzc}_{\mathrm{Pd}})$",
     )
 
 
@@ -2607,7 +3693,8 @@ def compute_sensitivities(base_params: Dict[str, Any], out_dir: Path, mode: str,
     df["abs_S_I_abs"] = df["S_I_abs"].abs()
     df = df.sort_values(by=["abs_S_E", "abs_S_I_abs", "abs_S_I_norm"], ascending=False)
 
-    df.to_csv(out_dir / "sensitivities.csv", index=False)
+    csv_dir = ensure_dir(out_dir / "csv")
+    df.to_csv(csv_dir / "sensitivities.csv", index=False)
 
     fig_dir = ensure_dir(out_dir / "figures")
     for col in ("S_E", "S_I_abs"):
@@ -2785,6 +3872,7 @@ def run_full_workflow(params: Dict[str, Any], out_dir: str | Path, print_summary
     p = copy.deepcopy(params)
     out_dir = ensure_dir(Path(out_dir))
     ensure_dir(out_dir / "figures")
+    csv_dir = ensure_dir(out_dir / "csv")
 
     summary_rows: List[Dict[str, Any]] = []
 
@@ -2848,7 +3936,7 @@ def run_full_workflow(params: Dict[str, Any], out_dir: str | Path, print_summary
                 debye_huckel_ok=case_no_edl["debye_huckel_ok"],
             ),
         ])
-        print("\n=== Baseline comparison: with EDL (FULL) vs without EDL ===")
+        print("\n=== Baseline comparison: with EDL vs without EDL ===")
         print(df_cmp.to_string(index=False))
         print("\nComparison summary:")
         print(pd.DataFrame([baseline_compare["comparison"]]).to_string(index=False))
@@ -2875,7 +3963,7 @@ def run_full_workflow(params: Dict[str, Any], out_dir: str | Path, print_summary
         compute_sensitivities(p, out_dir=out_dir, mode="FULL", summary_rows=summary_rows, rel_step=0.01)
 
     # Save master summary (required)
-    pd.DataFrame(summary_rows).to_csv(out_dir / "results_summary.csv", index=False)
+    pd.DataFrame(summary_rows).to_csv(csv_dir / "results_summary.csv", index=False)
 
     return dict(out_dir=str(out_dir), case_full=case_full, case_no_edl=case_no_edl, baseline_compare=baseline_compare)
 

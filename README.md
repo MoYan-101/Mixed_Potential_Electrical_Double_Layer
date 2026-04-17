@@ -53,7 +53,7 @@ python run_cases.py
 
 This will run:
 - `case1`: uses `params_template.json` as-is
-- `case2`: only overrides `L_gap = 100e-9`
+- `case2`: only overrides `L_gap = 100e-9` (support width)
 
 Outputs:
 - `results/case1/`
@@ -80,22 +80,56 @@ Notes:
 - `run_case()` also returns `max_abs_phi_tilde` and `debye_huckel_ok`, and you
   can control threshold handling with `dh_warn_threshold` and
   `dh_violation_action = ignore|warn|raise`.
-- Scan and heatmap axes now label the parameter units explicitly (`m`, `V`,
-  `F/m^2`, `M`, `K`, or `-` for dimensionless quantities).
-- The main workflow now uses `with EDL (FULL)` vs `without EDL` as the primary
+- Scan and heatmap axes now label the parameter units explicitly (`nm`, `V`,
+  `uF/cm^2`, `M`, `K`, or `-` for dimensionless quantities).
+- The main workflow now uses `with EDL` vs `without EDL` as the primary
   comparison. The with-EDL result is always the FULL numerical solution.
 - The default compare polarization curve is now a local window around the two
   `E_mix` values (`±0.10 V` margin by default). If you need the old full-range
   curve, pass explicit `E_min` and `E_max` in `solver_settings`.
 - The default OFAT range for `L_gap` is now `0` to `1000e-9 m` (0 to 1000 nm),
-  which is intended for nanoscale to sub-micron gap scans.
+  which is intended for nanoscale to sub-micron support-width scans.
+- The default OFAT `L_gap` scan is plotted in `nm` and now uses the same
+  sampling count as the generic OFAT default (`ofat_L_gap_n = ofat_n = 15`).
+- The `L_Au × L_Pd` heatmap now uses a fixed `2` to `1000 nm` range on both
+  axes, instead of scaling the range around the baseline lengths.
 - The default concentration ranges for OFAT and `C_tot` heatmaps are now
   `0.1 mM` to `10 M`. Internal calculations still use `mol/m^3`, but the
   plotted concentration axis is converted to `M` for chemistry-style figures.
+- The default 2D heatmap pairs are now:
+  `C_tot × (pzc_Au - pzc_Pd)` and `L_gap × Cdl_support`.
+- The second heatmap family is now sliced by three representative
+  `pzc_support` values around the baseline: `pzc_support - 0.10 V`,
+  `pzc_support`, and `pzc_support + 0.10 V`.
+- The first heatmap pair still writes side-by-side with/without EDL panels plus
+  standalone `delta_Emix` and `ratio_i_mix_abs` maps.
+- The second, material-oriented heatmap family writes multi-panel slice figures
+  for `E_mix` with EDL, `E_mix` without EDL, `delta_Emix`, and
+  `ratio_i_mix_abs`.
+- The shipped baseline now uses `C_tot = 10.0 mol/m^3`, which corresponds to
+  `10 mM` for a symmetric 1:1 electrolyte.
+- Displayed capacitances now use `uF/cm^2` throughout figures and summary
+  tables, although the solver still stores and computes them internally in
+  `F/m^2`.
+- Default OFAT capacitance scans are now floored at `1 uF/cm^2`
+  (`0.01 F/m^2`) to avoid exploring obviously nonphysical sub-`1 uF/cm^2`
+  values by default.
 - In the current Debye-length formula, `C_tot` means the concentration of each
   ion for a symmetric 1:1 electrolyte. If you intend `0.1 M`, enter `100.0`,
   not `0.1`.
-- Common unit reminder: `100 uF/cm^2 = 1.0 F/m^2`.
+- `pH` is now available as an explicit scan variable. In the current model, pH
+  acts only through reaction thermodynamics/kinetics, not through ionic
+  strength, unless you explicitly also change `C_tot`.
+- By default, reaction 2 is treated as a proton-coupled reduction of the form
+  `H+ + e- -> 1/2 H2` for pH scans. Accordingly, the shipped defaults use
+  `E2_eq_pH_slope_V_per_pH = -59.16 mV/pH` at `298 K` and `it0_2_pH_order = 1`.
+- The pH dependence is parameterized by:
+  `E1_eq_pH_slope_V_per_pH`, `E2_eq_pH_slope_V_per_pH`,
+  `it0_1_pH_order`, and `it0_2_pH_order`, all referenced to `pH_ref`.
+- The default pH scan range is `0` to `14`, and the main workflow will export
+  `ofat_compare_pH_E_mix.png` and `ofat_compare_pH_i_mix_abs_A.png` when
+  `do_ofat=true`.
+- Common unit reminder: `100 uF/cm^2 = 1.0 F/m^2`, so `1 uF/cm^2 = 0.01 F/m^2`.
 
 ### 4) Common pitfall: lambda_D
 If you manually set `lambda_D`, it overrides the auto-calculated Debye length.
