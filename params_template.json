@@ -62,8 +62,8 @@
   "heatmap_C_tot_max": 10000.0,
   "heatmap_L_min": 2e-09,
   "heatmap_L_max": 1e-06,
-  "heatmap_Cdl_C_min": 0.01,
-  "heatmap_Cdl_C_max": 10.0,
+  "heatmap_Cdl_C_min": 0.05,
+  "heatmap_Cdl_C_max": 1.0,
   "heatmap_pzc_C_offsets": [-0.1, 0.0, 0.1],
   "ofat_L_gap_min": 0.0,
   "ofat_L_gap_max": 1e-06

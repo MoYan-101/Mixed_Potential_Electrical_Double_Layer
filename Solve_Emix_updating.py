@@ -69,12 +69,12 @@ NATURE_WIDE_FIGSIZE = (4.5, 2.9)
 NATURE_DOUBLE_FIGSIZE = (6.9, 2.9)
 LEGEND_WITH_EDL = "with EDL"
 LEGEND_WITHOUT_EDL = "without EDL"
-HEATMAP_TITLE_FONTSIZE = 14.2
-HEATMAP_AXIS_LABEL_FONTSIZE = 13.8
-HEATMAP_TICK_LABEL_FONTSIZE = 12.4
-HEATMAP_COLORBAR_LABEL_FONTSIZE = 11.8
-HEATMAP_COLORBAR_TICK_FONTSIZE = 10.8
-HEATMAP_BASELINE_MARKER_SIZE = 22.0
+HEATMAP_TITLE_FONTSIZE = 24.0
+HEATMAP_AXIS_LABEL_FONTSIZE = 21.0
+HEATMAP_TICK_LABEL_FONTSIZE = 18.0
+HEATMAP_COLORBAR_LABEL_FONTSIZE = 18.0
+HEATMAP_COLORBAR_TICK_FONTSIZE = 16.0
+HEATMAP_BASELINE_MARKER_SIZE = 36.0
 
 
 def _configure_matplotlib() -> None:
@@ -702,8 +702,8 @@ def default_params() -> Dict[str, Any]:
         heatmap_C_tot_max=concentration_M_to_mol_per_m3(10.0),   # 10 M
         heatmap_L_min=2e-9,        # m, 2 nm lower bound for Au/Pd length heatmaps
         heatmap_L_max=1000e-9,     # m, 1000 nm upper bound for Au/Pd length heatmaps
-        heatmap_Cdl_C_min=0.01,      # F/m^2 = 1 uF/cm^2
-        heatmap_Cdl_C_max=10.0,      # F/m^2
+        heatmap_Cdl_C_min=0.05,      # F/m^2 = 5 uF/cm^2
+        heatmap_Cdl_C_max=1.0,       # F/m^2 = 100 uF/cm^2
         heatmap_pzc_C_offsets=[-0.10, 0.0, 0.10],  # V offsets around baseline pzc_C
         ofat_L_gap_min=0.0,        # m, allow L_gap=0 in OFAT
         ofat_L_gap_max=1000e-9,    # m, default OFAT range for nanoscale/sub-micron gaps
@@ -3011,6 +3011,104 @@ def _plot_heatmap_slice_panels(
     plt.close(fig)
 
 
+def _plot_combined_heatmap_panel(
+    entries: List[Dict[str, Any]],
+    out_path: Path,
+    title_suffix: str,
+) -> None:
+    """Plot the three Au/Pd sweep families as a 2x3 combined PNG panel."""
+    if len(entries) != 3:
+        raise ValueError("Combined heatmap panel expects exactly three entries")
+
+    fig = plt.figure(figsize=(23.5, 10.4))
+    gs = fig.add_gridspec(
+        2,
+        9,
+        width_ratios=[1.0, 0.052, 0.30, 1.0, 0.052, 0.30, 1.0, 0.052, 0.02],
+        wspace=0.08,
+        hspace=0.34,
+    )
+    letters = ["a", "b", "c", "d", "e", "f"]
+    emix_label = r"Mixed potential, $E_{\mathrm{mix}}$ [mV]"
+    imix_scaled_arrays, imix_label, _ = _scaled_current_display(
+        "i_mix_avg", *[entry["imix_avg_with"] for entry in entries]
+    )
+
+    for col, entry in enumerate(entries):
+        xscale_plot = entry["xscale"] if entry["xscale"] != "linear" else None
+        yscale_plot = entry["yscale"] if entry["yscale"] != "linear" else None
+        X, Y = np.meshgrid(entry["x_edges"], entry["y_edges"])
+
+        for row, (Z, cbarlab, panel_title) in enumerate((
+            (1000.0 * np.asarray(entry["Emix_with"], dtype=float), emix_label, r"$E_{\mathrm{mix}}$"),
+            (np.asarray(imix_scaled_arrays[col], dtype=float), imix_label, r"$\bar{i}_{\mathrm{mix}}$"),
+        )):
+            ax = fig.add_subplot(gs[row, 3 * col])
+            cax = fig.add_subplot(gs[row, 3 * col + 1])
+            mesh = ax.pcolormesh(X, Y, Z, shading="auto", cmap="viridis")
+            _style_axes(
+                ax,
+                xlabel=_param_axis_label(entry["x_name"]),
+                ylabel=_param_axis_label(entry["y_name"]),
+                title="",
+                xscale=xscale_plot,
+                yscale=yscale_plot,
+            )
+            _style_heatmap_axes(ax)
+            ax.text(
+                0.0,
+                1.035,
+                panel_title,
+                transform=ax.transAxes,
+                ha="left",
+                va="bottom",
+                fontsize=HEATMAP_TITLE_FONTSIZE,
+                fontweight="semibold",
+                color=NATURE_COLORS["black"],
+            )
+            ax.set_xlim(float(np.min(entry["x_disp"])), float(np.max(entry["x_disp"])))
+            ax.set_ylim(float(np.min(entry["y_disp"])), float(np.max(entry["y_disp"])))
+            if xscale_plot is None:
+                ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
+            if yscale_plot is None:
+                ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
+
+            bx, by = entry["baseline_point"]
+            ax.plot(
+                [bx],
+                [by],
+                marker="*",
+                markersize=HEATMAP_BASELINE_MARKER_SIZE,
+                markerfacecolor="white",
+                markeredgecolor=NATURE_COLORS["black"],
+                markeredgewidth=2.4,
+                color=NATURE_COLORS["black"],
+                linestyle="None",
+                clip_on=False,
+                zorder=8,
+            )
+            ax.text(
+                -0.16,
+                1.10,
+                letters[row + 2 * col],
+                transform=ax.transAxes,
+                ha="left",
+                va="top",
+                fontsize=28.0,
+                fontweight="bold",
+                color=NATURE_COLORS["black"],
+            )
+            cbar = fig.colorbar(mesh, cax=cax)
+            _style_heatmap_colorbar(cbar, cbarlab)
+            cbar.ax.yaxis.labelpad = 9.0
+
+    if title_suffix:
+        fig.suptitle(title_suffix, x=0.02, y=0.995, ha="left", fontsize=17.0, fontweight="semibold")
+    fig.subplots_adjust(left=0.055, right=0.985, bottom=0.075, top=0.945 if title_suffix else 0.965)
+    fig.savefig(out_path)
+    plt.close(fig)
+
+
 def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict[str, Any]]) -> None:
     """OFAT comparison scan: with EDL vs without EDL across parameter values."""
     fig_dir = ensure_dir(out_dir / "figures")
@@ -3285,142 +3383,94 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[
             "title_imix_delta": title_imix_delta,
         }
 
-    # Only keep the new Au/Pd coupled heatmaps. Legacy support/ionic-strength
-    # heatmaps are intentionally disabled.
-    def _cdl_max(baseline: float) -> float:
-        return max(MIN_PHYSICAL_CDL_F_PER_M2 * 10.0, float(baseline) * 10.0)
+    def _axis_values(vmin: float, vmax: float, count: int, scale: str) -> np.ndarray:
+        if scale == "log":
+            return np.logspace(np.log10(vmin), np.log10(vmax), count)
+        return np.linspace(vmin, vmax, count)
 
-    heatmap_data: List[Dict[str, Any]] = []
+    def _build_combined_heatmap_data(axis_scale: str, tag_suffix: str) -> List[Dict[str, Any]]:
+        if axis_scale not in {"log", "linear"}:
+            raise ValueError("axis_scale must be log or linear")
 
-    Cdl_Au_vals = np.logspace(np.log10(MIN_PHYSICAL_CDL_F_PER_M2), np.log10(_cdl_max(float(base_params["Cdl_Au"]))), nx)
-    Cdl_Pd_vals = np.logspace(np.log10(MIN_PHYSICAL_CDL_F_PER_M2), np.log10(_cdl_max(float(base_params["Cdl_Pd"]))), ny)
-    heatmap_data.append(_paired_compare_heatmap_data(
-        tag="CdlAu_vs_CdlPd",
-        x_name="Cdl_Au",
-        x_vals=Cdl_Au_vals,
-        y_name="Cdl_Pd",
-        y_vals=Cdl_Pd_vals,
-        xscale="log",
-        yscale="log",
-        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("Cdl_Au", xv), pvar.__setitem__("Cdl_Pd", yv)),
-        title_emix_with=r"$E_{\mathrm{mix}}$",
-        title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
-        title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
-        title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
-    ))
+        heatmap_data: List[Dict[str, Any]] = []
+        cdl_min = float(base_params.get("heatmap_Cdl_C_min", 0.05))
+        cdl_max = float(base_params.get("heatmap_Cdl_C_max", 1.0))
+        if cdl_min <= 0.0 or cdl_max <= cdl_min:
+            raise ValueError("heatmap_Cdl_C_min/max must define a positive increasing range")
 
-    L_heatmap_min = float(base_params["heatmap_L_min"])
-    L_heatmap_max = float(base_params["heatmap_L_max"])
-    L_Au_vals = np.logspace(np.log10(L_heatmap_min), np.log10(L_heatmap_max), nx)
-    L_Pd_vals = np.logspace(np.log10(L_heatmap_min), np.log10(L_heatmap_max), ny)
-    heatmap_data.append(_paired_compare_heatmap_data(
-        tag="LAu_vs_LPd",
-        x_name="L_Au",
-        x_vals=L_Au_vals,
-        y_name="L_Pd_len",
-        y_vals=L_Pd_vals,
-        xscale="log",
-        yscale="log",
-        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("L_Au", xv), pvar.__setitem__("L_Pd_len", yv)),
-        title_emix_with=r"$E_{\mathrm{mix}}$",
-        title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
-        title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
-        title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
-    ))
+        Cdl_Au_vals = _axis_values(cdl_min, cdl_max, nx, axis_scale)
+        Cdl_Pd_vals = _axis_values(cdl_min, cdl_max, ny, axis_scale)
+        heatmap_data.append(_paired_compare_heatmap_data(
+            tag=f"CdlAu_vs_CdlPd{tag_suffix}",
+            x_name="Cdl_Au",
+            x_vals=Cdl_Au_vals,
+            y_name="Cdl_Pd",
+            y_vals=Cdl_Pd_vals,
+            xscale=axis_scale,
+            yscale=axis_scale,
+            assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("Cdl_Au", xv), pvar.__setitem__("Cdl_Pd", yv)),
+            title_emix_with=r"$E_{\mathrm{mix}}$",
+            title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
+            title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
+            title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
+        ))
 
-    pzc_Au0 = float(base_params["pzc_Au"])
-    pzc_Pd0 = float(base_params["pzc_Pd"])
-    pzc_Au_vals = np.linspace(pzc_Au0 - 0.2, pzc_Au0 + 0.2, nx)
-    pzc_Pd_vals = np.linspace(pzc_Pd0 - 0.2, pzc_Pd0 + 0.2, ny)
-    heatmap_data.append(_paired_compare_heatmap_data(
-        tag="pzcAu_vs_pzcPd",
-        x_name="pzc_Au",
-        x_vals=pzc_Au_vals,
-        y_name="pzc_Pd",
-        y_vals=pzc_Pd_vals,
-        xscale="linear",
-        yscale="linear",
-        assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("pzc_Au", xv), pvar.__setitem__("pzc_Pd", yv)),
-        title_emix_with=r"$E_{\mathrm{mix}}$",
-        title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
-        title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
-        title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
-    ))
+        pzc_Au0 = float(base_params["pzc_Au"])
+        pzc_Pd0 = float(base_params["pzc_Pd"])
+        pzc_Au_vals = np.linspace(pzc_Au0 - 0.2, pzc_Au0 + 0.2, nx)
+        pzc_Pd_vals = np.linspace(pzc_Pd0 - 0.2, pzc_Pd0 + 0.2, ny)
+        heatmap_data.append(_paired_compare_heatmap_data(
+            tag=f"pzcAu_vs_pzcPd{tag_suffix}",
+            x_name="pzc_Au",
+            x_vals=pzc_Au_vals,
+            y_name="pzc_Pd",
+            y_vals=pzc_Pd_vals,
+            xscale="linear",
+            yscale="linear",
+            assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("pzc_Au", xv), pvar.__setitem__("pzc_Pd", yv)),
+            title_emix_with=r"$E_{\mathrm{mix}}$",
+            title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
+            title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
+            title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
+        ))
 
-    for entry in heatmap_data:
-        xscale_plot = entry["xscale"] if entry["xscale"] != "linear" else None
-        yscale_plot = entry["yscale"] if entry["yscale"] != "linear" else None
-        (imix_avg_with_plot,), imix_avg_label, _ = _scaled_current_display("i_mix_avg", entry["imix_avg_with"])
-        (delta_imix_avg_plot,), _, delta_imix_exp = _scaled_current_display("i_mix_avg", entry["delta_imix_avg"])
-        delta_imix_abs_label = _label_with_power_of_ten(r"$\Delta \bar{i}_{\mathrm{mix}}$ [A/m$^2$]", delta_imix_exp)
-        for obsolete in (
-            fig_dir / f"heatmap_compare_{entry['tag']}_ratio_i_mix_abs_FULL.png",
-            fig_dir / f"heatmap_compare_{entry['tag']}_log10_imix_abs_with_edl_FULL.png",
-            fig_dir / f"heatmap_compare_{entry['tag']}_delta_log10_i_mix_abs_FULL.png",
-            fig_dir / f"heatmap_compare_{entry['tag']}_imix_abs_with_edl_FULL.png",
-            fig_dir / f"heatmap_compare_{entry['tag']}_delta_i_mix_abs_FULL.png",
-        ):
-            if obsolete.exists():
-                obsolete.unlink()
+        L_heatmap_min = float(base_params["heatmap_L_min"])
+        L_heatmap_max = float(base_params["heatmap_L_max"])
+        L_Au_vals = _axis_values(L_heatmap_min, L_heatmap_max, nx, axis_scale)
+        L_Pd_vals = _axis_values(L_heatmap_min, L_heatmap_max, ny, axis_scale)
+        heatmap_data.append(_paired_compare_heatmap_data(
+            tag=f"LAu_vs_LPd{tag_suffix}",
+            x_name="L_Au",
+            x_vals=L_Au_vals,
+            y_name="L_Pd_len",
+            y_vals=L_Pd_vals,
+            xscale=axis_scale,
+            yscale=axis_scale,
+            assign_fn=lambda pvar, xv, yv: (pvar.__setitem__("L_Au", xv), pvar.__setitem__("L_Pd_len", yv)),
+            title_emix_with=r"$E_{\mathrm{mix}}$",
+            title_emix_delta=r"$\Delta E_{\mathrm{mix}}$",
+            title_imix_with=r"$\bar{i}_{\mathrm{mix}}$",
+            title_imix_delta=r"$\Delta \bar{i}_{\mathrm{mix}}$",
+        ))
+        return heatmap_data
 
-        _plot_heatmap_single(
-            entry["Emix_with"],
-            entry["x_edges"],
-            entry["y_edges"],
-            xlabel=_param_axis_label(entry["x_name"]),
-            ylabel=_param_axis_label(entry["y_name"]),
-            cbarlab=_plot_axis_label("E_mix"),
-            title=entry["title_emix_with"],
-            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_Emix_with_edl_FULL.png",
-            xscale=xscale_plot,
-            yscale=yscale_plot,
-            baseline_point=entry["baseline_point"],
-        )
-        _plot_heatmap_single(
-            entry["delta_Emix"],
-            entry["x_edges"],
-            entry["y_edges"],
-            xlabel=_param_axis_label(entry["x_name"]),
-            ylabel=_param_axis_label(entry["y_name"]),
-            cbarlab=r"$\Delta E_{\mathrm{mix}}$ [V]",
-            title=entry["title_emix_delta"],
-            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_delta_Emix_FULL.png",
-            cmap="coolwarm",
-            xscale=xscale_plot,
-            yscale=yscale_plot,
-            center=0.0,
-            symmetric_about_center=True,
-            baseline_point=entry["baseline_point"],
-        )
-        _plot_heatmap_single(
-            imix_avg_with_plot,
-            entry["x_edges"],
-            entry["y_edges"],
-            xlabel=_param_axis_label(entry["x_name"]),
-            ylabel=_param_axis_label(entry["y_name"]),
-            cbarlab=imix_avg_label,
-            title=entry["title_imix_with"],
-            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_imix_avg_with_edl_FULL.png",
-            xscale=xscale_plot,
-            yscale=yscale_plot,
-            baseline_point=entry["baseline_point"],
-        )
-        _plot_heatmap_single(
-            delta_imix_avg_plot,
-            entry["x_edges"],
-            entry["y_edges"],
-            xlabel=_param_axis_label(entry["x_name"]),
-            ylabel=_param_axis_label(entry["y_name"]),
-            cbarlab=delta_imix_abs_label,
-            title=entry["title_imix_delta"],
-            out_path=fig_dir / f"heatmap_compare_{entry['tag']}_delta_i_mix_avg_FULL.png",
-            cmap="coolwarm",
-            xscale=xscale_plot,
-            yscale=yscale_plot,
-            center=0.0,
-            symmetric_about_center=True,
-            baseline_point=entry["baseline_point"],
-        )
+    heatmap_data_log = _build_combined_heatmap_data("log", "")
+    heatmap_data_linear = _build_combined_heatmap_data("linear", "_linear")
+
+    for entry in heatmap_data_log + heatmap_data_linear:
+        for old in fig_dir.glob(f"heatmap_compare_{entry['tag']}_*.png"):
+            old.unlink()
+
+    _plot_combined_heatmap_panel(
+        heatmap_data_log,
+        fig_dir / "heatmap_combined_panel_log.png",
+        "",
+    )
+    _plot_combined_heatmap_panel(
+        heatmap_data_linear,
+        fig_dir / "heatmap_combined_panel_linear.png",
+        "",
+    )
 
     return
 

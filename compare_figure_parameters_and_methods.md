@@ -299,22 +299,25 @@ The current heatmap families are:
 2. `L_Au × L_Pd`
 3. `pzc_Au × pzc_Pd`
 
-The `Cdl_Au × Cdl_Pd` heatmap uses logarithmic axes on both dimensions.
+The `Cdl_Au × Cdl_Pd` heatmap uses `5` to `100 uF cm^-2` on both axes.
+The log combined panel uses logarithmic sampling/display; the linear combined
+panel uses linear sampling/display.
 
 The `L_Au × L_Pd` heatmap now uses:
 
 - `2 nm` to `1000 nm` on both axes,
-- logarithmic sampling on both axes,
-- logarithmic axis display on both axes.
+- logarithmic sampling/display in the log combined panel,
+- linear sampling/display in the linear combined panel.
 
 The `pzc_Au × pzc_Pd` heatmap uses linear scans around the baseline values.
 
-For each heatmap family, the active figure outputs are:
+The active heatmap figure outputs are:
 
-- `heatmap_compare_<tag>_Emix_with_edl_FULL.png`
-- `heatmap_compare_<tag>_delta_Emix_FULL.png`
-- `heatmap_compare_<tag>_imix_avg_with_edl_FULL.png`
-- `heatmap_compare_<tag>_delta_i_mix_avg_FULL.png`
+- `heatmap_combined_panel_log.png`
+- `heatmap_combined_panel_linear.png`
+
+The heatmap potential panels are plotted in `mV`; the CSV files remain in
+solver units.
 
 The corresponding CSV files are written under `csv/` and include:
 

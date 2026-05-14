@@ -114,9 +114,11 @@ Notes:
   axis is converted to `M` for chemistry-style figures.
 - The active default 2D heatmap families are material-coupled scans:
   `Cdl_Au × Cdl_Pd`, `L_Au × L_Pd`, and `pzc_Au × pzc_Pd`.
-- Each active heatmap family writes standalone maps for `E_mix` with EDL,
-  `delta_Emix`, average mixed current density with EDL, and
-  `delta_i_mix_avg`.
+- Heatmap figure output is now two combined PNG panels:
+  `heatmap_combined_panel_log.png` keeps logarithmic Cdl/L sweeps, while
+  `heatmap_combined_panel_linear.png` uses linear Cdl/L sweeps. Heatmap
+  potential panels are displayed in `mV`; CSV data remain in solver units.
+- The default Cdl heatmap range is now `5` to `100 uF/cm^2`.
 - The shipped baseline now uses `C_tot = 10.0 mol/m^3`, which corresponds to
   `10 mM` for a symmetric 1:1 electrolyte.
 - Displayed capacitances now use `uF/cm^2` throughout figures and summary

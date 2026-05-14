@@ -28,6 +28,9 @@ Each key below matches `params_template.json`. Units are the same as in the code
 - `heatmap_L_min`, `heatmap_L_max`: Internal lower/upper bounds for the
   default `L_Au × L_Pd` heatmap range. The shipped defaults are `2e-9` to
   `1000e-9 m` (2 to 1000 nm) on both axes.
+- `heatmap_Cdl_C_min`, `heatmap_Cdl_C_max`: Internal lower/upper bounds for
+  the `Cdl_Au × Cdl_Pd` heatmap range. The shipped defaults are `0.05` to
+  `1.0 F/m^2`, corresponding to `5` to `100 uF/cm^2`.
 - `ofat_L_gap_min`, `ofat_L_gap_max`: Default OFAT scan bounds for `L_gap`.
   The shipped defaults are `0` to `1000e-9 m` (0 to 1000 nm).
 - `L_Pd_len`: Length of Pd segment (m).
