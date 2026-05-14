@@ -119,6 +119,11 @@ The solution-side reaction-plane potential is written in the code as
 
 `phi_RP(x) = (RT/F) * phi_tilde(x)`
 
+In the 2026 main solver, this reaction-plane potential is evaluated at the
+surface boundary (`y_tilde = 0`). The root-level prototype
+`edl_mixed_potential_model.py` supports a finite reaction-plane offset, but
+that offset is not part of the present production workflow.
+
 In the `without EDL` comparison model:
 
 - `phi_tilde(x) = 0`
@@ -368,6 +373,7 @@ master table.
 The baseline linear workflow can be regenerated with:
 
 ```bash
+python3 -m pip install -r requirements.txt
 python3 Solve_Emix_updating.py
 ```
 

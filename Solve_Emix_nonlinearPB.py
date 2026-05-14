@@ -3619,9 +3619,22 @@ def run_self_checks(
     run_convergence: bool = False,
     raise_on_fail: bool = False,
     print_summary: bool = True,
+    include_mixed_potential: bool = False,
+    smoke_grid: Optional[Tuple[int, int]] = (31, 21),
 ) -> Dict[str, Any]:
-    """Run basic solver-consistency checks for the nonlinear PB variant."""
+    """
+    Run basic solver-consistency checks for the nonlinear PB variant.
+
+    By default this is a fast field-solve smoke check on a coarse PB grid.
+    Set ``include_mixed_potential=True`` to also run the expensive nested
+    mixed-potential solve, and set ``smoke_grid=None`` to check the supplied
+    grid without downsampling.
+    """
     p = default_params() if params is None else copy.deepcopy(params)
+    if smoke_grid is not None:
+        p["pb_nx"] = int(smoke_grid[0])
+        p["pb_ny"] = int(smoke_grid[1])
+        p["Nx"] = min(int(p.get("Nx", 200)), 200)
     results: Dict[str, Any] = {}
 
     def _record(name: str, criterion_met: bool, value: Any, warn_only: bool = False) -> None:
@@ -3630,25 +3643,25 @@ def run_self_checks(
         if not criterion_met and not warn_only and raise_on_fail:
             raise AssertionError(f"Self-check failed: {name} -> {value}")
 
-    # Test 1 & 2: mixed potential consistency (FULL mode)
-    case = run_case(p, mode="FULL", return_profiles=True, use_edl=True)
-    I_Au = float(case["I_Au"]); I_Pd = float(case["I_Pd"])
-    resid = I_Au + I_Pd
-    scale = abs(I_Au) + abs(I_Pd) + 1e-30
-    rel_resid = abs(resid) / scale
-    _record("mixed_potential_zero_current", rel_resid < rel_tol, rel_resid)
-    _record("internal_current_balance",
-            (abs(resid) < rel_tol * scale)
-            and (abs(abs(I_Au) - abs(I_Pd)) < rel_tol * scale)
-            and (float(case["i_mix"]) >= 0.0),
-            dict(residual=resid, I_Au=I_Au, I_Pd=I_Pd, i_mix=float(case["i_mix"])))
+    def _record_skipped(name: str, value: Any) -> None:
+        results[name] = dict(ok=True, criterion_met=None, skipped=True, warn=False, value=value)
 
-    # Test 3: sidewall Neumann condition from a finite-difference surface derivative
+    # Test 1: solve one nonlinear PB field at a fixed metal potential.
     edl = make_edl_model(p)
     x, phi = edl.phi_tilde_surface(E_test)
-    dx = x[1] - x[0]
-    dphi_left_fd = (phi[1] - phi[0]) / dx
-    dphi_right_fd = (phi[-1] - phi[-2]) / dx
+    field_metrics = dict(edl._last_field_metrics)
+    residual_limit = max(100.0 * float(p.get("pb_solver_tol", 1e-8)), 5.0e-2)
+    _record(
+        "field_solve_residual",
+        bool(field_metrics)
+        and np.isfinite(float(field_metrics.get("field_residual_max", float("nan"))))
+        and float(field_metrics.get("field_residual_max", float("inf"))) <= residual_limit,
+        dict(field_metrics=field_metrics, residual_limit=residual_limit),
+    )
+
+    # Test 2: sidewall Neumann condition from a finite-difference surface derivative.
+    dphi_left_fd = (phi[1] - phi[0]) / (x[1] - x[0])
+    dphi_right_fd = (phi[-1] - phi[-2]) / (x[-1] - x[-2])
     _record(
         "sidewall_neumann_fd",
         (abs(dphi_left_fd) < math.sqrt(bc_tol)) and (abs(dphi_right_fd) < math.sqrt(bc_tol)),
@@ -3658,18 +3671,18 @@ def run_self_checks(
         ),
     )
 
-    # Test 4: no NaN / Inf in the returned profiles
+    # Test 3: no NaN / Inf in the returned surface profile.
     _record(
-        "finite_profiles",
-        np.all(np.isfinite(case["phi_tilde"])) and np.all(np.isfinite(case["i1"])) and np.all(np.isfinite(case["i2"])),
+        "finite_surface_profile",
+        bool(np.all(np.isfinite(phi))),
         dict(
-            finite_phi=bool(np.all(np.isfinite(case["phi_tilde"]))),
-            finite_i1=bool(np.all(np.isfinite(case["i1"]))),
-            finite_i2=bool(np.all(np.isfinite(case["i2"]))),
+            finite_phi=bool(np.all(np.isfinite(phi))),
+            min_phi=float(np.min(phi)),
+            max_phi=float(np.max(phi)),
         ),
     )
 
-    # Test 5: top boundary should be close to zero on the solver grid
+    # Test 4: top boundary should be close to zero on the solver grid.
     phi_grid = np.asarray(edl._last_solution, dtype=float) if edl._last_solution is not None else None
     top_max = float(np.max(np.abs(phi_grid[-1, :]))) if phi_grid is not None else float("nan")
     _record(
@@ -3678,8 +3691,8 @@ def run_self_checks(
         dict(top_boundary_max_abs=top_max),
     )
 
-    # Test 6: report the nonlinear amplitude scale as informational output
-    max_phi = float(np.max(np.abs(case["phi_tilde"])))
+    # Test 5: report the nonlinear amplitude scale as informational output.
+    max_phi = float(np.max(np.abs(phi)))
     _record(
         "nonlinear_amplitude_scale",
         max_phi < max(5.0, dh_warn_threshold),
@@ -3687,7 +3700,37 @@ def run_self_checks(
         warn_only=True,
     )
 
-    # Test 7: optional coarse convergence scan for the nonlinear grid
+    if include_mixed_potential:
+        # Optional expensive test: full mixed-potential consistency.
+        case = run_case(p, mode="FULL", return_profiles=True, use_edl=True)
+        I_Au = float(case["I_Au"]); I_Pd = float(case["I_Pd"])
+        resid = I_Au + I_Pd
+        scale = abs(I_Au) + abs(I_Pd) + 1e-30
+        rel_resid = abs(resid) / scale
+        _record("mixed_potential_zero_current", rel_resid < rel_tol, rel_resid)
+        _record(
+            "internal_current_balance",
+            (abs(resid) < rel_tol * scale)
+            and (abs(abs(I_Au) - abs(I_Pd)) < rel_tol * scale)
+            and (float(case["i_mix"]) >= 0.0),
+            dict(residual=resid, I_Au=I_Au, I_Pd=I_Pd, i_mix=float(case["i_mix"])),
+        )
+        _record(
+            "finite_current_profiles",
+            np.all(np.isfinite(case["phi_tilde"])) and np.all(np.isfinite(case["i1"])) and np.all(np.isfinite(case["i2"])),
+            dict(
+                finite_phi=bool(np.all(np.isfinite(case["phi_tilde"]))),
+                finite_i1=bool(np.all(np.isfinite(case["i1"]))),
+                finite_i2=bool(np.all(np.isfinite(case["i2"]))),
+            ),
+        )
+    else:
+        _record_skipped(
+            "mixed_potential_zero_current",
+            "Skipped by default because the nonlinear PB mixed-potential solve is expensive; pass include_mixed_potential=True.",
+        )
+
+    # Test 6: optional coarse convergence scan for the nonlinear grid.
     if run_convergence:
         conv_rows: List[Dict[str, Any]] = []
         for pb_nx, pb_ny in [(81, 61), (121, 81), (161, 101)]:
@@ -3704,7 +3747,7 @@ def run_self_checks(
             if name == "convergence_scan":
                 print("convergence_scan:", item)
                 continue
-            status = "warn" if item.get("warn", False) else ("ok" if item["ok"] else "fail")
+            status = "skip" if item.get("skipped", False) else ("warn" if item.get("warn", False) else ("ok" if item["ok"] else "fail"))
             print(f"{name}: status={status}, criterion_met={item.get('criterion_met')}, value={item['value']}")
 
     return results

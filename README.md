@@ -10,12 +10,26 @@
 
 ## How To Run (Beginner Steps)
 
+### 0) Install dependencies
+From this folder, install the Python packages used by the workflow:
+
+```
+python3 -m pip install -r requirements.txt
+```
+
+The core solver uses `numpy`, `scipy`, `pandas`, and `matplotlib`. `plotly` is
+used only for optional interactive HTML figures:
+
+```
+python3 -m pip install -r requirements-optional.txt
+```
+
 ### 1) Run the main script
 This runs the default parameters and saves results under this script folder's
 `results/<timestamp>/`.
 
 ```
-python Solve_Emix_updating.py
+python3 Solve_Emix_updating.py
 ```
 
 You will get:
@@ -31,7 +45,7 @@ You will get:
 Use the helper script below. It compares with/without EDL and saves results.
 
 ```
-python run_compare.py
+python3 run_compare.py
 ```
 
 Outputs are saved to:
@@ -48,7 +62,7 @@ Step A: edit `params_template.json` (only change numbers).
 
 Step B: run:
 ```
-python run_cases.py
+python3 run_cases.py
 ```
 
 This will run:
@@ -75,7 +89,9 @@ Notes:
 - If your real electrode has a different out-of-plane width `W`, change
   `out_of_plane_width` and the absolute current will scale automatically as
   `I_abs = W * i_mix_phys_A_per_m`.
-- Current-related comparison figures now default to absolute current in `A`.
+- Current-related comparison figures now default to average mixed current
+  density in `A/m^2`, normalized by the reactive Au+Pd area. Absolute-current
+  outputs are still saved in summaries for downstream use.
   The baseline `i(x)` profile remains a local current density in `A/m^2`.
 - `run_case()` also returns `max_abs_phi_tilde` and `debye_huckel_ok`, and you
   can control threshold handling with `dh_warn_threshold` and
@@ -93,19 +109,14 @@ Notes:
   sampling count as the generic OFAT default (`ofat_L_gap_n = ofat_n = 15`).
 - The `L_Au × L_Pd` heatmap now uses a fixed `2` to `1000 nm` range on both
   axes, instead of scaling the range around the baseline lengths.
-- The default concentration ranges for OFAT and `C_tot` heatmaps are now
-  `0.1 mM` to `10 M`. Internal calculations still use `mol/m^3`, but the
-  plotted concentration axis is converted to `M` for chemistry-style figures.
-- The default 2D heatmap pairs are now:
-  `C_tot × (pzc_Au - pzc_Pd)` and `L_gap × Cdl_support`.
-- The second heatmap family is now sliced by three representative
-  `pzc_support` values around the baseline: `pzc_support - 0.10 V`,
-  `pzc_support`, and `pzc_support + 0.10 V`.
-- The first heatmap pair still writes side-by-side with/without EDL panels plus
-  standalone `delta_Emix` and `ratio_i_mix_abs` maps.
-- The second, material-oriented heatmap family writes multi-panel slice figures
-  for `E_mix` with EDL, `E_mix` without EDL, `delta_Emix`, and
-  `ratio_i_mix_abs`.
+- The default concentration ranges for OFAT are `0.1 mM` to `10 M`.
+  Internal calculations still use `mol/m^3`, but the plotted concentration
+  axis is converted to `M` for chemistry-style figures.
+- The active default 2D heatmap families are material-coupled scans:
+  `Cdl_Au × Cdl_Pd`, `L_Au × L_Pd`, and `pzc_Au × pzc_Pd`.
+- Each active heatmap family writes standalone maps for `E_mix` with EDL,
+  `delta_Emix`, average mixed current density with EDL, and
+  `delta_i_mix_avg`.
 - The shipped baseline now uses `C_tot = 10.0 mol/m^3`, which corresponds to
   `10 mM` for a symmetric 1:1 electrolyte.
 - Displayed capacitances now use `uF/cm^2` throughout figures and summary
@@ -117,6 +128,10 @@ Notes:
 - In the current Debye-length formula, `C_tot` means the concentration of each
   ion for a symmetric 1:1 electrolyte. If you intend `0.1 M`, enter `100.0`,
   not `0.1`.
+- In the 2026 main solver, the kinetic reaction-plane potential is evaluated
+  at the surface (`y_tilde = 0`). The older root-level prototype includes a
+  finite reaction-plane distance; do not mix those two conventions without
+  adding the same offset to the 2026 solver.
 - `pH` is now available as an explicit scan variable. In the current model, pH
   acts only through reaction thermodynamics/kinetics, not through ionic
   strength, unless you explicitly also change `C_tot`.
@@ -127,7 +142,7 @@ Notes:
   `E1_eq_pH_slope_V_per_pH`, `E2_eq_pH_slope_V_per_pH`,
   `it0_1_pH_order`, and `it0_2_pH_order`, all referenced to `pH_ref`.
 - The default pH scan range is `0` to `14`, and the main workflow will export
-  `ofat_compare_pH_E_mix.png` and `ofat_compare_pH_i_mix_abs_A.png` when
+  `ofat_compare_pH_E_mix.png` and `ofat_compare_pH_i_mix_avg_A_per_m2.png` when
   `do_ofat=true`.
 - Common unit reminder: `100 uF/cm^2 = 1.0 F/m^2`, so `1 uF/cm^2 = 0.01 F/m^2`.
 
