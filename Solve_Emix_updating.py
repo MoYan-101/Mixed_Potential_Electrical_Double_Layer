@@ -69,6 +69,12 @@ NATURE_WIDE_FIGSIZE = (4.5, 2.9)
 NATURE_DOUBLE_FIGSIZE = (6.9, 2.9)
 LEGEND_WITH_EDL = "with EDL"
 LEGEND_WITHOUT_EDL = "without EDL"
+HEATMAP_TITLE_FONTSIZE = 14.2
+HEATMAP_AXIS_LABEL_FONTSIZE = 13.8
+HEATMAP_TICK_LABEL_FONTSIZE = 12.4
+HEATMAP_COLORBAR_LABEL_FONTSIZE = 11.8
+HEATMAP_COLORBAR_TICK_FONTSIZE = 10.8
+HEATMAP_BASELINE_MARKER_SIZE = 22.0
 
 
 def _configure_matplotlib() -> None:
@@ -536,15 +542,44 @@ def _style_colorbar(
     label: str,
     ticks: Optional[np.ndarray | List[float]] = None,
     use_max_locator: bool = True,
+    labelsize: float = 7.5,
+    label_fontsize: Optional[float] = None,
 ) -> None:
     cbar.set_label(label)
-    cbar.ax.tick_params(length=2.8, width=0.7, pad=2, labelsize=7.5)
+    if label_fontsize is not None:
+        cbar.ax.yaxis.label.set_fontsize(label_fontsize)
+    cbar.ax.tick_params(length=2.8, width=0.7, pad=2, labelsize=labelsize)
     cbar.outline.set_linewidth(0.8)
     if ticks is not None:
         cbar.set_ticks(np.asarray(ticks, dtype=float))
     elif use_max_locator:
         cbar.locator = MaxNLocator(nbins=5)
     cbar.update_ticks()
+
+
+def _style_heatmap_axes(ax: Axes) -> None:
+    ax.title.set_fontsize(HEATMAP_TITLE_FONTSIZE)
+    ax.title.set_fontweight("semibold")
+    ax.xaxis.label.set_fontsize(HEATMAP_AXIS_LABEL_FONTSIZE)
+    ax.yaxis.label.set_fontsize(HEATMAP_AXIS_LABEL_FONTSIZE)
+    ax.tick_params(axis="both", which="major", labelsize=HEATMAP_TICK_LABEL_FONTSIZE, length=4.8, width=1.05, pad=3.2)
+    ax.tick_params(axis="both", which="minor", length=3.0, width=0.85)
+
+
+def _style_heatmap_colorbar(
+    cbar,
+    label: str,
+    ticks: Optional[np.ndarray | List[float]] = None,
+    use_max_locator: bool = True,
+) -> None:
+    _style_colorbar(
+        cbar,
+        label,
+        ticks=ticks,
+        use_max_locator=use_max_locator,
+        labelsize=HEATMAP_COLORBAR_TICK_FONTSIZE,
+        label_fontsize=HEATMAP_COLORBAR_LABEL_FONTSIZE,
+    )
 
 
 def _ofat_x_values(dfp: pd.DataFrame, pname: str) -> np.ndarray:
@@ -2093,20 +2128,25 @@ def plot_publication_compare_panels(
     out_base: Path,
     i_mix_abs_edl: Optional[float] = None,
     i_mix_abs_no: Optional[float] = None,
+    export_formats: Tuple[str, ...] = ("png", "pdf", "svg"),
 ) -> Dict[str, str]:
     """
-    Publication-style 2x2 compare figure:
+    Publication-style compare figure:
     (a) compact bar-chart summary of mixed potential and mixed current
     (b) reaction-plane potential
-    (c) local overpotential
-    (d) local current density profile
+    (c) normalized local reactant concentration
+    (d) local overpotential
+    (e) local current density profile
 
-    The first three panels compare with/without EDL. The local current-density
-    panel shows the spatially resolved with-EDL solution at the converged
-    mixed potential.
+    All panels compare with/without EDL at their converged mixed potentials.
     """
     out_base = Path(out_base)
     ensure_dir(out_base.parent)
+    export_formats = tuple(fmt.lower() for fmt in export_formats)
+    allowed_formats = {"png", "pdf", "svg"}
+    unknown_formats = sorted(set(export_formats) - allowed_formats)
+    if unknown_formats:
+        raise ValueError(f"Unsupported export format(s): {', '.join(unknown_formats)}")
 
     rxn = _effective_reaction_params(params)
     scale_edl = float(derived_edl["R"]) * float(derived_edl["T"]) / float(derived_edl["F"])
@@ -2115,9 +2155,6 @@ def plot_publication_compare_panels(
     x_nm = np.asarray(prof_edl["x_tilde"], dtype=float) * float(derived_edl["lambda_D"]) * 1e9
     phi2_edl = scale_edl * np.asarray(prof_edl["phi_tilde"], dtype=float)
     phi2_no = scale_no * np.asarray(prof_no["phi_tilde"], dtype=float)
-
-    metal_edl = np.full_like(x_nm, float(E_mix_edl), dtype=float)
-    metal_no = np.full_like(x_nm, float(E_mix_no), dtype=float)
 
     eta_edl = np.full_like(x_nm, np.nan, dtype=float)
     eta_no = np.full_like(x_nm, np.nan, dtype=float)
@@ -2130,14 +2167,39 @@ def plot_publication_compare_panels(
     eta_no[mask_Au] = float(E_mix_no) - E1_eq - phi2_no[mask_Au]
     eta_no[mask_Pd] = float(E_mix_no) - E2_eq - phi2_no[mask_Pd]
 
-    i1 = np.asarray(prof_edl["i1"], dtype=float)
-    i2 = np.asarray(prof_edl["i2"], dtype=float)
-    (i1_plot, i2_plot), i_label, _ = _scaled_current_display("local_current_density", i1, i2)
+    phi_tilde_edl = np.asarray(prof_edl["phi_tilde"], dtype=float)
+    z_R1 = float(params["z_R1"])
+    z_O2 = float(params["z_O2"])
+    c_R1_norm = np.asarray(safe_exp(-z_R1 * phi_tilde_edl), dtype=float)
+    c_O2_norm = np.asarray(safe_exp(-z_O2 * phi_tilde_edl), dtype=float)
+
+    i1_edl = np.asarray(prof_edl["i1"], dtype=float)
+    i2_edl = np.asarray(prof_edl["i2"], dtype=float)
+    i1_no = np.asarray(prof_no["i1"], dtype=float)
+    i2_no = np.asarray(prof_no["i2"], dtype=float)
+    mask_Au_no = np.asarray(prof_no["mask_Au"], dtype=bool)
+    mask_Pd_no = np.asarray(prof_no["mask_Pd"], dtype=bool)
+
+    i1_edl_segment = np.full_like(i1_edl, np.nan, dtype=float)
+    i2_edl_segment = np.full_like(i2_edl, np.nan, dtype=float)
+    i1_no_segment = np.full_like(i1_no, np.nan, dtype=float)
+    i2_no_segment = np.full_like(i2_no, np.nan, dtype=float)
+    i1_edl_segment[mask_Au] = i1_edl[mask_Au]
+    i2_edl_segment[mask_Pd] = i2_edl[mask_Pd]
+    i1_no_segment[mask_Au_no] = i1_no[mask_Au_no]
+    i2_no_segment[mask_Pd_no] = i2_no[mask_Pd_no]
+    (i1_edl_plot, i1_no_plot, i2_edl_plot, i2_no_plot), i_label, _ = _scaled_current_display(
+        "local_current_density",
+        i1_edl_segment,
+        i1_no_segment,
+        i2_edl_segment,
+        i2_no_segment,
+    )
     reactive_area_m2 = (float(params["L_Au"]) + float(params["L_Pd_len"])) * float(params.get("out_of_plane_width", 1.0))
     i_mix_avg_vals = np.array(
         [
-            np.nan if i_mix_abs_edl is None else float(i_mix_abs_edl) / reactive_area_m2,
             np.nan if i_mix_abs_no is None else float(i_mix_abs_no) / reactive_area_m2,
+            np.nan if i_mix_abs_edl is None else float(i_mix_abs_edl) / reactive_area_m2,
         ],
         dtype=float,
     )
@@ -2146,24 +2208,25 @@ def plot_publication_compare_panels(
     L_Au_nm = float(derived_edl["L_Au_tilde"]) * float(derived_edl["lambda_D"]) * 1e9
     L_C_nm = float(derived_edl["L_C_tilde"]) * float(derived_edl["lambda_D"]) * 1e9
 
-    fig = plt.figure(figsize=(10.6, 6.5))
-    gs = fig.add_gridspec(2, 2, width_ratios=[1.0, 1.0], wspace=0.34, hspace=0.46)
-    gs_a = gs[0, 0].subgridspec(1, 3, width_ratios=[1.0, 0.82, 1.0], wspace=0.0)
+    fig = plt.figure(figsize=(12.0, 6.8))
+    gs = fig.add_gridspec(2, 11, height_ratios=[1.0, 1.0], wspace=0.25, hspace=0.62)
+    gs_a = gs[0, 2:5].subgridspec(1, 3, width_ratios=[1.0, 0.82, 1.0], wspace=0.0)
 
     ax_a1 = fig.add_subplot(gs_a[0, 0])
     ax_a2 = fig.add_subplot(gs_a[0, 2])
-    ax_b = fig.add_subplot(gs[0, 1])
-    ax_c = fig.add_subplot(gs[1, 0])
-    ax_d = fig.add_subplot(gs[1, 1])
+    ax_b = fig.add_subplot(gs[0, 6:9])
+    ax_c = fig.add_subplot(gs[1, 0:3])
+    ax_d = fig.add_subplot(gs[1, 4:7])
+    ax_e = fig.add_subplot(gs[1, 8:11])
 
-    labels = [LEGEND_WITH_EDL, LEGEND_WITHOUT_EDL]
+    labels = [LEGEND_WITHOUT_EDL, LEGEND_WITH_EDL]
     categories = np.array([0.0, 1.0], dtype=float)
     width = 0.56
-    bar_colors = [NATURE_COLORS["blue"], NATURE_COLORS["orange"]]
+    bar_colors = [NATURE_COLORS["orange"], NATURE_COLORS["blue"]]
 
     ax_a1.bar(
         categories,
-        [float(E_mix_edl), float(E_mix_no)],
+        [float(E_mix_no), float(E_mix_edl)],
         width=width,
         color=bar_colors,
         edgecolor=NATURE_COLORS["black"],
@@ -2174,7 +2237,7 @@ def plot_publication_compare_panels(
     ax_a1.set_xticks(categories)
     ax_a1.set_xticklabels(labels, rotation=45, ha="right", rotation_mode="anchor")
     ax_a1.set_xlim(-0.6, 1.6)
-    ax_a1.yaxis.labelpad = 5.0
+    ax_a1.yaxis.labelpad = 6.0
     ax_a1.tick_params(axis="x", labelsize=9.5)
 
     ax_a2.bar(
@@ -2195,8 +2258,7 @@ def plot_publication_compare_panels(
     ax_a2.yaxis.tick_left()
     ax_a2.tick_params(axis="y", labelleft=True, left=True, labelright=False, right=False, pad=3.5)
     ax_a2.tick_params(axis="x", labelsize=9.5)
-    ax_a2.yaxis.labelpad = 5.0
-    ax_a2.yaxis.set_label_coords(-0.21, 0.5)
+    ax_a2.yaxis.labelpad = 6.0
 
     ax_b.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
     ax_b.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
@@ -2205,22 +2267,33 @@ def plot_publication_compare_panels(
     ax_b.yaxis.labelpad = 5.0
     ax_b.legend(loc="upper right", bbox_to_anchor=(0.98, 0.90), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
 
-    ax_c.plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    ax_c.plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    ax_c.plot(x_nm, c_R1_norm, label=r"$c_{\mathrm{R1}}/c_{\mathrm{bulk}}$ (with EDL)", color=NATURE_COLORS["green"])
+    ax_c.plot(x_nm, c_O2_norm, label=r"$c_{\mathrm{O2}}/c_{\mathrm{bulk}}$ (with EDL)", color=NATURE_COLORS["gold"])
+    ax_c.plot(x_nm, np.ones_like(x_nm), label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"], linestyle="--")
     _add_vertical_boundaries(ax_c, L_Au_nm, L_C_nm)
-    _style_publication_axes(ax_c, "x [nm]", _plot_axis_label("overpotential"), "Local overpotential")
+    _style_publication_axes(ax_c, "x [nm]", r"$c_i/c_{\mathrm{bulk}}$ [-]", "Local reactant concentration")
     ax_c.yaxis.labelpad = 5.0
-    ax_c.legend(loc="center right", bbox_to_anchor=(0.98, 0.50), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
+    ax_c.legend(loc="lower right", bbox_to_anchor=(0.98, 0.30), borderaxespad=0.15, fontsize=9.3, handlelength=2.0)
 
-    ax_d.plot(x_nm, i1_plot, label="i1 (Au)", color=NATURE_COLORS["green"])
-    ax_d.plot(x_nm, i2_plot, label="i2 (Pd)", color=NATURE_COLORS["gold"])
+    ax_d.plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
+    ax_d.plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
     _add_vertical_boundaries(ax_d, L_Au_nm, L_C_nm)
-    _style_publication_axes(ax_d, "x [nm]", i_label, "Local current density")
+    _style_publication_axes(ax_d, "x [nm]", _plot_axis_label("overpotential"), "Local overpotential")
     ax_d.yaxis.labelpad = 5.0
-    ax_d.legend(loc="upper right", bbox_to_anchor=(0.98, 0.98), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
-    fig.subplots_adjust(left=0.08, right=0.98, bottom=0.12, top=0.93, wspace=0.34, hspace=0.46)
+    ax_d.legend(loc="center right", bbox_to_anchor=(0.98, 0.50), borderaxespad=0.15, fontsize=10.0, handlelength=2.0)
 
-    panel_specs = [("a", ax_a1), ("b", ax_b), ("c", ax_c), ("d", ax_d)]
+    ax_e.plot(x_nm, i1_edl_plot, label=r"$i_1$ (Au), with EDL", color=NATURE_COLORS["green"])
+    ax_e.plot(x_nm, i1_no_plot, label=r"$i_1$ (Au), without EDL", color=NATURE_COLORS["green"], linestyle="--")
+    ax_e.plot(x_nm, i2_edl_plot, label=r"$i_2$ (Pd), with EDL", color=NATURE_COLORS["gold"])
+    ax_e.plot(x_nm, i2_no_plot, label=r"$i_2$ (Pd), without EDL", color=NATURE_COLORS["gold"], linestyle="--")
+    _add_vertical_boundaries(ax_e, L_Au_nm, L_C_nm)
+    current_label_short = i_label.replace("Local current density, ", "")
+    _style_publication_axes(ax_e, "x [nm]", current_label_short, "Local current density")
+    ax_e.yaxis.labelpad = 5.0
+    ax_e.legend(loc="upper right", bbox_to_anchor=(0.98, 0.98), borderaxespad=0.15, fontsize=8.4, handlelength=1.8)
+    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.12, top=0.93, wspace=0.25, hspace=0.62)
+
+    panel_specs = [("a", ax_a1), ("b", ax_b), ("c", ax_c), ("d", ax_d), ("e", ax_e)]
     for label, ax in panel_specs:
         pos = ax.get_position()
         fig.text(
@@ -2234,14 +2307,21 @@ def plot_publication_compare_panels(
             color=NATURE_COLORS["black"],
         )
 
-    png_path = out_base.with_suffix(".png")
-    pdf_path = out_base.with_suffix(".pdf")
-    svg_path = out_base.with_suffix(".svg")
-    fig.savefig(png_path, dpi=600)
-    fig.savefig(pdf_path)
-    fig.savefig(svg_path)
+    paths: Dict[str, str] = {}
+    if "png" in export_formats:
+        png_path = out_base.with_suffix(".png")
+        fig.savefig(png_path, dpi=600)
+        paths["png"] = str(png_path)
+    if "pdf" in export_formats:
+        pdf_path = out_base.with_suffix(".pdf")
+        fig.savefig(pdf_path)
+        paths["pdf"] = str(pdf_path)
+    if "svg" in export_formats:
+        svg_path = out_base.with_suffix(".svg")
+        fig.savefig(svg_path)
+        paths["svg"] = str(svg_path)
     plt.close(fig)
-    return {"png": str(png_path), "pdf": str(pdf_path), "svg": str(svg_path)}
+    return paths
 
 
 def _safe_ratio_pct(numerator: float, denominator: float) -> Tuple[float, float]:
@@ -2747,8 +2827,8 @@ def _plot_heatmap_single(
     cbar_use_max_locator: bool = True,
     baseline_point: Optional[Tuple[float, float]] = None,
 ) -> None:
-    fig = plt.figure(figsize=(4.35, 3.25))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 0.05], wspace=0.18)
+    fig = plt.figure(figsize=(5.8, 4.65))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 0.065], wspace=0.20)
     ax = fig.add_subplot(gs[0, 0])
     cax = fig.add_subplot(gs[0, 1])
     X, Y = np.meshgrid(x_edges, y_edges)
@@ -2783,6 +2863,7 @@ def _plot_heatmap_single(
 
     mesh = ax.pcolormesh(X, Y, Z, **mesh_kwargs)
     _style_axes(ax, xlabel, ylabel, title, xscale=xscale, yscale=yscale)
+    _style_heatmap_axes(ax)
     if xscale is None:
         ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
     if yscale is None:
@@ -2793,17 +2874,17 @@ def _plot_heatmap_single(
             [bx],
             [by],
             marker="*",
-            markersize=9.0,
+            markersize=HEATMAP_BASELINE_MARKER_SIZE,
             markerfacecolor="white",
             markeredgecolor=NATURE_COLORS["black"],
-            markeredgewidth=0.9,
+            markeredgewidth=1.9,
             color=NATURE_COLORS["black"],
             linestyle="None",
             zorder=6,
         )
     cbar = fig.colorbar(mesh, cax=cax)
-    _style_colorbar(cbar, cbarlab, ticks=cbar_ticks, use_max_locator=cbar_use_max_locator)
-    fig.subplots_adjust(left=0.12, right=0.95, bottom=0.17, top=0.90)
+    _style_heatmap_colorbar(cbar, cbarlab, ticks=cbar_ticks, use_max_locator=cbar_use_max_locator)
+    fig.subplots_adjust(left=0.16, right=0.94, bottom=0.18, top=0.90)
     fig.savefig(out_path)
     plt.close(fig)
 
@@ -2820,30 +2901,46 @@ def _plot_heatmap_edl_comparison(
     out_path: Path,
     xscale: Optional[str] = None,
     yscale: Optional[str] = None,
+    baseline_point: Optional[Tuple[float, float]] = None,
 ) -> None:
-    fig = plt.figure(figsize=(8.8, 3.55))
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 0.045], wspace=0.18)
+    fig = plt.figure(figsize=(11.0, 4.8))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 0.055], wspace=0.22)
     axes = [fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])]
     cax = fig.add_subplot(gs[0, 2])
     X, Y = np.meshgrid(x_edges, y_edges)
     vmin, vmax = _heatmap_vmin_vmax(Z_with, Z_no)
     mesh = None
-    for ax, panel_title, Z in zip(
+    for idx, (ax, panel_title, Z) in enumerate(zip(
         axes,
         [LEGEND_WITH_EDL, LEGEND_WITHOUT_EDL],
         [Z_with, Z_no],
-    ):
+    )):
         mesh = ax.pcolormesh(X, Y, Z, shading="auto", cmap="viridis", vmin=vmin, vmax=vmax)
-        _style_axes(ax, xlabel, ylabel, panel_title, xscale=xscale, yscale=yscale)
+        _style_axes(ax, xlabel, ylabel if idx == 0 else "", panel_title, xscale=xscale, yscale=yscale)
+        _style_heatmap_axes(ax)
         if xscale is None:
             ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
         if yscale is None:
             ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
-    fig.suptitle(title, x=0.02, y=1.03, ha="left", fontsize=9, fontweight="semibold")
+        if baseline_point is not None:
+            bx, by = baseline_point
+            ax.plot(
+                [bx],
+                [by],
+                marker="*",
+                markersize=HEATMAP_BASELINE_MARKER_SIZE,
+                markerfacecolor="white",
+                markeredgecolor=NATURE_COLORS["black"],
+                markeredgewidth=1.9,
+                color=NATURE_COLORS["black"],
+                linestyle="None",
+                zorder=6,
+            )
+    fig.suptitle(title, x=0.02, y=1.02, ha="left", fontsize=14.0, fontweight="semibold")
     if mesh is not None:
         cbar = fig.colorbar(mesh, cax=cax)
-        _style_colorbar(cbar, cbarlab)
-    fig.subplots_adjust(left=0.09, right=0.96, bottom=0.18, top=0.80)
+        _style_heatmap_colorbar(cbar, cbarlab)
+    fig.subplots_adjust(left=0.10, right=0.95, bottom=0.18, top=0.82)
     fig.savefig(out_path)
     plt.close(fig)
 
@@ -2867,8 +2964,8 @@ def _plot_heatmap_slice_panels(
     n_panels = len(Z_panels)
     if n_panels == 0:
         return
-    fig = plt.figure(figsize=(3.05 * n_panels + 0.9, 3.4))
-    gs = fig.add_gridspec(1, n_panels + 1, width_ratios=[1.0] * n_panels + [0.05], wspace=0.20)
+    fig = plt.figure(figsize=(4.0 * n_panels + 1.1, 4.7))
+    gs = fig.add_gridspec(1, n_panels + 1, width_ratios=[1.0] * n_panels + [0.06], wspace=0.24)
     axes = [fig.add_subplot(gs[0, i]) for i in range(n_panels)]
     cax = fig.add_subplot(gs[0, n_panels])
     X, Y = np.meshgrid(x_edges, y_edges)
@@ -2900,15 +2997,16 @@ def _plot_heatmap_slice_panels(
     for idx, (ax, Z, panel_title) in enumerate(zip(axes, Z_panels, panel_titles)):
         mesh = ax.pcolormesh(X, Y, Z, **mesh_kwargs)
         _style_axes(ax, xlabel, ylabel if idx == 0 else "", panel_title, xscale=xscale, yscale=yscale)
+        _style_heatmap_axes(ax)
         if xscale is None:
             ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
         if yscale is None:
             ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
     if mesh is not None:
         cbar = fig.colorbar(mesh, cax=cax)
-        _style_colorbar(cbar, cbarlab)
-    fig.suptitle(title, x=0.02, y=1.02, ha="left", fontsize=9, fontweight="semibold")
-    fig.subplots_adjust(left=0.08, right=0.96, bottom=0.18, top=0.82)
+        _style_heatmap_colorbar(cbar, cbarlab)
+    fig.suptitle(title, x=0.02, y=1.02, ha="left", fontsize=14.0, fontweight="semibold")
+    fig.subplots_adjust(left=0.09, right=0.95, bottom=0.18, top=0.82)
     fig.savefig(out_path)
     plt.close(fig)
 
@@ -3378,6 +3476,7 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[
 
     x_edges = make_edges(C_vals_M, "log")
     y_edges = make_edges(delta_vals, "linear")
+    baseline_ctot_delta = (concentration_mol_per_m3_to_M(float(base_params["C_tot"])), delta0)
     (imix_abs_with_plot, imix_abs_no_plot), imix_abs_label, _ = _scaled_current_display("i_mix_abs", imix_abs_with, imix_abs_no)
     _plot_heatmap_edl_comparison(
         Emix_with,
@@ -3390,6 +3489,7 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[
         title=r"EDL comparison: $E_{\mathrm{mix}}(C_{\mathrm{tot}}, \Delta \mathrm{pzc})$",
         out_path=fig_dir / "heatmap_compare_Ctot_vs_deltapzc_Emix_FULL.png",
         xscale="log",
+        baseline_point=baseline_ctot_delta,
     )
     _plot_heatmap_edl_comparison(
         imix_abs_with_plot,
@@ -3402,6 +3502,7 @@ def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[
         title=r"EDL comparison: $i_{\mathrm{mix}}(C_{\mathrm{tot}}, \Delta \mathrm{pzc})$",
         out_path=fig_dir / "heatmap_compare_Ctot_vs_deltapzc_imix_abs_FULL.png",
         xscale="log",
+        baseline_point=baseline_ctot_delta,
     )
     _plot_heatmap_single(
         Emix_with - Emix_no,

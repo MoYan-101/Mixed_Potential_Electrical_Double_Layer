@@ -66,7 +66,7 @@ def main() -> None:
     parser.add_argument(
         "--output-stem",
         type=str,
-        default="publication_compare_panels_latest",
+        default="publication_compare_panels_compactA_test12",
         help="Base filename stem for the exported figure.",
     )
     args = parser.parse_args()
@@ -93,6 +93,7 @@ def main() -> None:
         out_base=out_base,
         i_mix_abs_edl=float(res_edl["i_mix_abs_A"]),
         i_mix_abs_no=float(res_no["i_mix_abs_A"]),
+        export_formats=("png",),
     )
 
     print(f"Parameter source: {source_label}")
