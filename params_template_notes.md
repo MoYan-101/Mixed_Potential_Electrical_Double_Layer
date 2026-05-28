@@ -23,7 +23,7 @@ Each key below matches `params_template.json`. Units are the same as in the code
 - `L_Au`: Length of Au segment (m).
 - `L_gap`: Length of gap/central segment (m).
 - `ofat_pH_min`, `ofat_pH_max`: Default pH scan bounds. The shipped defaults are `0` to `14`.
-- `ofat_C_tot_min`, `ofat_C_tot_max`: Internal lower/upper bounds for the default OFAT concentration scan (`mol/m^3`). The shipped defaults correspond to `0.1 mM` and `10 M`.
+- `ofat_C_tot_min`, `ofat_C_tot_max`: Internal lower/upper bounds for the default OFAT concentration scan (`mol/m^3`). The shipped defaults correspond to `0.1 mM` and `1 M`.
 - `heatmap_C_tot_min`, `heatmap_C_tot_max`: Internal lower/upper bounds for the default `C_tot` heatmap range (`mol/m^3`). The shipped defaults also correspond to `0.1 mM` and `10 M`.
 - `heatmap_L_min`, `heatmap_L_max`: Internal lower/upper bounds for the
   default `L_Au × L_Pd` heatmap range. The shipped defaults are `2e-9` to
@@ -31,6 +31,9 @@ Each key below matches `params_template.json`. Units are the same as in the code
 - `heatmap_Cdl_C_min`, `heatmap_Cdl_C_max`: Internal lower/upper bounds for
   the `Cdl_Au × Cdl_Pd` heatmap range. The shipped defaults are `0.05` to
   `1.0 F/m^2`, corresponding to `5` to `100 uF/cm^2`.
+- `heatmap_pzc_span`: Half-width for the baseline-centered `pzc_Au ×
+  pzc_Pd` heatmap range (`V`). The shipped default is `0.3 V`, so each axis
+  is swept over `pzc0 ± 0.3 V`.
 - `ofat_L_gap_min`, `ofat_L_gap_max`: Default OFAT scan bounds for `L_gap`.
   The shipped defaults are `0` to `1000e-9 m` (0 to 1000 nm).
 - `L_Pd_len`: Length of Pd segment (m).

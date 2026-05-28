@@ -69,6 +69,23 @@ def main() -> None:
         default="publication_compare_panels_compactA_test12",
         help="Base filename stem for the exported figure.",
     )
+    parser.add_argument(
+        "--concentration-yscale",
+        choices=("linear", "log"),
+        default="linear",
+        help="Y-axis scale for panel c concentration profiles.",
+    )
+    parser.add_argument(
+        "--font-scale",
+        type=float,
+        default=1.0,
+        help="Multiplier for publication panel font sizes.",
+    )
+    parser.add_argument(
+        "--transparent",
+        action="store_true",
+        help="Export the figure with a transparent background.",
+    )
     args = parser.parse_args()
 
     params_path = _resolve_params_path(args.params_json)
@@ -94,6 +111,9 @@ def main() -> None:
         i_mix_abs_edl=float(res_edl["i_mix_abs_A"]),
         i_mix_abs_no=float(res_no["i_mix_abs_A"]),
         export_formats=("png",),
+        concentration_yscale=args.concentration_yscale,
+        font_scale=args.font_scale,
+        transparent_background=args.transparent,
     )
 
     print(f"Parameter source: {source_label}")
