@@ -59,7 +59,7 @@
   "ofat_n": 15,
   "ofat_pH_max": 14.0,
   "ofat_pH_min": 0.0,
-  "out_of_plane_width": 1.0,
+  "out_of_plane_width": 0.01,
   "pH": 7.0,
   "pH_ref": 7.0,
   "pzc_Au": 0.93,

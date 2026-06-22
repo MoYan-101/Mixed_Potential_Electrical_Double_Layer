@@ -47,7 +47,7 @@ Last updated: 2026-06-22.
 | `L_gap` | 1e-08 | m | 10.0 nm |
 | `L_Pd_len` | 3.7e-08 | m | 37.0 nm |
 | `L_total` | derived | m | 58.0 nm |
-| `out_of_plane_width` | 1.0 | m | 1.0 m |
+| `out_of_plane_width` | 0.01 | m | 1.0 cm |
 | `L_Au_tilde` | derived | dimensionless | 3.616972016284198 |
 | `L_C_tilde` | derived | dimensionless | 6.905128394724378 |
 | `L_tilde` | derived | dimensionless | 19.071306994953044 |
@@ -142,6 +142,7 @@ The figures and CSV files under [results/20260528_111255](results/20260528_11125
 - `C_tot = 10 mM`
 - `lambda_D = 3.041 nm` auto-calculated
 - `L_Au / L_gap / L_Pd = 11 / 10 / 37 nm`
+- `out_of_plane_width = 1 cm`
 - `Cdl_Au / Cdl_support / Cdl_Pd = 20 / 10 / 40 uF/cm^2`
 - `pzc_Au / pzc_support / pzc_Pd = 0.93 / 0.50 / 0.78 V`
 - `E1_eq / E2_eq = 0.10 / 0.834 V`
