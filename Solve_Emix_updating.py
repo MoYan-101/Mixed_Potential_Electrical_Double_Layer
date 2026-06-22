@@ -798,14 +798,18 @@ def validate_params(params: Dict[str, Any]) -> None:
         raise ValueError("R, F, and T must be positive")
     if require_finite("epsilon0") <= 0 or require_finite("epsilon_r") <= 0:
         raise ValueError("epsilon0 and epsilon_r must be positive")
-    if params.get("epsilon_s") is not None and float(params["epsilon_s"]) <= 0:
-        raise ValueError("epsilon_s must be positive when provided")
+    if params.get("epsilon_s") is not None:
+        epsilon_s = float(params["epsilon_s"])
+        if not math.isfinite(epsilon_s) or epsilon_s <= 0:
+            raise ValueError("epsilon_s must be finite and positive when provided")
 
     if params.get("lambda_D") is None:
         if require_finite("C_tot") <= 0:
             raise ValueError("C_tot must be positive when lambda_D is auto-calculated")
-    elif float(params["lambda_D"]) <= 0:
-        raise ValueError("lambda_D must be positive when provided")
+    else:
+        lambda_D = float(params["lambda_D"])
+        if not math.isfinite(lambda_D) or lambda_D <= 0:
+            raise ValueError("lambda_D must be finite and positive when provided")
 
     for name in ("it0_1", "it0_2"):
         if require_finite(name) <= 0:
@@ -818,8 +822,10 @@ def validate_params(params: Dict[str, Any]) -> None:
         if require_finite(name) < 0:
             raise ValueError(f"{name} must be non-negative")
     for name in ("g_Au", "g_C", "g_Pd"):
-        if params.get(name) is not None and float(params[name]) < 0:
-            raise ValueError(f"{name} must be non-negative when provided")
+        if params.get(name) is not None:
+            g_val = float(params[name])
+            if not math.isfinite(g_val) or g_val < 0:
+                raise ValueError(f"{name} must be finite and non-negative when provided")
 
     for name in ("alpha1", "alpha2"):
         alpha = require_finite(name)
