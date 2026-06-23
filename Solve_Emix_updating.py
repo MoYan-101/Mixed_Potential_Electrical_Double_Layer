@@ -61,6 +61,12 @@ NATURE_COLORS = {
     "orange": "#C06C52",
     "green": "#3B7A57",
     "gold": "#C9A227",
+    "with_edl": "#F26B38",
+    "with_edl_alt": "#D83A2E",
+    "with_edl_gold": "#F2B134",
+    "without_edl": "#12355B",
+    "without_edl_alt": "#2D5A7B",
+    "without_edl_deep": "#0B1F3A",
     "gray": "#6B7280",
     "black": "#111827",
 }
@@ -1755,14 +1761,14 @@ def plot_baseline_profiles(case_full: Dict[str, Any], params: Dict[str, Any], ou
     L_C_nm = case_full["L_C_tilde"] * case_full["lambda_D"] * 1e9
 
     fig_phi, ax_phi = _new_figure()
-    ax_phi.plot(x_nm, phi2, color=NATURE_COLORS["blue"])
+    ax_phi.plot(x_nm, phi2, color=NATURE_COLORS["with_edl"])
     _add_vertical_boundaries(ax_phi, L_Au_nm, L_C_nm)
     _style_axes(ax_phi, "x [nm]", _plot_axis_label("phi2"), "Reaction-plane potential along surface")
     _finalize_figure(fig_phi, fig_dir / "baseline_phi2.png")
 
     fig_i, ax_i = _new_figure()
-    ax_i.plot(x_nm, i1_plot, label="i1 (Au)", color=NATURE_COLORS["blue"])
-    ax_i.plot(x_nm, i2_plot, label="i2 (Pd)", color=NATURE_COLORS["orange"])
+    ax_i.plot(x_nm, i1_plot, label="i1 (Au)", color=NATURE_COLORS["with_edl"])
+    ax_i.plot(x_nm, i2_plot, label="i2 (Pd)", color=NATURE_COLORS["with_edl_alt"])
     _add_vertical_boundaries(ax_i, L_Au_nm, L_C_nm)
     _style_axes(ax_i, "x [nm]", i_label, "Local current density profiles")
     ax_i.legend(loc="best")
@@ -1806,7 +1812,7 @@ def plot_baseline_profiles_html(
             y=phi2,
             mode="lines",
             name="phi2",
-            line=dict(color=NATURE_COLORS["blue"], width=2.5),
+            line=dict(color=NATURE_COLORS["with_edl"], width=2.5),
             text=hover_text,
             hovertemplate="x=%{x:.6g} nm<br>phi2=%{y:.6g} V<br>%{text}<extra></extra>",
         )
@@ -1822,7 +1828,7 @@ def plot_baseline_profiles_html(
             y=i1,
             mode="lines",
             name="i1 (Au)",
-            line=dict(color=NATURE_COLORS["blue"], width=2.4),
+            line=dict(color=NATURE_COLORS["with_edl"], width=2.4),
             text=hover_text,
             hovertemplate="x=%{x:.6g} nm<br>%{fullData.name}=%{y:.6g} A/m^2<br>%{text}<extra></extra>",
         )
@@ -1833,7 +1839,7 @@ def plot_baseline_profiles_html(
             y=i2,
             mode="lines",
             name="i2 (Pd)",
-            line=dict(color=NATURE_COLORS["orange"], width=2.4),
+            line=dict(color=NATURE_COLORS["with_edl_alt"], width=2.4),
             text=hover_text,
             hovertemplate="x=%{x:.6g} nm<br>%{fullData.name}=%{y:.6g} A/m^2<br>%{text}<extra></extra>",
         )
@@ -2057,11 +2063,11 @@ def plot_compare_polarization_curve(
         curve_no["I_total_avg_A_per_m2"],
     )
     fig, ax = _new_figure(NATURE_WIDE_FIGSIZE)
-    ax.plot(curve_edl["E"], I_edl_plot, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    ax.plot(curve_no["E"], I_no_plot, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    ax.plot(curve_edl["E"], I_edl_plot, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    ax.plot(curve_no["E"], I_no_plot, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     ax.axhline(0.0, color=NATURE_COLORS["black"], linewidth=0.9)
-    ax.axvline(E_mix_edl, linestyle=(0, (3, 2)), linewidth=1.0, color=NATURE_COLORS["blue"], alpha=0.9)
-    ax.axvline(E_mix_no, linestyle=(0, (3, 2)), linewidth=1.0, color=NATURE_COLORS["orange"], alpha=0.9)
+    ax.axvline(E_mix_edl, linestyle=(0, (3, 2)), linewidth=1.0, color=NATURE_COLORS["with_edl"], alpha=0.9)
+    ax.axvline(E_mix_no, linestyle=(0, (3, 2)), linewidth=1.0, color=NATURE_COLORS["without_edl"], alpha=0.9)
     _style_axes(ax, "E [V]", y_label, title)
     ax.legend(loc="best")
     _finalize_figure(fig, out_path)
@@ -2078,7 +2084,7 @@ def plot_compare_emix_imix(
     (i_mix_plot,), i_label, _ = _scaled_current_display("i_mix_avg", np.array([i_mix_avg_edl, i_mix_avg_no], dtype=float))
     fig, axes = plt.subplots(1, 2, figsize=NATURE_DOUBLE_FIGSIZE)
     labels = [LEGEND_WITH_EDL, LEGEND_WITHOUT_EDL]
-    colors = [NATURE_COLORS["blue"], NATURE_COLORS["orange"]]
+    colors = [NATURE_COLORS["with_edl"], NATURE_COLORS["without_edl"]]
     axes[0].bar(labels, [E_mix_edl, E_mix_no], color=colors, edgecolor=NATURE_COLORS["black"])
     axes[1].bar(labels, i_mix_plot, color=colors, edgecolor=NATURE_COLORS["black"])
     _style_axes(axes[0], "", _plot_axis_label("E_mix"), r"$E_{\mathrm{mix}}$")
@@ -2107,8 +2113,8 @@ def plot_compare_phi2(
     L_C_nm = float(derived_edl["L_C_tilde"]) * float(derived_edl["lambda_D"]) * 1e9
 
     fig, ax = _new_figure()
-    ax.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    ax.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    ax.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    ax.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     _add_vertical_boundaries(ax, L_Au_nm, L_C_nm)
     _style_axes(ax, "x [nm]", _plot_axis_label("phi2"), title)
     ax.legend(loc="best")
@@ -2152,19 +2158,19 @@ def plot_compare_potentials_overpotential(
 
     fig, axes = plt.subplots(1, 3, figsize=(10.3, 2.9))
 
-    axes[0].plot(x_nm, metal_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    axes[0].plot(x_nm, metal_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    axes[0].plot(x_nm, metal_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    axes[0].plot(x_nm, metal_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     _add_vertical_boundaries(axes[0], L_Au_nm, L_C_nm)
     _style_axes(axes[0], "x [nm]", _plot_axis_label("metal_potential"), "Metal potential")
     axes[0].legend(loc="best")
 
-    axes[1].plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    axes[1].plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    axes[1].plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    axes[1].plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     _add_vertical_boundaries(axes[1], L_Au_nm, L_C_nm)
     _style_axes(axes[1], "x [nm]", _plot_axis_label("phi2"), "Reaction-plane potential")
 
-    axes[2].plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    axes[2].plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    axes[2].plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    axes[2].plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     _add_vertical_boundaries(axes[2], L_Au_nm, L_C_nm)
     _style_axes(axes[2], "x [nm]", _plot_axis_label("overpotential"), "Local overpotential")
 
@@ -2319,7 +2325,7 @@ def plot_publication_compare_panels(
     labels = [LEGEND_WITHOUT_EDL, LEGEND_WITH_EDL]
     categories = np.array([0.0, 1.0], dtype=float)
     width = 0.56
-    bar_colors = [NATURE_COLORS["orange"], NATURE_COLORS["blue"]]
+    bar_colors = [NATURE_COLORS["without_edl"], NATURE_COLORS["with_edl"]]
 
     ax_a1.bar(
         categories,
@@ -2357,16 +2363,16 @@ def plot_publication_compare_panels(
     ax_a2.tick_params(axis="x", labelsize=9.5 * font_scale)
     ax_a2.yaxis.labelpad = 6.0
 
-    ax_b.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    ax_b.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    ax_b.plot(x_nm, phi2_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    ax_b.plot(x_nm, phi2_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     _add_vertical_boundaries(ax_b, L_Au_nm, L_C_nm)
     _style_publication_axes(ax_b, "x [nm]", r"$\phi_{\mathrm{RP}}(x)$ [V]", "Reaction-plane potential", font_scale=font_scale)
     ax_b.yaxis.labelpad = 5.0
     ax_b.legend(loc="upper right", bbox_to_anchor=(0.98, 0.76), borderaxespad=0.15, fontsize=10.0 * font_scale, handlelength=2.0)
 
-    ax_c.plot(x_nm, c_R1_norm, label=r"$c_{\mathrm{R1}}/c_{\mathrm{bulk}}$ (with EDL)", color=NATURE_COLORS["green"])
-    ax_c.plot(x_nm, c_O2_norm, label=r"$c_{\mathrm{O2}}/c_{\mathrm{bulk}}$ (with EDL)", color=NATURE_COLORS["gold"])
-    ax_c.plot(x_nm, np.ones_like(x_nm), label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"], linestyle="--")
+    ax_c.plot(x_nm, c_R1_norm, label=r"$c_{\mathrm{R1}}/c_{\mathrm{bulk}}$ (with EDL)", color=NATURE_COLORS["with_edl"])
+    ax_c.plot(x_nm, c_O2_norm, label=r"$c_{\mathrm{O2}}/c_{\mathrm{bulk}}$ (with EDL)", color=NATURE_COLORS["with_edl_gold"])
+    ax_c.plot(x_nm, np.ones_like(x_nm), label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"], linestyle="--")
     _add_vertical_boundaries(ax_c, L_Au_nm, L_C_nm)
     _style_publication_axes(ax_c, "x [nm]", r"$c_i/c_{\mathrm{bulk}}$ [-]", "Local reactant concentration", font_scale=font_scale)
     if concentration_yscale == "log":
@@ -2390,17 +2396,17 @@ def plot_publication_compare_panels(
     else:
         ax_c.legend(loc="lower right", bbox_to_anchor=(0.98, 0.30), borderaxespad=0.15, fontsize=9.3 * font_scale, handlelength=2.0)
 
-    ax_d.plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"])
-    ax_d.plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"])
+    ax_d.plot(x_nm, eta_edl, label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"])
+    ax_d.plot(x_nm, eta_no, label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"])
     _add_vertical_boundaries(ax_d, L_Au_nm, L_C_nm)
     _style_publication_axes(ax_d, "x [nm]", _plot_axis_label("overpotential"), "Local overpotential", font_scale=font_scale)
     ax_d.yaxis.labelpad = 5.0
     ax_d.legend(loc="center right", bbox_to_anchor=(0.98, 0.50), borderaxespad=0.15, fontsize=10.0 * font_scale, handlelength=2.0)
 
-    ax_e.plot(x_nm, i1_edl_plot, label=r"$i_1$ (Au), with EDL", color=NATURE_COLORS["green"])
-    ax_e.plot(x_nm, i1_no_plot, label=r"$i_1$ (Au), without EDL", color=NATURE_COLORS["green"], linestyle="--")
-    ax_e.plot(x_nm, i2_edl_plot, label=r"$i_2$ (Pd), with EDL", color=NATURE_COLORS["gold"])
-    ax_e.plot(x_nm, i2_no_plot, label=r"$i_2$ (Pd), without EDL", color=NATURE_COLORS["gold"], linestyle="--")
+    ax_e.plot(x_nm, i1_edl_plot, label=r"$i_1$ (Au), with EDL", color=NATURE_COLORS["with_edl"])
+    ax_e.plot(x_nm, i1_no_plot, label=r"$i_1$ (Au), without EDL", color=NATURE_COLORS["without_edl"], linestyle="--")
+    ax_e.plot(x_nm, i2_edl_plot, label=r"$i_2$ (Pd), with EDL", color=NATURE_COLORS["with_edl_alt"])
+    ax_e.plot(x_nm, i2_no_plot, label=r"$i_2$ (Pd), without EDL", color=NATURE_COLORS["without_edl_alt"], linestyle="--")
     _add_vertical_boundaries(ax_e, L_Au_nm, L_C_nm)
     current_label_short = i_label.replace("Local current density, ", "")
     _style_publication_axes(ax_e, "x [nm]", current_label_short, "Local current density", font_scale=font_scale)
@@ -2860,8 +2866,8 @@ def plot_ofat_edl_comparison_html(
 
     fig = go.Figure()
     for label, y_values, color in [
-        (LEGEND_WITH_EDL, y_with, NATURE_COLORS["blue"]),
-        (LEGEND_WITHOUT_EDL, y_no, NATURE_COLORS["orange"]),
+        (LEGEND_WITH_EDL, y_with, NATURE_COLORS["with_edl"]),
+        (LEGEND_WITHOUT_EDL, y_no, NATURE_COLORS["without_edl"]),
     ]:
         fig.add_trace(
             go.Scatter(
@@ -2904,8 +2910,8 @@ def _plot_ofat_metric_on_axis(
     x_plot = x_vals[mask]
     y_with = y_with[mask]
     y_no = y_no[mask]
-    ax.plot(x_plot, y_with, marker="o", linestyle="-", label=LEGEND_WITH_EDL, color=NATURE_COLORS["blue"], markersize=4.5)
-    ax.plot(x_plot, y_no, marker="o", linestyle="-", label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["orange"], markersize=4.5)
+    ax.plot(x_plot, y_with, marker="o", linestyle="-", label=LEGEND_WITH_EDL, color=NATURE_COLORS["with_edl"], markersize=4.5)
+    ax.plot(x_plot, y_no, marker="o", linestyle="-", label=LEGEND_WITHOUT_EDL, color=NATURE_COLORS["without_edl"], markersize=4.5)
     title_metric = _label_symbol(ylab)
     title_param = _label_symbol(_param_axis_label(pname))
     _style_axes(
