@@ -27,6 +27,12 @@ model in which the solution-side electrostatic potential is set to zero.
 
 ## Baseline Parameter Set
 
+This baseline parameter set is the one used by the
+`Figures/Figure_same_length_i0_alpha/` figure set. It is saved in
+`../Figures/Figure_same_length_i0_alpha/inputs/params_same_length_i0_alpha050_au25_pd25_20260528_111255.json`.
+The corresponding mixed-potential summary is saved in
+`../Figures/Figure_same_length_i0_alpha/inputs/summary_compare_same_length_i0_alpha050_au25_pd25_20260528_111255.csv`.
+
 ### Electrolyte and medium
 
 | Quantity | Code key | Value |
@@ -36,7 +42,7 @@ model in which the solution-side electrostatic potential is set to zero.
 | Reference pH | `pH_ref` | `7.0` |
 | Temperature | `T` | `298.0 K` |
 | Relative permittivity | `epsilon_r` | `78.5` |
-| Out-of-plane width | `out_of_plane_width` | `1.0 m` |
+| Out-of-plane width | `out_of_plane_width` | `0.01 m = 1 cm` |
 
 In the current code convention, `C_tot` denotes the concentration of each ionic
 species in a symmetric 1:1 electrolyte. Thus an experimental electrolyte
@@ -47,9 +53,9 @@ input.
 
 | Quantity | Code key | Value |
 | --- | --- | ---: |
-| Au length | `L_Au` | `11 nm` |
+| Au length | `L_Au` | `25 nm` |
 | Support length | `L_gap` | `10 nm` |
-| Pd length | `L_Pd_len` | `37 nm` |
+| Pd length | `L_Pd_len` | `25 nm` |
 
 ### Interfacial capacitances
 
@@ -58,9 +64,9 @@ figures and tables in `uF cm^-2`.
 
 | Quantity | Code key | Internal value | Display value |
 | --- | --- | ---: | ---: |
-| Au double-layer capacitance | `Cdl_Au` | `0.23 F m^-2` | `23.0 uF cm^-2` |
+| Au double-layer capacitance | `Cdl_Au` | `0.20 F m^-2` | `20.0 uF cm^-2` |
 | Support capacitance | `Cdl_C` | `0.10 F m^-2` | `10.0 uF cm^-2` |
-| Pd double-layer capacitance | `Cdl_Pd` | `0.377 F m^-2` | `37.7 uF cm^-2` |
+| Pd double-layer capacitance | `Cdl_Pd` | `0.40 F m^-2` | `40.0 uF cm^-2` |
 
 Useful conversion:
 
@@ -71,21 +77,23 @@ Useful conversion:
 
 | Quantity | Code key | Value |
 | --- | --- | ---: |
-| Au potential of zero charge | `pzc_Au` | `0.513 V` |
-| Support potential of zero charge | `pzc_C` | `0.361 V` |
-| Pd potential of zero charge | `pzc_Pd` | `0.371 V` |
+| Au potential of zero charge | `pzc_Au` | `0.93 V` |
+| Support potential of zero charge | `pzc_C` | `0.50 V` |
+| Pd potential of zero charge | `pzc_Pd` | `0.78 V` |
 | Au equilibrium potential | `E1_eq` | `0.100 V` |
 | Pd equilibrium potential | `E2_eq` | `0.834 V` |
-| Au exchange current density | `it0_1` | `8.85e-5 A m^-2` |
-| Pd exchange current density | `it0_2` | `3.878e-4 A m^-2` |
+| Au exchange current density | `it0_1` | `1.852573885166257e-4 A m^-2` |
+| Pd exchange current density | `it0_2` | `1.852573885166257e-4 A m^-2` |
 | Au transfer coefficient | `alpha1` | `0.5` |
-| Pd transfer coefficient | `alpha2` | `0.37` |
+| Pd transfer coefficient | `alpha2` | `0.5` |
+| Reaction-1 reactant charge number | `z_R1` | `-1.0` |
+| Reaction-2 oxidant charge number | `z_O2` | `1.0` |
 
 The baseline pH-dependent parameterization is referenced to `pH_ref = 7.0`.
 Reaction 2 is treated as a proton-coupled half reaction of the form
 `H+ + e- -> 1/2 H2`, with:
 
-- `E2_eq_pH_slope_V_per_pH = -(2.303 RT / F)`
+- `E2_eq_pH_slope_V_per_pH = -(2.303 RT / F) = -0.059126500015747985 V pH^-1`
 - `it0_2_pH_order = 1.0`
 
 Reaction 1 is currently pH-independent in the shipped defaults.
@@ -373,14 +381,14 @@ master table.
 
 ## Reproducibility
 
-The baseline linear workflow can be regenerated with:
+The `Figures/Figure_same_length_i0_alpha/` baseline and its associated figure
+set can be regenerated from the 2026 workspace root with:
 
 ```bash
-python3 -m pip install -r requirements.txt
-python3 Solve_Emix_updating.py
+python3 Figures/Figure_same_length_i0_alpha/make_all_same_length_i0_alpha.py
 ```
 
-The compare helper workflow can be regenerated with:
+The solver's default compare helper workflow can still be regenerated with:
 
 ```bash
 python3 run_compare.py
@@ -398,7 +406,7 @@ python3 make_latest_publication_compare_panels.py
 The current electrostatic solver is the linear Debye-Huckel version. For the
 present baseline parameter set, the `with EDL` solution yields:
 
-- `max_abs_phi_tilde > 1`
+- `max_abs_phi_tilde = 6.038944611092431 > 1`
 
 and therefore exceeds the nominal strict small-potential regime associated with
 the linear Debye-Huckel approximation. The current figures should therefore be
