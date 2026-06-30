@@ -74,7 +74,7 @@ NATURE_SINGLE_FIGSIZE = (3.35, 2.55)
 NATURE_WIDE_FIGSIZE = (4.5, 2.9)
 NATURE_DOUBLE_FIGSIZE = (6.9, 2.9)
 LEGEND_WITH_EDL = "with EDL"
-LEGEND_WITHOUT_EDL = "without EDL"
+LEGEND_WITHOUT_EDL = "w/o EDL"
 HEATMAP_TITLE_FONTSIZE = 24.0
 HEATMAP_AXIS_LABEL_FONTSIZE = 21.0
 HEATMAP_TICK_LABEL_FONTSIZE = 18.0
@@ -746,7 +746,7 @@ def default_params() -> Dict[str, Any]:
         max_bracket_expands=12,
 
         # switches
-        use_edl=True,                       # True=with EDL, False=no EDL
+        use_edl=True,                       # True=with EDL, False=w/o EDL
         use_affine_phi2=True,              # Eq. (D5-3)
         use_closed_form_when_affine=True,  # Eq. (D5-6)/(D5-8)
         do_self_checks=False,              # run optional self-checks (slow)
@@ -899,7 +899,7 @@ def validate_params(params: Dict[str, Any]) -> None:
 # -----------------------------
 
 def compute_derived_params(params: Dict[str, Any]) -> Dict[str, Any]:
-    """Derived quantities used by both EDL and no-EDL paths."""
+    """Derived quantities used by both EDL and w/o EDL paths."""
     validate_params(params)
     p = params
     R_gas = float(p["R"]); F = float(p["F"]); T = float(p["T"])
@@ -1426,7 +1426,7 @@ def mean_mode_residual_no_edl(E: float, derived: Dict[str, Any], params: Dict[st
 
 
 def emix_closed_form_no_edl(derived: Dict[str, Any], params: Dict[str, Any]) -> float:
-    """Closed-form Emix for no-EDL mean-field model (phi2_1=phi2_2=0)."""
+    """Closed-form Emix for w/o EDL mean-field model (phi2_1=phi2_2=0)."""
     R_gas = float(params["R"]); F = float(params["F"]); T = float(params["T"])
     rxn = _effective_reaction_params(params)
     it0_1 = rxn["it0_1_eff"]; it0_2 = rxn["it0_2_eff"]
@@ -1451,7 +1451,7 @@ def solve_emix_no_edl(
     E_guess: Optional[float] = None,
     bracket: Optional[Tuple[float, float]] = None,
 ) -> Tuple[float, float, Dict[str, Any]]:
-    """Root-find Emix for no-EDL kinetics (phi2_1=phi2_2=0)."""
+    """Root-find Emix for w/o EDL kinetics (phi2_1=phi2_2=0)."""
     mode = mode.upper()
     rxn = _effective_reaction_params(params)
     if mode == "FULL":
@@ -1605,13 +1605,13 @@ def run_case(
     if not use_edl:
         global _NO_EDL_WARNED
         if not _NO_EDL_WARNED:
-            print("WARNING: use_edl=False skips the EDL PDE solve and uses a no-EDL comparison model.")
+            print("WARNING: use_edl=False skips the EDL PDE solve and uses a w/o EDL comparison model.")
             _NO_EDL_WARNED = True
 
     # EDL entry points:
     # - currents_mean_field(...): phi2_1/phi2_2 in the Frumkin term (-Gamma*beta*phi2)
     # - full_mode_currents(...): phi_tilde(x) in Boltzmann factors exp(+/-Gamma*phi_tilde)
-    # no-EDL handling: set phi2_1/phi2_2 = 0, phi_tilde = 0, K_Au/L_Au_tilde, K_Pd/L_Pd_tilde, and skip EDL solve.
+    # w/o EDL handling: set phi2_1/phi2_2 = 0, phi_tilde = 0, K_Au/L_Au_tilde, K_Pd/L_Pd_tilde, and skip EDL solve.
     use_affine_phi2 = bool(p.get("use_affine_phi2", True))
     use_closed = bool(p.get("use_closed_form_when_affine", True))
     if return_profiles and mode != "FULL":
@@ -2226,7 +2226,7 @@ def plot_publication_compare_panels(
     (d) local overpotential
     (e) local current density profile
 
-    All panels compare with/without EDL at their converged mixed potentials.
+    All panels compare with/w/o EDL at their converged mixed potentials.
     """
     out_base = Path(out_base)
     ensure_dir(out_base.parent)
@@ -2404,9 +2404,9 @@ def plot_publication_compare_panels(
     ax_d.legend(loc="center right", bbox_to_anchor=(0.98, 0.50), borderaxespad=0.15, fontsize=10.0 * font_scale, handlelength=2.0)
 
     ax_e.plot(x_nm, i1_edl_plot, label=r"$i_1$ (Au), with EDL", color=NATURE_COLORS["with_edl"])
-    ax_e.plot(x_nm, i1_no_plot, label=r"$i_1$ (Au), without EDL", color=NATURE_COLORS["without_edl"], linestyle="--")
+    ax_e.plot(x_nm, i1_no_plot, label=r"$i_1$ (Au), w/o EDL", color=NATURE_COLORS["without_edl"], linestyle="--")
     ax_e.plot(x_nm, i2_edl_plot, label=r"$i_2$ (Pd), with EDL", color=NATURE_COLORS["with_edl_alt"])
-    ax_e.plot(x_nm, i2_no_plot, label=r"$i_2$ (Pd), without EDL", color=NATURE_COLORS["without_edl_alt"], linestyle="--")
+    ax_e.plot(x_nm, i2_no_plot, label=r"$i_2$ (Pd), w/o EDL", color=NATURE_COLORS["without_edl_alt"], linestyle="--")
     _add_vertical_boundaries(ax_e, L_Au_nm, L_C_nm)
     current_label_short = i_label.replace("Local current density, ", "")
     _style_publication_axes(ax_e, "x [nm]", current_label_short, "Local current density", font_scale=font_scale)
@@ -3391,7 +3391,7 @@ def _plot_combined_heatmap_panel(
 
 
 def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict[str, Any]]) -> None:
-    """OFAT comparison scan: with EDL vs without EDL across parameter values."""
+    """OFAT comparison scan: with EDL vs w/o EDL across parameter values."""
     fig_dir = ensure_dir(out_dir / "figures")
     csv_dir = ensure_dir(out_dir / "csv")
     specs = make_ofat_specs(base_params)
@@ -3473,7 +3473,7 @@ def run_ofat(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict
 
 
 def run_heatmaps(base_params: Dict[str, Any], out_dir: Path, summary_rows: List[Dict[str, Any]]) -> None:
-    """2D comparison heatmaps: with EDL vs without EDL."""
+    """2D comparison heatmaps: with EDL vs w/o EDL."""
     fig_dir = ensure_dir(out_dir / "figures")
     csv_dir = ensure_dir(out_dir / "csv")
     nx = int(base_params["heatmap_nx"])
@@ -4040,7 +4040,7 @@ def run_full_workflow(params: Dict[str, Any], out_dir: str | Path, print_summary
                 debye_huckel_ok=case_no_edl["debye_huckel_ok"],
             ),
         ])
-        print("\n=== Baseline comparison: with EDL vs without EDL ===")
+        print("\n=== Baseline comparison: with EDL vs w/o EDL ===")
         print(df_cmp.to_string(index=False))
         print("\nComparison summary:")
         print(pd.DataFrame([baseline_compare["comparison"]]).to_string(index=False))

@@ -5,7 +5,7 @@
 我尝试把可能的改变的参数都纳入进去：Au-C-Pd的几何(长度)、Cdl、E_pzc; alpha; exchange current density; electrolyte concentration; E_eq
 
 ## W/O EDL
-尝试输出在相同参数的情况下，with and without EDL的E_mix和i_mix的对比
+尝试输出在相同参数的情况下，with and w/o EDL的E_mix和i_mix的对比
 
 
 ## How To Run (Beginner Steps)
@@ -41,8 +41,8 @@ You will get:
 - heatmap comparison outputs `heatmap_compare_*.csv` and `figures/heatmap_compare_*.png` if enabled
 - sensitivity outputs if enabled in parameters
 
-### 2) Compare with-EDL vs no-EDL (single run)
-Use the helper script below. It compares with/without EDL and saves results.
+### 2) Compare with-EDL vs w/o EDL (single run)
+Use the helper script below. It compares with/w/o EDL and saves results.
 
 ```
 python3 run_compare.py
@@ -98,7 +98,7 @@ Notes:
   `dh_violation_action = ignore|warn|raise`.
 - Scan and heatmap axes now label the parameter units explicitly (`nm`, `V`,
   `uF/cm^2`, `M`, `K`, or `-` for dimensionless quantities).
-- The main workflow now uses `with EDL` vs `without EDL` as the primary
+- The main workflow now uses `with EDL` vs `w/o EDL` as the primary
   comparison. The with-EDL result is always the FULL numerical solution.
 - The default compare polarization curve is now a local window around the two
   `E_mix` values (`±0.10 V` margin by default). If you need the old full-range

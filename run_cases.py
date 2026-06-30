@@ -10,7 +10,7 @@ This script will read the JSON and run two example cases:
     - case2: overrides only L_gap = 100e-9 on top of the JSON
 
 It runs the SAME workflow as Solve_Emix_updating.py main():
-    baseline comparison of with EDL (FULL) vs without EDL
+    baseline comparison of with EDL (FULL) vs w/o EDL
     + baseline profiles
     + OFAT comparison scans
     + optional heatmaps / sensitivities.

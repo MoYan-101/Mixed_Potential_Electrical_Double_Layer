@@ -22,7 +22,7 @@ solution-side reaction-plane potential through lateral electrostatic coupling.
 
 The current shipped solver is the linear Debye-Huckel implementation. The
 `with EDL` result always refers to the fully spatially resolved `FULL`
-numerical solution, whereas the `without EDL` result refers to the comparison
+numerical solution, whereas the `w/o EDL` result refers to the comparison
 model in which the solution-side electrostatic potential is set to zero.
 
 ## Baseline Parameter Set
@@ -132,7 +132,7 @@ surface boundary (`y_tilde = 0`). The root-level prototype
 `edl_mixed_potential_model.py` supports a finite reaction-plane offset, but
 that offset is not part of the present production workflow.
 
-In the `without EDL` comparison model:
+In the `w/o EDL` comparison model:
 
 - `phi_tilde(x) = 0`
 - `phi_RP(x) = 0`
@@ -155,7 +155,7 @@ The mixed potential is then defined by the zero-net-current condition:
 
 `I_Au(E_mix) + I_Pd(E_mix) = 0`
 
-For the `without EDL` comparison case, the same current-balance condition is
+For the `w/o EDL` comparison case, the same current-balance condition is
 solved with `phi_RP(x) = 0`.
 
 Closed-form mixed-potential shortcuts are not used in the present compare
@@ -220,7 +220,7 @@ For the baseline compare workflow:
 
 1. the baseline parameter dictionary is assembled,
 2. the `with EDL` case is solved using `mode="FULL", use_edl=True`,
-3. the `without EDL` case is solved using `mode="FULL", use_edl=False`,
+3. the `w/o EDL` case is solved using `mode="FULL", use_edl=False`,
 4. both solutions are compared at the same geometry and kinetic parameter set.
 
 The default compare polarization curve is sampled in a local potential window:
@@ -251,7 +251,7 @@ potentials when pH dependence is active.
 
 The OFAT workflow is one-factor-at-a-time. At each scan point, a single
 parameter is changed while all other baseline inputs are held fixed, and the
-same `with EDL` versus `without EDL` comparison is repeated.
+same `with EDL` versus `w/o EDL` comparison is repeated.
 
 Current default settings:
 
@@ -281,8 +281,8 @@ The OFAT CSV stores:
 
 - scanned parameter value,
 - effective pH-adjusted kinetic and thermodynamic quantities,
-- `E_mix` with and without EDL,
-- average mixed current density with and without EDL,
+- `E_mix` with and w/o EDL,
+- average mixed current density with and w/o EDL,
 - `delta_E_mix`,
 - `delta_i_mix_avg_A_per_m2`,
 - `ratio_i_mix_avg`,
