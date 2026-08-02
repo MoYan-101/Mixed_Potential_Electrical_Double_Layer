@@ -1,0 +1,121 @@
+{
+  "affine_residuals": {
+    "phi_m_relative_l2": 5.466474383232557e-16,
+    "phi_pzc_relative_l2": 5.28089426277595e-16
+  },
+  "case": {
+    "E_mix_V": 0.5993920655357766,
+    "I_Au_A": 4.099264145222497e-11,
+    "I_Pd_A": -4.0992641453713954e-11,
+    "condition": "with EDL",
+    "d_Au_Pd_nm": 3.0000000000000004,
+    "dh_threshold_exceeded": true,
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "i_mix_abs_A": 4.099264145222497e-11,
+    "i_mix_avg_A_per_m2": 0.08198528290444994,
+    "max_abs_phi_tilde": 6.00867057594219,
+    "relative_balance_residual": 1.8161592068183367e-11,
+    "result_schema_version": 2
+  },
+  "derived": {
+    "C_D": 0.2285445399406402,
+    "C_tot": 10.0,
+    "F": 96485.0,
+    "L_Au": 2.5e-08,
+    "L_Au_tilde": 8.22039094610045,
+    "L_Pd": 2.5e-08,
+    "L_Pd_tilde": 8.22039094610045,
+    "L_total": 5.3e-08,
+    "L_total_tilde": 17.427228805732955,
+    "N_modes": 960,
+    "Nx": 5000,
+    "R": 8.314,
+    "T": 298.0,
+    "beta": 38.943368749727554,
+    "d_Au_Pd": 3.0000000000000004e-09,
+    "d_Au_Pd_tilde": 0.9864469135320542,
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "epsilon_s": 6.950537433048001e-10,
+    "g_Au": 0.8751029451499737,
+    "g_Pd": 1.7502058902999473,
+    "gap_exists": true,
+    "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+    "inverse_Debye_length_per_m": 328815637.84401804,
+    "lambda_D": 3.0412178890177212e-09,
+    "out_of_plane_width": 0.01,
+    "pzc_Au": 0.93,
+    "pzc_Au_tilde": 36.217332937246624,
+    "pzc_Pd": 0.78,
+    "pzc_Pd_tilde": 30.375827624787494,
+    "reactive_area_m2": 5e-10,
+    "reactive_length": 5e-08,
+    "substrate_gap_exists": true,
+    "thermal_voltage_V": 0.02567831269109188,
+    "x_Au_end": 2.5e-08,
+    "x_Pd_start": 2.8e-08
+  },
+  "effective_reaction": {
+    "E1_eq_eff": 0.1,
+    "E1_eq_pH_slope_V_per_pH": 0.0,
+    "E2_eq_eff": 0.834,
+    "E2_eq_pH_slope_V_per_pH": -0.059126500015747985,
+    "delta_pH": 0.0,
+    "it0_1_eff": 0.0001852573885166257,
+    "it0_1_pH_order": 0.0,
+    "it0_2_eff": 0.0001852573885166257,
+    "it0_2_pH_order": 1.0,
+    "pH": 7.0,
+    "pH_ref": 7.0
+  },
+  "electronic_coupling": "ideal external wire; shared E_mix",
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "electrostatics": {
+    "basis": "cos(rho_n x_tilde) exp(-gamma_n y_tilde)",
+    "boundary_quadrature_points": {
+      "Au": 2360,
+      "Pd": 2360
+    },
+    "diagnostic_surface_n_x_coordinates": 5002,
+    "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+    "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "farfield_condition": "phi_tilde -> 0 as y_tilde -> infinity",
+    "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+    "lateral_electrostatic_bc": "homogeneous Neumann (reflection)",
+    "n_coefficients": 961,
+    "n_modes": 960,
+    "n_x_coordinates": 5000,
+    "n_x_coordinates_role": "saved spectral_field surface_x_tilde coordinate count",
+    "n_y_coordinates": null,
+    "saved_surface_n_x_coordinates": 5000,
+    "substrate_gap_electrostatic_bc": "homogeneous Neumann",
+    "surface_quadrature_target_points": 5000,
+    "topology_checks": {
+      "boundary_lengths_tilde": {
+        "au_top": 8.22039094610045,
+        "pd_top": 8.22039094610045,
+        "substrate_gap": 0.9864469135320542
+      },
+      "boundary_partition_complete": true,
+      "electrolyte_domain_is_semi_infinite_strip": true,
+      "reactive_boundary_interiors_disjoint": true,
+      "reactive_boundary_overlap_measure_zero": true,
+      "substrate_gap_electrostatic_bc": "homogeneous Neumann",
+      "substrate_gap_is_boundary": true
+    }
+  },
+  "pb_model": "linearized Poisson-Boltzmann / Debye-Huckel; semi-infinite cosine/Fourier spectral solution",
+  "result_schema_version": 2,
+  "root": {
+    "bracket_V": [
+      -0.15,
+      1.084
+    ],
+    "bracket_expansions": 0,
+    "converged": true,
+    "flag": "converged",
+    "function_calls": 18,
+    "iterations": 17,
+    "method": "brentq"
+  }
+}

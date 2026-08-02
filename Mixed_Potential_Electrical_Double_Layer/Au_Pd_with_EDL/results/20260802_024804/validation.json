@@ -1,0 +1,270 @@
+{
+  "adjacent_legacy_reference": {
+    "E_tolerance_V": 0.0005,
+    "computed": {
+      "E_mix_V": 0.6006820511512232,
+      "d_Au_Pd_nm": 0.0,
+      "i_mix_abs_A": 4.080263823770917e-11,
+      "i_mix_avg_A_per_m2": 0.08160527647541833,
+      "relative_balance_residual": 1.513572640496472e-11
+    },
+    "delta_E_V": 1.2942965800344375e-05,
+    "description": "d=0 FEM versus legacy N_modes=960/Nx=5000 reference",
+    "i_relative_tolerance": 0.01,
+    "passed": true,
+    "reference": {
+      "E_mix_V": 0.6006949941170235,
+      "i_mix_avg_A_per_m2": 0.0815880733807085
+    },
+    "relative_delta_i_mix_avg": 0.00021085305727905918
+  },
+  "affine_direct_solve": {
+    "absolute_tolerance_phi_tilde": 1e-10,
+    "description": "affine field versus one direct reduced solve",
+    "direct_free_dof_relative_residual": 9.554633139550966e-15,
+    "max_abs_error_phi_tilde": 2.1316282072803006e-14,
+    "passed": true,
+    "relative_l2_error": 1.0865364973362068e-15,
+    "relative_l2_tolerance": 1e-11,
+    "test_potential_V": 0.6006820511512232
+  },
+  "cache": {
+    "homogeneous_electrostatic_solves": 1,
+    "unique_mixed_potential_fem_solves": 12
+  },
+  "debye_huckel_violation_action": "ignore",
+  "farfield_convergence": {
+    "cases": [
+      {
+        "comparison_H10_vs_H12": {
+          "E_tolerance_V": 0.0005,
+          "delta_E_V": 1.5368717409813826e-10,
+          "i_relative_tolerance": 0.01,
+          "passed": true,
+          "relative_delta_i_mix_avg": 1.4380301923581921e-09
+        },
+        "d_Au_Pd_m": 0.0,
+        "d_Au_Pd_nm": 0.0,
+        "label": "d0",
+        "passed": true,
+        "results": {
+          "H10": {
+            "E_mix_V": 0.6006820511512232,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.080263823770917e-11,
+            "i_mix_avg_A_per_m2": 0.08160527647541833,
+            "relative_balance_residual": 1.513572640496472e-11
+          },
+          "H12": {
+            "E_mix_V": 0.6006820513049104,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.0802638179033746e-11,
+            "i_mix_avg_A_per_m2": 0.08160527635806748,
+            "relative_balance_residual": 1.5136359949347887e-11
+          },
+          "H8": {
+            "E_mix_V": 0.6006820426933319,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.0802641532829306e-11,
+            "i_mix_avg_A_per_m2": 0.0816052830656586,
+            "relative_balance_residual": 1.5136358705206456e-11
+          }
+        }
+      },
+      {
+        "comparison_H10_vs_H12": {
+          "E_tolerance_V": 0.0005,
+          "delta_E_V": 1.521791581637899e-10,
+          "i_relative_tolerance": 0.01,
+          "passed": true,
+          "relative_delta_i_mix_avg": 1.511178991850101e-09
+        },
+        "d_Au_Pd_m": 3.0412178890177212e-09,
+        "d_Au_Pd_nm": 3.0412178890177213,
+        "label": "one_lambda_D",
+        "passed": true,
+        "results": {
+          "H10": {
+            "E_mix_V": 0.5993659325191035,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.100632913704333e-11,
+            "i_mix_avg_A_per_m2": 0.08201265827408666,
+            "relative_balance_residual": 1.839586057186375e-11
+          },
+          "H12": {
+            "E_mix_V": 0.5993659326712827,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.1006329075075426e-11,
+            "i_mix_avg_A_per_m2": 0.08201265815015085,
+            "relative_balance_residual": 1.8396175787522292e-11
+          },
+          "H8": {
+            "E_mix_V": 0.599365924144507,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.100633260871024e-11,
+            "i_mix_avg_A_per_m2": 0.08201266521742048,
+            "relative_balance_residual": 1.8393179917866966e-11
+          }
+        }
+      },
+      {
+        "comparison_H10_vs_H12": {
+          "E_tolerance_V": 0.0005,
+          "delta_E_V": 1.2652490166686903e-10,
+          "i_relative_tolerance": 0.01,
+          "passed": true,
+          "relative_delta_i_mix_avg": 1.394105763131563e-09
+        },
+        "d_Au_Pd_m": 1e-07,
+        "d_Au_Pd_nm": 100.0,
+        "label": "d100nm",
+        "passed": true,
+        "results": {
+          "H10": {
+            "E_mix_V": 0.5987695032594279,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.1279707927911576e-11,
+            "i_mix_avg_A_per_m2": 0.08255941585582315,
+            "relative_balance_residual": 2.039333122550483e-11
+          },
+          "H12": {
+            "E_mix_V": 0.5987695033859528,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.1279707870363296e-11,
+            "i_mix_avg_A_per_m2": 0.08255941574072659,
+            "relative_balance_residual": 2.0391217825577202e-11
+          },
+          "H8": {
+            "E_mix_V": 0.5987694961125581,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.1279711172423866e-11,
+            "i_mix_avg_A_per_m2": 0.08255942234484773,
+            "relative_balance_residual": 2.039129446955415e-11
+          }
+        }
+      }
+    ],
+    "description": "far-field convergence; H=10 versus H=12 controls pass",
+    "passed": true
+  },
+  "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+  "homogeneous_robin": {
+    "absolute_tolerance_phi_tilde": 0.002,
+    "analytic_phi_tilde_surface": -5.997655067983046,
+    "common_g": 0.8751029451499737,
+    "common_pzc_V": 0.93,
+    "description": "finite-H homogeneous Robin surface solution",
+    "farfield_lambda_D": 10.0,
+    "fem_phi_tilde_surface_max": -5.996646889986062,
+    "fem_phi_tilde_surface_min": -5.996646889986227,
+    "fem_surface_spread": 1.652011860642233e-13,
+    "max_abs_error_phi_tilde": 0.0010081779969839388,
+    "max_relative_error": 0.00016809536152984862,
+    "passed": true,
+    "relative_tolerance": 0.0005,
+    "test_potential_V": 0.6
+  },
+  "mesh_convergence": {
+    "base_h_bulk_lambda_D": 0.2,
+    "base_h_corner_lambda_D": 0.05,
+    "cases": [
+      {
+        "base": {
+          "E_mix_V": 0.6006820511512232,
+          "d_Au_Pd_nm": 0.0,
+          "i_mix_abs_A": 4.080263823770917e-11,
+          "i_mix_avg_A_per_m2": 0.08160527647541833,
+          "relative_balance_residual": 1.513572640496472e-11
+        },
+        "comparison_base_vs_refined": {
+          "E_tolerance_V": 0.0005,
+          "delta_E_V": 5.697625072298429e-06,
+          "i_relative_tolerance": 0.01,
+          "passed": true,
+          "relative_delta_i_mix_avg": 9.124976803118594e-05
+        },
+        "d_Au_Pd_m": 0.0,
+        "d_Au_Pd_nm": 0.0,
+        "label": "d0",
+        "passed": true,
+        "refined": {
+          "E_mix_V": 0.6006877487762955,
+          "d_Au_Pd_nm": 0.0,
+          "i_mix_abs_A": 4.079891534614791e-11,
+          "i_mix_avg_A_per_m2": 0.08159783069229581,
+          "relative_balance_residual": 1.503826899012332e-11
+        }
+      },
+      {
+        "base": {
+          "E_mix_V": 0.5993659325191035,
+          "d_Au_Pd_nm": 3.0412178890177213,
+          "i_mix_abs_A": 4.100632913704333e-11,
+          "i_mix_avg_A_per_m2": 0.08201265827408666,
+          "relative_balance_residual": 1.839586057186375e-11
+        },
+        "comparison_base_vs_refined": {
+          "E_tolerance_V": 0.0005,
+          "delta_E_V": 7.4057029982865785e-06,
+          "i_relative_tolerance": 0.01,
+          "passed": true,
+          "relative_delta_i_mix_avg": 0.00010679293128901549
+        },
+        "d_Au_Pd_m": 3.0412178890177212e-09,
+        "d_Au_Pd_nm": 3.0412178890177213,
+        "label": "one_lambda_D",
+        "passed": true,
+        "refined": {
+          "E_mix_V": 0.5993733382221018,
+          "d_Au_Pd_nm": 3.0412178890177213,
+          "i_mix_abs_A": 4.100195041856957e-11,
+          "i_mix_avg_A_per_m2": 0.08200390083713913,
+          "relative_balance_residual": 1.8305622825588906e-11
+        }
+      },
+      {
+        "base": {
+          "E_mix_V": 0.5987695032594279,
+          "d_Au_Pd_nm": 100.0,
+          "i_mix_abs_A": 4.1279707927911576e-11,
+          "i_mix_avg_A_per_m2": 0.08255941585582315,
+          "relative_balance_residual": 2.039333122550483e-11
+        },
+        "comparison_base_vs_refined": {
+          "E_tolerance_V": 0.0005,
+          "delta_E_V": 7.99601033207864e-06,
+          "i_relative_tolerance": 0.01,
+          "passed": true,
+          "relative_delta_i_mix_avg": 0.00012387613787950003
+        },
+        "d_Au_Pd_m": 1e-07,
+        "d_Au_Pd_nm": 100.0,
+        "label": "d100nm",
+        "passed": true,
+        "refined": {
+          "E_mix_V": 0.59877749926976,
+          "d_Au_Pd_nm": 100.0,
+          "i_mix_abs_A": 4.127459499049161e-11,
+          "i_mix_avg_A_per_m2": 0.08254918998098322,
+          "relative_balance_residual": 2.0297531737835826e-11
+        }
+      }
+    ],
+    "description": "base mesh versus 25-percent smaller h targets",
+    "passed": true,
+    "refined_h_bulk_lambda_D": 0.15000000000000002,
+    "refined_h_corner_lambda_D": 0.037500000000000006
+  },
+  "model": "flush Au|uncharged insulating substrate|Pd",
+  "passed": true,
+  "runtime_seconds": 0.8272083339979872,
+  "thresholds": {
+    "E_mix_absolute_V": 0.0005,
+    "affine_field_absolute_phi_tilde": 1e-10,
+    "affine_field_relative_l2": 1e-11,
+    "homogeneous_surface_absolute_phi_tilde": 0.002,
+    "homogeneous_surface_relative": 0.0005,
+    "i_mix_relative": 0.01
+  },
+  "validation": "linear-PB FEM numerical validation"
+}

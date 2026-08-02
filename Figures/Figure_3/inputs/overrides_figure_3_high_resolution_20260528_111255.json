@@ -1,0 +1,5 @@
+{
+  "N_modes": 960,
+  "Nx": 5000,
+  "source_params": "Mixed_Potential_Electrical_Double_Layer/results/20260528_111255/params.json"
+}

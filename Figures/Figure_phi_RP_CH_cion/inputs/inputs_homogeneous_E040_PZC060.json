@@ -1,0 +1,35 @@
+{
+  "C_H_points_F_per_m2": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    1.0,
+    2.0
+  ],
+  "E_V_vs_RHE": 0.4,
+  "PZC_V_vs_RHE": 0.6,
+  "c_ion_points_M": [
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1.0
+  ],
+  "description": "Homogeneous single-surface EDL check for E < PZC.",
+  "fixed_C_H_F_per_m2_for_c_ion_sweep": 0.2,
+  "fixed_c_ion_M_for_C_H_sweep": 0.01,
+  "formula": "phi_RP = [g/(1+g)]*(E-PZC), g=lambda_D*C_H/epsilon_s",
+  "normal_profile_formula": "phi(x) = phi_RP*exp(-x/lambda_D)",
+  "profile_c_ion_points_M": [
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1.0
+  ],
+  "sigma_formula": "sigma = C_H*(E-PZC-phi_RP)",
+  "solver_source": "/media/herryao/81ca6f19-78c8-470d-b5a1-5f35b4678058/work_dir/Document/Yan/Mixed_potential_EDLs/Code_EDL/2026/Mixed_Potential_Electrical_Double_Layer/Solve_Emix_updating.py",
+  "tag": "homogeneous_E040_PZC060"
+}

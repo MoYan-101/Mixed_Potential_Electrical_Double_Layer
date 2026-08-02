@@ -1,0 +1,863 @@
+{
+  "command": "scan",
+  "figure_3_count": {
+    "pdf": 0,
+    "png": 6,
+    "svg": 6
+  },
+  "figure_3_metadata": {
+    "E_mix_with_EDL_V": 0.5980889874770864,
+    "E_mix_without_EDL_V": 0.46699999999999997,
+    "comparison_basis": "length-matched against legacy Au|C|Pd 25|10|25 nm Figure 3",
+    "dpi": 600,
+    "figure_type": "figure_3_style_au_electrolyte_gap_pd",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "geometry_nm": {
+      "L_Au": 25.0,
+      "L_Pd": 25.0,
+      "electrolyte_gap": 10.0
+    },
+    "i_mix_with_EDL_A_per_m2": 0.08378598550976511,
+    "i_mix_without_EDL_A_per_m2": 0.11756035407872421,
+    "panel_count": 6,
+    "pdf_count": 0,
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_a_emix_imix_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_a_emix_imix_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_d_local_overpotential_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_d_local_overpotential_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_e_local_current_density_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_e_local_current_density_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separation_nm": 10.0,
+    "source_profile": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/top_surface_profiles_d010nm.csv",
+    "source_summary": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/summary_cases.csv"
+  },
+  "gouy_chapman_metadata": {
+    "analysis_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/gouy_chapman_analysis.json",
+    "csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/gouy_chapman_length_vs_separation.csv",
+    "n_rows": 62,
+    "protected_sha256_before_and_after": {
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/separation_scan.csv": "7742be0074d7b0c68e59cad0e079311b2432a4bd318a419a12b975fe0591a4d7",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/trends/emix_imix_vs_separation_au25_pd25_equal_i0_alpha050_ctot10mM.png": "94c74b5fea6429582bb47a8694c2d29421366d746a9ef69a665835c7343d6238",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/trends/emix_imix_vs_separation_au25_pd25_equal_i0_alpha050_ctot10mM.svg": "1528436f9a60ced1205a8724c089bd106369e5cd5b092f112a1aadba26f446d7"
+    },
+    "recomputed_against_original_separation_scan": {
+      "max_abs_delta_E_mix_V": 0.0,
+      "max_abs_delta_i_mix_A_per_m2": 0.0,
+      "n_separations": 31
+    }
+  },
+  "n_separations": 31,
+  "output_dir": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012",
+  "plateau_check": {
+    "E_tolerance_V": 0.0001,
+    "checked": true,
+    "delta_E_75_vs_100_V": 1.0674271466726282e-09,
+    "delta_i_relative_75_vs_100": 2.175796386743795e-08,
+    "i_relative_tolerance": 0.005,
+    "passed": true
+  },
+  "rp_figure_count": {
+    "pdf": 0,
+    "png": 4,
+    "svg": 4
+  },
+  "rp_metadata": {
+    "cases": [
+      {
+        "E_mix_V": 0.6006820511512232,
+        "d_nm": 0.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 5.984230304518736,
+        "x_range_nm": [
+          0.0,
+          50.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      },
+      {
+        "E_mix_V": 0.5990159460552742,
+        "d_nm": 2.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 6.014474189325147,
+        "x_range_nm": [
+          0.0,
+          52.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      },
+      {
+        "E_mix_V": 0.598673672101125,
+        "d_nm": 3.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 6.020684196992661,
+        "x_range_nm": [
+          0.0,
+          53.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      },
+      {
+        "E_mix_V": 0.5980889874770864,
+        "d_nm": 10.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 6.031287756380227,
+        "x_range_nm": [
+          0.0,
+          60.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      }
+    ],
+    "dpi": 600,
+    "figure_type": "phi_s_reactants_2d_batch",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "grid": {
+      "n_x": 600,
+      "n_y": 320,
+      "y_max_over_lambda": 5.0
+    },
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d000nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d000nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d002nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d002nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d003nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d003nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "saved_paths_by_separation": {
+      "000": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d000nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d000nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "002": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d002nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d002nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "003": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d003nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d003nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "010": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/rp_2d/phi_s_reactants_2d_d010nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ]
+    },
+    "shared_color_limits": {
+      "c_Ox2_over_c_bulk": [
+        1.0,
+        1000.0
+      ],
+      "c_Red1_over_c_bulk": [
+        0.001,
+        1.0
+      ],
+      "phi_s_mV": [
+        -160.0,
+        160.0
+      ]
+    },
+    "shared_contour_levels": {
+      "c_Ox2_over_c_bulk": [
+        1.0,
+        2.371373705661655,
+        5.623413251903491,
+        13.33521432163324,
+        31.622776601683793,
+        74.98942093324558,
+        177.82794100389228,
+        421.6965034285823,
+        1000.0
+      ],
+      "c_Red1_over_c_bulk": [
+        0.001,
+        0.0023713737056616554,
+        0.005623413251903491,
+        0.01333521432163324,
+        0.03162277660168379,
+        0.07498942093324558,
+        0.1778279410038923,
+        0.4216965034285822,
+        1.0
+      ],
+      "phi_s_mV": [
+        -160.0,
+        -128.0,
+        -96.0,
+        -64.0,
+        -32.0,
+        0.0,
+        32.0,
+        64.0,
+        96.0,
+        128.0,
+        160.0
+      ]
+    },
+    "tag": "au25_pd25_equal_i0_alpha050_ctot10mM"
+  },
+  "tag": "au25_pd25_equal_i0_alpha050_ctot10mM",
+  "trend_figure_count": {
+    "pdf": 0,
+    "png": 2,
+    "svg": 2
+  },
+  "trend_metadata": {
+    "dpi": 600,
+    "figure_type": "emix_imix_vs_separation",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "reference_100nm": {
+      "E_mix_with_EDL_V": 0.5980484934361089,
+      "i_mix_avg_with_EDL_A_per_m2": 0.08383834671661106
+    },
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/trends/emix_imix_vs_separation_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/trends/emix_imix_vs_separation_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separations_nm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5000000000000002,
+      2.0,
+      2.5,
+      3.0000000000000004,
+      3.0412178890180006,
+      3.5000000000000004,
+      4.0,
+      4.500000000000001,
+      5.0,
+      5.500000000000001,
+      6.000000000000001,
+      6.082435778035001,
+      6.5,
+      7.000000000000001,
+      7.500000000000001,
+      8.0,
+      8.5,
+      9.000000000000002,
+      9.123653667053,
+      9.5,
+      10.0,
+      15.000000000000002,
+      15.206089445089003,
+      20.0,
+      30.000000000000004,
+      50.00000000000001,
+      75.00000000000001,
+      100.00000000000001
+    ],
+    "series": {
+      "E_mix_with_EDL_V": [
+        0.6006820511512232,
+        0.6000278268210414,
+        0.5995881937385196,
+        0.5992628141925735,
+        0.5990159460552742,
+        0.5988245472134511,
+        0.598673672101125,
+        0.5986634407319328,
+        0.5985549892223206,
+        0.5984604290239047,
+        0.5983840814893395,
+        0.5983231481955971,
+        0.5982738865461729,
+        0.5982334465666383,
+        0.5982274569102438,
+        0.5982006116116045,
+        0.5981738985866719,
+        0.5981520477102243,
+        0.5981341329286227,
+        0.5981192874887156,
+        0.5981071964054544,
+        0.598104515636968,
+        0.5980972241290284,
+        0.5980889874770864,
+        0.5980550860019982,
+        0.5980546397072698,
+        0.5980496150716896,
+        0.5980485343590751,
+        0.5980484967998682,
+        0.598048494503536,
+        0.5980484934361089
+      ],
+      "E_mix_without_EDL_V": [
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997
+      ],
+      "i_mix_avg_with_EDL_A_per_m2": [
+        0.08160527647541833,
+        0.08182384561500294,
+        0.0821346475712843,
+        0.0824271423497404,
+        0.08267715600068337,
+        0.08288604204076304,
+        0.08305962504264564,
+        0.08307106804103334,
+        0.08320026607551945,
+        0.08331503855590743,
+        0.0834098077070111,
+        0.08348596372423718,
+        0.08354810644818417,
+        0.0835998619319656,
+        0.08360762504887873,
+        0.08364199653614238,
+        0.08367631560584654,
+        0.08370446206317672,
+        0.08372758148621037,
+        0.08374679467932102,
+        0.0837624270720598,
+        0.08376590265283143,
+        0.08377532734038669,
+        0.08378598550976511,
+        0.0838298498313737,
+        0.08383041828726163,
+        0.08383690560070743,
+        0.08383829169310537,
+        0.08383834098456983,
+        0.08383834489245934,
+        0.08383834671661106
+      ],
+      "i_mix_avg_without_EDL_A_per_m2": [
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421
+      ]
+    },
+    "tag": "au25_pd25_equal_i0_alpha050_ctot10mM"
+  },
+  "trend_zoom_0_20nm_metadata": {
+    "dpi": 600,
+    "figure_type": "emix_imix_vs_separation",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "n_visible_points": 27,
+    "reference_100nm": {
+      "E_mix_with_EDL_V": 0.5980484934361089,
+      "i_mix_avg_with_EDL_A_per_m2": 0.08383834671661106
+    },
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/trends/emix_imix_vs_separation_0_20nm_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/figures/trends/emix_imix_vs_separation_0_20nm_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separations_nm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5000000000000002,
+      2.0,
+      2.5,
+      3.0000000000000004,
+      3.0412178890180006,
+      3.5000000000000004,
+      4.0,
+      4.500000000000001,
+      5.0,
+      5.500000000000001,
+      6.000000000000001,
+      6.082435778035001,
+      6.5,
+      7.000000000000001,
+      7.500000000000001,
+      8.0,
+      8.5,
+      9.000000000000002,
+      9.123653667053,
+      9.5,
+      10.0,
+      15.000000000000002,
+      15.206089445089003,
+      20.0
+    ],
+    "series": {
+      "E_mix_with_EDL_V": [
+        0.6006820511512232,
+        0.6000278268210414,
+        0.5995881937385196,
+        0.5992628141925735,
+        0.5990159460552742,
+        0.5988245472134511,
+        0.598673672101125,
+        0.5986634407319328,
+        0.5985549892223206,
+        0.5984604290239047,
+        0.5983840814893395,
+        0.5983231481955971,
+        0.5982738865461729,
+        0.5982334465666383,
+        0.5982274569102438,
+        0.5982006116116045,
+        0.5981738985866719,
+        0.5981520477102243,
+        0.5981341329286227,
+        0.5981192874887156,
+        0.5981071964054544,
+        0.598104515636968,
+        0.5980972241290284,
+        0.5980889874770864,
+        0.5980550860019982,
+        0.5980546397072698,
+        0.5980496150716896
+      ],
+      "E_mix_without_EDL_V": [
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997
+      ],
+      "i_mix_avg_with_EDL_A_per_m2": [
+        0.08160527647541833,
+        0.08182384561500294,
+        0.0821346475712843,
+        0.0824271423497404,
+        0.08267715600068337,
+        0.08288604204076304,
+        0.08305962504264564,
+        0.08307106804103334,
+        0.08320026607551945,
+        0.08331503855590743,
+        0.0834098077070111,
+        0.08348596372423718,
+        0.08354810644818417,
+        0.0835998619319656,
+        0.08360762504887873,
+        0.08364199653614238,
+        0.08367631560584654,
+        0.08370446206317672,
+        0.08372758148621037,
+        0.08374679467932102,
+        0.0837624270720598,
+        0.08376590265283143,
+        0.08377532734038669,
+        0.08378598550976511,
+        0.0838298498313737,
+        0.08383041828726163,
+        0.08383690560070743
+      ],
+      "i_mix_avg_without_EDL_A_per_m2": [
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421
+      ]
+    },
+    "source_row_count": 31,
+    "tag": "au25_pd25_equal_i0_alpha050_ctot10mM",
+    "visible_row_count": 27,
+    "x_range_nm": [
+      0.0,
+      20.0
+    ],
+    "x_ticks_nm": [
+      0.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0
+    ]
+  },
+  "validation": {
+    "adjacent_legacy_reference": {
+      "E_tolerance_V": 0.0005,
+      "computed": {
+        "E_mix_V": 0.6006820511512232,
+        "d_Au_Pd_nm": 0.0,
+        "i_mix_abs_A": 4.080263823770917e-11,
+        "i_mix_avg_A_per_m2": 0.08160527647541833,
+        "relative_balance_residual": 1.513572640496472e-11
+      },
+      "delta_E_V": 1.2942965800344375e-05,
+      "description": "d=0 FEM versus legacy N_modes=960/Nx=5000 reference",
+      "i_relative_tolerance": 0.01,
+      "passed": true,
+      "reference": {
+        "E_mix_V": 0.6006949941170235,
+        "i_mix_avg_A_per_m2": 0.0815880733807085
+      },
+      "relative_delta_i_mix_avg": 0.00021085305727905918
+    },
+    "affine_direct_solve": {
+      "absolute_tolerance_phi_tilde": 1e-10,
+      "description": "affine field versus one direct reduced solve",
+      "direct_free_dof_relative_residual": 9.554633139550966e-15,
+      "max_abs_error_phi_tilde": 2.1316282072803006e-14,
+      "passed": true,
+      "relative_l2_error": 1.0865364973362068e-15,
+      "relative_l2_tolerance": 1e-11,
+      "test_potential_V": 0.6006820511512232
+    },
+    "cache": {
+      "homogeneous_electrostatic_solves": 1,
+      "unique_mixed_potential_fem_solves": 12
+    },
+    "debye_huckel_violation_action": "ignore",
+    "farfield_convergence": {
+      "cases": [
+        {
+          "comparison_H10_vs_H12": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.5368717409813826e-10,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 1.4380301923581921e-09
+          },
+          "d_Au_Pd_m": 0.0,
+          "d_Au_Pd_nm": 0.0,
+          "label": "d0",
+          "passed": true,
+          "results": {
+            "H10": {
+              "E_mix_V": 0.6006820511512232,
+              "d_Au_Pd_nm": 0.0,
+              "i_mix_abs_A": 4.080263823770917e-11,
+              "i_mix_avg_A_per_m2": 0.08160527647541833,
+              "relative_balance_residual": 1.513572640496472e-11
+            },
+            "H12": {
+              "E_mix_V": 0.6006820513049104,
+              "d_Au_Pd_nm": 0.0,
+              "i_mix_abs_A": 4.0802638179033746e-11,
+              "i_mix_avg_A_per_m2": 0.08160527635806748,
+              "relative_balance_residual": 1.5136359949347887e-11
+            },
+            "H8": {
+              "E_mix_V": 0.6006820426933319,
+              "d_Au_Pd_nm": 0.0,
+              "i_mix_abs_A": 4.0802641532829306e-11,
+              "i_mix_avg_A_per_m2": 0.0816052830656586,
+              "relative_balance_residual": 1.5136358705206456e-11
+            }
+          }
+        },
+        {
+          "comparison_H10_vs_H12": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.4951984095290527e-10,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 1.4828171706607962e-09
+          },
+          "d_Au_Pd_m": 3.0412178890177212e-09,
+          "d_Au_Pd_nm": 3.0412178890177213,
+          "label": "one_lambda_D",
+          "passed": true,
+          "results": {
+            "H10": {
+              "E_mix_V": 0.5986626787667298,
+              "d_Au_Pd_nm": 3.0412178890177213,
+              "i_mix_abs_A": 4.153630047113622e-11,
+              "i_mix_avg_A_per_m2": 0.08307260094227242,
+              "relative_balance_residual": 2.3940824210469526e-11
+            },
+            "H12": {
+              "E_mix_V": 0.5986626789162497,
+              "d_Au_Pd_nm": 3.0412178890177213,
+              "i_mix_abs_A": 4.1536300409545473e-11,
+              "i_mix_avg_A_per_m2": 0.08307260081909094,
+              "relative_balance_residual": 2.3942068911184457e-11
+            },
+            "H8": {
+              "E_mix_V": 0.5986626705384119,
+              "d_Au_Pd_nm": 3.0412178890177213,
+              "i_mix_abs_A": 4.153630391899291e-11,
+              "i_mix_avg_A_per_m2": 0.08307260783798581,
+              "relative_balance_residual": 2.3940900014752517e-11
+            }
+          }
+        },
+        {
+          "comparison_H10_vs_H12": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.2284950834384745e-10,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 1.3115387195707254e-09
+          },
+          "d_Au_Pd_m": 1e-07,
+          "d_Au_Pd_nm": 100.0,
+          "label": "d100nm",
+          "passed": true,
+          "results": {
+            "H10": {
+              "E_mix_V": 0.5980484934361088,
+              "d_Au_Pd_nm": 100.0,
+              "i_mix_abs_A": 4.191917335830542e-11,
+              "i_mix_avg_A_per_m2": 0.08383834671661083,
+              "relative_balance_residual": 2.5625443845645842e-11
+            },
+            "H12": {
+              "E_mix_V": 0.5980484935589583,
+              "d_Au_Pd_nm": 100.0,
+              "i_mix_abs_A": 4.1919173303326804e-11,
+              "i_mix_avg_A_per_m2": 0.0838383466066536,
+              "relative_balance_residual": 2.562513555501889e-11
+            },
+            "H8": {
+              "E_mix_V": 0.5980484864909119,
+              "d_Au_Pd_nm": 100.0,
+              "i_mix_abs_A": 4.191917645901038e-11,
+              "i_mix_avg_A_per_m2": 0.08383835291802075,
+              "relative_balance_residual": 2.5625441950166315e-11
+            }
+          }
+        }
+      ],
+      "description": "far-field convergence; H=10 versus H=12 controls pass",
+      "passed": true
+    },
+    "homogeneous_robin": {
+      "absolute_tolerance_phi_tilde": 0.002,
+      "analytic_phi_tilde_surface": -5.997655067983046,
+      "common_g": 0.8751029451499737,
+      "common_pzc_V": 0.93,
+      "description": "finite-H homogeneous Robin surface solution",
+      "farfield_lambda_D": 10.0,
+      "fem_phi_tilde_surface_max": -5.996646889986062,
+      "fem_phi_tilde_surface_min": -5.996646889986227,
+      "fem_surface_spread": 1.652011860642233e-13,
+      "max_abs_error_phi_tilde": 0.0010081779969839388,
+      "max_relative_error": 0.00016809536152984862,
+      "passed": true,
+      "relative_tolerance": 0.0005,
+      "test_potential_V": 0.6
+    },
+    "mesh_convergence": {
+      "base_h_bulk_lambda_D": 0.2,
+      "base_h_corner_lambda_D": 0.05,
+      "cases": [
+        {
+          "base": {
+            "E_mix_V": 0.6006820511512232,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.080263823770917e-11,
+            "i_mix_avg_A_per_m2": 0.08160527647541833,
+            "relative_balance_residual": 1.513572640496472e-11
+          },
+          "comparison_base_vs_refined": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 5.697625072298429e-06,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 9.124976803118594e-05
+          },
+          "d_Au_Pd_m": 0.0,
+          "d_Au_Pd_nm": 0.0,
+          "label": "d0",
+          "passed": true,
+          "refined": {
+            "E_mix_V": 0.6006877487762955,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.079891534614791e-11,
+            "i_mix_avg_A_per_m2": 0.08159783069229581,
+            "relative_balance_residual": 1.503826899012332e-11
+          }
+        },
+        {
+          "base": {
+            "E_mix_V": 0.5986626787667298,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.153630047113622e-11,
+            "i_mix_avg_A_per_m2": 0.08307260094227242,
+            "relative_balance_residual": 2.3940824210469526e-11
+          },
+          "comparison_base_vs_refined": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.5132803505846226e-05,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 0.0003033663787610734
+          },
+          "d_Au_Pd_m": 3.0412178890177212e-09,
+          "d_Au_Pd_nm": 3.0412178890177213,
+          "label": "one_lambda_D",
+          "passed": true,
+          "refined": {
+            "E_mix_V": 0.5986778115702357,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.152370357554975e-11,
+            "i_mix_avg_A_per_m2": 0.0830474071510995,
+            "relative_balance_residual": 2.379043350671083e-11
+          }
+        },
+        {
+          "base": {
+            "E_mix_V": 0.5980484934361088,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.191917335830542e-11,
+            "i_mix_avg_A_per_m2": 0.08383834671661083,
+            "relative_balance_residual": 2.5625443845645842e-11
+          },
+          "comparison_base_vs_refined": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.8097860670085453e-05,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 0.0003886670907893458
+          },
+          "d_Au_Pd_m": 1e-07,
+          "d_Au_Pd_nm": 100.0,
+          "label": "d100nm",
+          "passed": true,
+          "refined": {
+            "E_mix_V": 0.5980665912967789,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.190288708508639e-11,
+            "i_mix_avg_A_per_m2": 0.08380577417017276,
+            "relative_balance_residual": 2.548179846510062e-11
+          }
+        }
+      ],
+      "description": "base mesh versus 25-percent smaller h targets",
+      "passed": true,
+      "refined_h_bulk_lambda_D": 0.15000000000000002,
+      "refined_h_corner_lambda_D": 0.037500000000000006
+    },
+    "model": "Au|electrolyte gap|Pd",
+    "passed": true,
+    "runtime_seconds": 1.2202015410002787,
+    "thresholds": {
+      "E_mix_absolute_V": 0.0005,
+      "affine_field_absolute_phi_tilde": 1e-10,
+      "affine_field_relative_l2": 1e-11,
+      "homogeneous_surface_absolute_phi_tilde": 0.002,
+      "homogeneous_surface_relative": 0.0005,
+      "i_mix_relative": 0.01
+    },
+    "validation": "linear-PB FEM numerical validation"
+  }
+}

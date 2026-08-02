@@ -1,0 +1,76 @@
+{
+  "calculation_scope": {
+    "n_potentials": 1201,
+    "outside_saved_0_100nm_scan": true,
+    "potential_max_V": 1.02,
+    "potential_min_V": -0.02,
+    "production_N_modes": 4800,
+    "production_Nx": 20000,
+    "separation_nm": 1000.0,
+    "source_N_modes": 960,
+    "source_Nx": 5000,
+    "standard_scan_manifest_unchanged": true
+  },
+  "comparison": {
+    "I_mix_drop_percent": 29.787735741109913,
+    "I_mix_with_over_without": 0.7021226425889009,
+    "delta_E_1000nm_minus_saved_100nm_V": -1.5681091719565998e-06,
+    "delta_E_with_minus_without_V": 0.13178516758382142,
+    "delta_i_1000nm_minus_saved_100nm_relative": 4.286964454869313e-05
+  },
+  "current_definition": "Signed absolute half-reaction currents: I_Au > 0 and I_Pd < 0; the mixed-potential root is I_Au + I_Pd = 0.",
+  "display_current_conversion": "I_display in units of 10^-3 uA equals I_A multiplied by 1e9.",
+  "figure_type": "signed_absolute_half_reaction_polarization_schematic",
+  "linearized_PB_caveat": {
+    "interpretation": "linearized-PB internal geometry sensitivity",
+    "threshold": 1.0,
+    "threshold_exceeded": true,
+    "warnings": [
+      "Linearized-PB validity threshold exceeded; treat this run as an internal geometry-sensitivity result, not an absolute quantitative prediction."
+    ]
+  },
+  "pdf_generated": false,
+  "result_id": "20260802_144648",
+  "result_tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+  "source_files": {
+    "params_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/params.json",
+    "params_sha256": "5a444a2400a4e79938aaa1911ca8c7a9533387c15466dff7ed733dc4eda0443c",
+    "run_manifest_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/run_manifest.json",
+    "run_manifest_sha256": "3637ee9c95469ace7f98108339397229f0f180129197ed3ee4808d5c05a721c6",
+    "summary_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/summary.json",
+    "summary_sha256": "c5b61aa9587aab2a94d86abf85d2b79111421ba80afee65e4d5888a7fa4d996c"
+  },
+  "source_manifest_tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+  "source_result_contract": {
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+    "package_version": "0.3.0",
+    "result_schema_version": 2
+  },
+  "supporting_outputs": {
+    "convergence_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM_convergence.csv",
+    "curve_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM_curves.csv",
+    "effective_params_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM_effective_params.json",
+    "figure_png": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "figure_svg": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+  },
+  "with_EDL": {
+    "E_mix_V": 0.5987851675838214,
+    "I_Au_A": 4.127089323472036e-11,
+    "I_Pd_A": -4.127089323638622e-11,
+    "i_mix_abs_A": 4.127089323472036e-11,
+    "i_mix_avg_A_per_m2": 0.08254178646944071,
+    "i_mix_display_1e-3_uA": 0.04127089323472036,
+    "max_abs_phi_tilde": 6.019831589018242,
+    "relative_balance_residual": 2.018207112687705e-11
+  },
+  "without_EDL": {
+    "E_mix_V": 0.46699999999999997,
+    "I_Au_A": 5.878017703936211e-11,
+    "I_Pd_A": -5.878017703936211e-11,
+    "i_mix_abs_A": 5.878017703936211e-11,
+    "i_mix_avg_A_per_m2": 0.11756035407872421,
+    "i_mix_display_1e-3_uA": 0.05878017703936211,
+    "relative_balance_residual": 0.0
+  }
+}

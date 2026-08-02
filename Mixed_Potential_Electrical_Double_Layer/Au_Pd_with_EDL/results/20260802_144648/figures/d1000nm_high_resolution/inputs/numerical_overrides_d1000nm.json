@@ -1,0 +1,12 @@
+{
+  "numerical_override": {
+    "N_modes": 3840,
+    "Nx": 20001
+  },
+  "physical_override": {
+    "d_Au_Pd_m": 1.0000000000000002e-06,
+    "d_Au_Pd_nm": 1000.0
+  },
+  "source_result": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648",
+  "unchanged_physical_parameters": "All source physical parameters except d_Au_Pd are unchanged."
+}

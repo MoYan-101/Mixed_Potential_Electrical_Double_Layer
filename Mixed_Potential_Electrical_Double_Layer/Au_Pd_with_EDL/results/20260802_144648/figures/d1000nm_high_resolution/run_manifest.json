@@ -1,0 +1,31 @@
+{
+  "N_modes": 3840,
+  "Nx": 20001,
+  "command": "make_d1000nm_figure_set.py",
+  "created_local": "2026-08-02T17:51:51.151258+09:00",
+  "d_Au_Pd_nm": 1000.0,
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "far_gap_ringing_check": {
+    "definition": "surface Phi_s over x=75-975 nm, at least 50 nm from either metal/substrate junction",
+    "max_abs_phi_s_mV": 0.004810954696404654,
+    "passed": true,
+    "peak_to_peak_phi_s_mV": 0.009465452173630724,
+    "sample_count": 3601,
+    "visibility_threshold_mV": 0.02,
+    "x_range_nm": [
+      75.0,
+      975.0
+    ]
+  },
+  "formats": [
+    "png",
+    "svg"
+  ],
+  "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+  "model": "flush Au|uncharged insulating substrate|Pd",
+  "output_dir": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution",
+  "parent_result": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648",
+  "pdf_policy": "no PDF generated",
+  "result_schema_version": 2,
+  "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM"
+}

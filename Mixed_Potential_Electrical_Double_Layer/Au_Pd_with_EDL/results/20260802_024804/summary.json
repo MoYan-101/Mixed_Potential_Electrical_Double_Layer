@@ -1,0 +1,98 @@
+{
+  "debye_huckel_caveat": "Runs with max_abs_phi_tilde > 1 are linearized-PB internal geometry sensitivity results and are not claimed as absolute quantitative predictions.",
+  "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+  "gouy_chapman_analysis": {
+    "analysis_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_024804/gouy_chapman_analysis.json",
+    "csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_024804/csv/gouy_chapman_length_vs_separation.csv",
+    "interpretation": {
+      "comparison_rule": "Compare the empirical overlap decay lengths with both the Debye length and the Au/Pd charge-derived Gouy-Chapman ranges; do not attribute the overlap range to one GC scalar alone.",
+      "gap_topology": "The Au-Pd gap exposes a flush ideal uncharged insulating substrate with a homogeneous-Neumann electrostatic boundary, unlike the charged-support context of the paper.",
+      "role_in_this_model": "The Au/Pd Gouy-Chapman lengths are charge-derived diagnostics, not independent screening lengths in the linearized-PB equation."
+    },
+    "n_rows": 62
+  },
+  "model": "flush Au|uncharged insulating substrate|Pd",
+  "no_overlap_100nm_reference": {
+    "E_mix_V": 0.5987695032594279,
+    "I_Au_A": 4.1279707927911576e-11,
+    "I_Pd_A": -4.127970792959519e-11,
+    "condition": "with EDL",
+    "d_Au_Pd_nm": 100.00000000000001,
+    "dh_threshold_exceeded": true,
+    "i_mix_abs_A": 4.1279707927911576e-11,
+    "i_mix_avg_A_per_m2": 0.08255941585582315,
+    "max_abs_phi_tilde": 6.018932109085004,
+    "relative_balance_residual": 2.039278329963498e-11
+  },
+  "plateau_check": {
+    "E_tolerance_V": 0.0001,
+    "checked": true,
+    "delta_E_75_vs_100_V": 1.1168214131274112e-09,
+    "delta_i_relative_75_vs_100": 2.061361361480934e-08,
+    "i_relative_tolerance": 0.005,
+    "passed": true
+  },
+  "retained_cases": {
+    "0.0": {
+      "E_mix_V": 0.6006820511512232,
+      "I_Au_A": 4.080263823770917e-11,
+      "I_Pd_A": -4.0802638238944324e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 0.0,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.080263823770917e-11,
+      "i_mix_avg_A_per_m2": 0.08160527647541833,
+      "max_abs_phi_tilde": 5.984230304518736,
+      "relative_balance_residual": 1.513572640496472e-11
+    },
+    "10.0": {
+      "E_mix_V": 0.5988155272590002,
+      "I_Au_A": 4.1256513812359854e-11,
+      "I_Pd_A": -4.125651381402925e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 10.0,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.1256513812359854e-11,
+      "i_mix_avg_A_per_m2": 0.08251302762471971,
+      "max_abs_phi_tilde": 6.018098402116896,
+      "relative_balance_residual": 2.023186757076275e-11
+    },
+    "2.0": {
+      "E_mix_V": 0.599651095272607,
+      "I_Au_A": 4.0904516209084115e-11,
+      "I_Pd_A": -4.090451621051339e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 2.0,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.0904516209084115e-11,
+      "i_mix_avg_A_per_m2": 0.08180903241816823,
+      "max_abs_phi_tilde": 6.002944932927743,
+      "relative_balance_residual": 1.747090245831764e-11
+    },
+    "3.0": {
+      "E_mix_V": 0.5993752356517109,
+      "I_Au_A": 4.1002651793353804e-11,
+      "I_Pd_A": -4.100265179485991e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 3.0000000000000004,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.1002651793353804e-11,
+      "i_mix_avg_A_per_m2": 0.0820053035867076,
+      "max_abs_phi_tilde": 6.00794958564777,
+      "relative_balance_residual": 1.8365988801338926e-11
+    }
+  },
+  "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+  "without_edl_reference": {
+    "E_mix_V": 0.46699999999999997,
+    "I_Au_A": 5.878017703936211e-11,
+    "I_Pd_A": -5.878017703936211e-11,
+    "condition": "w/o EDL",
+    "d_Au_Pd_nm": 0.0,
+    "dh_threshold_exceeded": false,
+    "i_mix_abs_A": 5.878017703936211e-11,
+    "i_mix_avg_A_per_m2": 0.11756035407872421,
+    "max_abs_phi_tilde": 0.0,
+    "relative_balance_residual": 0.0
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "description": "Semi-quantitative EDL scheme for Figure 5 C_H and PZC scans; no IHP is represented.",
+  "distance_lambda_max": 5.0,
+  "n_distance": 180,
+  "output_tag": "same_length_i0_alpha050_au25_pd25_20260528_111255",
+  "profile_formula": "side-average phi_s(y) = (RT/F) sum_n c_side,n A_n exp(-gamma_n y/lambda_D); the compact-side guide line is a linear OHP tangent and does not introduce an IHP.",
+  "scans": [
+    {
+      "baseline": 0.2,
+      "display_factor": 100.0,
+      "display_unit": "$\\mu$F cm$^{-2}$",
+      "group": "CH",
+      "high": 1.0,
+      "key": "Cdl_Au",
+      "low": 0.05,
+      "side": "Au"
+    },
+    {
+      "baseline": 0.4,
+      "display_factor": 100.0,
+      "display_unit": "$\\mu$F cm$^{-2}$",
+      "group": "CH",
+      "high": 1.0,
+      "key": "Cdl_Pd",
+      "low": 0.05,
+      "side": "Pd"
+    },
+    {
+      "baseline": 0.93,
+      "display_factor": 1.0,
+      "display_unit": "V",
+      "group": "PZC",
+      "high": 1.23,
+      "key": "pzc_Au",
+      "low": 0.63,
+      "side": "Au"
+    },
+    {
+      "baseline": 0.78,
+      "display_factor": 1.0,
+      "display_unit": "V",
+      "group": "PZC",
+      "high": 1.08,
+      "key": "pzc_Pd",
+      "low": 0.48,
+      "side": "Pd"
+    }
+  ],
+  "source_params": "Figures/Figure_5/Heatmap/inputs/params_same_length_i0_alpha050_au25_pd25_20260528_111255.json",
+  "source_summary": "Figures/Figure_5/Heatmap/inputs/summary_compare_same_length_i0_alpha050_au25_pd25_20260528_111255.json",
+  "visible_naming_note": "Use C_H in figure labels and output names; keep Cdl_* only as internal solver keys."
+}
