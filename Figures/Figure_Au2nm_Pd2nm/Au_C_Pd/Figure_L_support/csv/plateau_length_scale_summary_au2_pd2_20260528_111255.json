@@ -1,0 +1,36 @@
+{
+  "E_inf_V": 0.5974237417906718,
+  "LGC_definition": "2 * epsilon_s * R * T / (F * mean_support_abs_sigma_C)",
+  "L_support_equals_L_GC_C_nm": 0.8637698317372073,
+  "amplitude_V": 0.01897680165853787,
+  "debye_huckel_caveat": "L_GC is a charge-derived diagnostic within the linearized-PB model; max_abs_phi_tilde may exceed 1.",
+  "decay_length_nm": 2.14436390286999,
+  "fit_covariance": [
+    [
+      2.7145020488442037e-11,
+      1.2925742886844955e-09,
+      -7.412757361565638e-08
+    ],
+    [
+      1.2925742886844955e-09,
+      7.954342487465467e-08,
+      -4.282484194429926e-06
+    ],
+    [
+      -7.412757361565638e-08,
+      -4.282484194429926e-06,
+      0.00023484470470914038
+    ]
+  ],
+  "fit_r_squared": 0.9999879154240982,
+  "fit_range_nm": [
+    5.0,
+    10.0
+  ],
+  "lambda_D_nm": 3.0412178890177213,
+  "max_fit_residual_V": 3.07581204916918e-06,
+  "model": "E_mix_with(L) = E_inf + amplitude * exp(-L/decay_length)",
+  "plateau_continuous_nm": 11.24890922416457,
+  "plateau_first_sampled_nm": null,
+  "plateau_tolerance_V": 0.0001
+}

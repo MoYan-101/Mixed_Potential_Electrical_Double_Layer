@@ -1,0 +1,205 @@
+{
+  "debye_huckel_warning_retained": true,
+  "figure_counts": {
+    "Figure_3": {
+      "png": 14,
+      "svg": 14
+    },
+    "Figure_L_support_OFAT": {
+      "png": 8,
+      "svg": 8
+    },
+    "Figure_RP": {
+      "png": 14,
+      "svg": 14
+    },
+    "total_legacy": {
+      "pdf": 0,
+      "png": 36,
+      "svg": 36
+    }
+  },
+  "fourier_gibbs_warning_retained": true,
+  "mixed_current_balance": [
+    {
+      "L_support_nm": 0.0,
+      "with_edl": 5.309790236404263e-13,
+      "without_edl": 1.7950514385510672e-15
+    },
+    {
+      "L_support_nm": 1.0,
+      "with_edl": 2.3681901988809874e-14,
+      "without_edl": 1.7950514385510672e-15
+    },
+    {
+      "L_support_nm": 2.0,
+      "with_edl": 1.2239834892002476e-14,
+      "without_edl": 4.308123452522561e-15
+    },
+    {
+      "L_support_nm": 3.0,
+      "with_edl": 6.393720961921073e-16,
+      "without_edl": 6.0134223191460756e-15
+    },
+    {
+      "L_support_nm": 10.0,
+      "with_edl": 2.893797796348427e-15,
+      "without_edl": 6.0134223191460756e-15
+    },
+    {
+      "L_support_nm": 1000.0,
+      "with_edl": 4.015026462861269e-15,
+      "without_edl": 3.033636931151246e-13
+    }
+  ],
+  "model_id": "legacy_Au_C_Pd_linear_PB_piecewise_Robin",
+  "numerical_convergence": [
+    {
+      "E_mix_gl128_V": 0.6249104327869085,
+      "E_mix_gl64_V": 0.6249104327869085,
+      "E_mix_high_modes_V": 0.6249104327869085,
+      "E_mix_low_modes_V": 0.6249104327869085,
+      "E_tolerance_mV": 0.002,
+      "L_support_nm": 0.0,
+      "high_N_modes": 960,
+      "high_gl_order": 128,
+      "i_mix_avg_gl128_A_per_m2": 0.06649993987830802,
+      "i_mix_avg_gl64_A_per_m2": 0.06649996256895499,
+      "i_mix_avg_high_modes_A_per_m2": 0.06649993987830802,
+      "i_mix_avg_low_modes_A_per_m2": 0.06650001881053816,
+      "i_tolerance_percent": 0.005,
+      "low_N_modes": 480,
+      "low_gl_order": 64,
+      "mode_delta_E_mV": 0.0,
+      "mode_delta_i_percent": 0.000118695049343917,
+      "passed": true,
+      "quadrature_delta_E_mV": 0.0,
+      "quadrature_delta_i_percent": 3.412129284875784e-05,
+      "relative_balance_high": 5.309790236404263e-13
+    },
+    {
+      "E_mix_gl128_V": 0.6119044004353885,
+      "E_mix_gl64_V": 0.6119044727540525,
+      "E_mix_high_modes_V": 0.6119044004353885,
+      "E_mix_low_modes_V": 0.6119042770475631,
+      "E_tolerance_mV": 0.002,
+      "L_support_nm": 1.0,
+      "high_N_modes": 960,
+      "high_gl_order": 128,
+      "i_mix_avg_gl128_A_per_m2": 0.06037129665539306,
+      "i_mix_avg_gl64_A_per_m2": 0.06037119680232855,
+      "i_mix_avg_high_modes_A_per_m2": 0.06037129665539306,
+      "i_mix_avg_low_modes_A_per_m2": 0.06037149479946391,
+      "i_tolerance_percent": 0.005,
+      "low_N_modes": 480,
+      "low_gl_order": 64,
+      "mode_delta_E_mV": 0.00012338782540144422,
+      "mode_delta_i_percent": 0.00032820799205073633,
+      "passed": true,
+      "quadrature_delta_E_mV": 7.231866394619146e-05,
+      "quadrature_delta_i_percent": 0.00016539851749391445,
+      "relative_balance_high": 2.3681901988809874e-14
+    },
+    {
+      "E_mix_gl128_V": 0.6057057326070008,
+      "E_mix_gl64_V": 0.6057057030985606,
+      "E_mix_high_modes_V": 0.6057057326070008,
+      "E_mix_low_modes_V": 0.6057056040110216,
+      "E_tolerance_mV": 0.002,
+      "L_support_nm": 2.0,
+      "high_N_modes": 960,
+      "high_gl_order": 128,
+      "i_mix_avg_gl128_A_per_m2": 0.05861936925863239,
+      "i_mix_avg_gl64_A_per_m2": 0.058619408751517894,
+      "i_mix_avg_high_modes_A_per_m2": 0.05861936925863239,
+      "i_mix_avg_low_modes_A_per_m2": 0.058619629502807004,
+      "i_tolerance_percent": 0.005,
+      "low_N_modes": 480,
+      "low_gl_order": 64,
+      "mode_delta_E_mV": 0.0001285959791985647,
+      "mode_delta_i_percent": 0.0004439539738144362,
+      "passed": true,
+      "quadrature_delta_E_mV": 2.9508440135828096e-05,
+      "quadrature_delta_i_percent": 6.737168856639322e-05,
+      "relative_balance_high": 1.2239834892002476e-14
+    },
+    {
+      "E_mix_gl128_V": 0.6023350752719744,
+      "E_mix_gl64_V": 0.6023349971145234,
+      "E_mix_high_modes_V": 0.6023350752719744,
+      "E_mix_low_modes_V": 0.6023348037418993,
+      "E_tolerance_mV": 0.002,
+      "L_support_nm": 3.0,
+      "high_N_modes": 960,
+      "high_gl_order": 128,
+      "i_mix_avg_gl128_A_per_m2": 0.05775933090201933,
+      "i_mix_avg_gl64_A_per_m2": 0.05775943323778796,
+      "i_mix_avg_high_modes_A_per_m2": 0.05775933090201933,
+      "i_mix_avg_low_modes_A_per_m2": 0.05775978205412029,
+      "i_tolerance_percent": 0.005,
+      "low_N_modes": 480,
+      "low_gl_order": 64,
+      "mode_delta_E_mV": 0.0002715300750910643,
+      "mode_delta_i_percent": 0.0007810834544573606,
+      "passed": true,
+      "quadrature_delta_E_mV": 7.815745095562932e-05,
+      "quadrature_delta_i_percent": 0.0001771758531783009,
+      "relative_balance_high": 6.393720961921073e-16
+    },
+    {
+      "E_mix_gl128_V": 0.5976004686075482,
+      "E_mix_gl64_V": 0.5976007307636929,
+      "E_mix_high_modes_V": 0.5976004686075482,
+      "E_mix_low_modes_V": 0.5975993354665048,
+      "E_tolerance_mV": 0.002,
+      "L_support_nm": 10.0,
+      "high_N_modes": 960,
+      "high_gl_order": 128,
+      "i_mix_avg_gl128_A_per_m2": 0.056515985430357824,
+      "i_mix_avg_gl64_A_per_m2": 0.056515654113288766,
+      "i_mix_avg_high_modes_A_per_m2": 0.056515985430357824,
+      "i_mix_avg_low_modes_A_per_m2": 0.05651786061252017,
+      "i_tolerance_percent": 0.005,
+      "low_N_modes": 480,
+      "low_gl_order": 64,
+      "mode_delta_E_mV": 0.0011331410434411993,
+      "mode_delta_i_percent": 0.0033178576507029186,
+      "passed": true,
+      "quadrature_delta_E_mV": 0.00026215614468139137,
+      "quadrature_delta_i_percent": 0.0005862394663142599,
+      "relative_balance_high": 2.893797796348427e-15
+    },
+    {
+      "E_mix_gl128_V": 0.5973613862344098,
+      "E_mix_gl64_V": 0.59736138623441,
+      "E_mix_high_modes_V": 0.5973613862344098,
+      "E_mix_low_modes_V": 0.5973407260717296,
+      "E_tolerance_mV": 0.03,
+      "L_support_nm": 1000.0,
+      "high_N_modes": 7680,
+      "high_gl_order": 128,
+      "i_mix_avg_gl128_A_per_m2": 0.05650122135106419,
+      "i_mix_avg_gl64_A_per_m2": 0.05650122135106412,
+      "i_mix_avg_high_modes_A_per_m2": 0.05650122135106419,
+      "i_mix_avg_low_modes_A_per_m2": 0.056534885146100035,
+      "i_tolerance_percent": 0.1,
+      "low_N_modes": 5760,
+      "low_gl_order": 64,
+      "mode_delta_E_mV": 0.020660162680208316,
+      "mode_delta_i_percent": 0.059545172770494564,
+      "passed": true,
+      "quadrature_delta_E_mV": 2.220446049250313e-13,
+      "quadrature_delta_i_percent": 1.228096267298927e-13,
+      "relative_balance_high": 4.015026462861269e-15
+    }
+  ],
+  "passed": true,
+  "phi_2d_surface_max_errors": [
+    7.993605777301127e-15,
+    2.220446049250313e-14,
+    1.7319479184152442e-14,
+    2.1316282072803006e-14,
+    1.865174681370263e-14,
+    2.398081733190338e-14
+  ]
+}
