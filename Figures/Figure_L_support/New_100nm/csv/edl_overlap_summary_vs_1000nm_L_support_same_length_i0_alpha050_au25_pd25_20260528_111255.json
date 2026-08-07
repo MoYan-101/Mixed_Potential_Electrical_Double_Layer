@@ -1,0 +1,72 @@
+{
+  "absolute_tolerances": {
+    "abs_delta_E_mix_mV": 0.1,
+    "abs_delta_i_mix_avg_percent_of_reference": 0.1,
+    "delta_phi_RP_active_rms_mV": 0.1
+  },
+  "combined_absolute_L_GC_C_nm": 3.7692636155141535,
+  "combined_absolute_continuous_nm": 10.523984942829255,
+  "combined_absolute_first_sampled_nm": 11.0,
+  "combined_absolute_over_L_GC_C": 2.7920533070472735,
+  "combined_absolute_over_lambda_D": 3.460450821637243,
+  "combined_five_percent_L_GC_C_nm": 3.630025934159893,
+  "combined_five_percent_continuous_nm": 9.185244474772672,
+  "combined_five_percent_first_sampled_nm": 10.0,
+  "combined_five_percent_over_L_GC_C": 2.530352300884715,
+  "combined_five_percent_over_lambda_D": 3.0202520207256183,
+  "definitions": {
+    "absolute_negligible_boundary": "all three absolute tolerances are satisfied persistently",
+    "delta_E_mix": "E_mix_with(L_support) - E_mix_with(1000 nm)",
+    "delta_i_mix_avg": "i_mix_avg_with(L_support) - i_mix_avg_with(1000 nm)",
+    "delta_phi_RP_Au_or_Pd": "material-mean phi_RP(L_support) - material-mean phi_RP(1000 nm), aligned by material rather than global x",
+    "delta_phi_RP_active_rms": "length-weighted RMS of the Au and Pd material-mean delta_phi_RP values",
+    "five_percent_boundary": "all three overlap magnitudes are <= 5% of their respective L_support=0 nm contact values"
+  },
+  "lambda_D_nm": 3.0412178890177213,
+  "metrics": {
+    "E_mix": {
+      "absolute_tolerance": 0.1,
+      "absolute_tolerance_continuous_nm": 8.150328870155985,
+      "absolute_tolerance_first_sampled_nm": 9.0,
+      "contact_overlap_magnitude": 2.726740145006845,
+      "e_fold_continuous_nm": 2.183547118215907,
+      "e_fold_first_sampled_nm": 2.5,
+      "five_percent_continuous_nm": 7.239985715317938,
+      "five_percent_first_sampled_nm": 8.0,
+      "units": "mV"
+    },
+    "i_mix_avg": {
+      "absolute_tolerance": 0.1,
+      "absolute_tolerance_continuous_nm": 10.523984942829255,
+      "absolute_tolerance_first_sampled_nm": 11.0,
+      "contact_overlap_magnitude": 2.6778713863551364,
+      "e_fold_continuous_nm": 3.202531117753458,
+      "e_fold_first_sampled_nm": 3.5,
+      "five_percent_continuous_nm": 9.185244474772672,
+      "five_percent_first_sampled_nm": 10.0,
+      "units": "% of 1000 nm reference"
+    },
+    "phi_RP_active_rms": {
+      "absolute_tolerance": 0.1,
+      "absolute_tolerance_continuous_nm": 6.607091372742325,
+      "absolute_tolerance_first_sampled_nm": 7.0,
+      "contact_overlap_magnitude": 2.027708933200131,
+      "e_fold_continuous_nm": 2.0239243362370765,
+      "e_fold_first_sampled_nm": 2.5,
+      "five_percent_continuous_nm": 6.575043900761127,
+      "five_percent_first_sampled_nm": 7.0,
+      "units": "mV"
+    }
+  },
+  "model_caveat": "These are operational overlap boundaries within the present linearized-PB model, not universal sharp transitions.",
+  "numerical_caveat": "Material-mean phi_RP is used because pointwise interface maxima are contaminated by unequal Fourier resolution and Gibbs ringing.",
+  "reference": {
+    "E_mix_with_V": 0.5979682539720167,
+    "L_support_nm": 1000.0,
+    "N_modes": 3840,
+    "Nx": 7000,
+    "i_mix_avg_with_A_per_m2": 0.08383301366598922,
+    "phi_RP_Au_mean_mV": -150.26591623742266,
+    "phi_RP_Pd_mean_mV": -113.14444740617552
+  }
+}

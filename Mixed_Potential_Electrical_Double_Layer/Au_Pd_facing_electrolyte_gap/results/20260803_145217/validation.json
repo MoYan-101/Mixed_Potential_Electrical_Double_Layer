@@ -1,0 +1,28 @@
+{
+  "all_gaps_strictly_positive": true,
+  "all_nonlinear_pb_solves_successful": true,
+  "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+  "large_gap_gouy_chapman_stern_comparison": {
+    "delta_E_mix_V": 0.0,
+    "delta_phi_RP_Au_tilde": 0.0,
+    "delta_phi_RP_Pd_tilde": -4.440892098500626e-16,
+    "gap_nm": 1000.0,
+    "relative_i_mix_difference": 3.1086244689504383e-15
+  },
+  "large_gap_reference": {
+    "gap_nm": 1000.0,
+    "interpretation": "independent-planar-EDL limit",
+    "overlap_factor": 1.5746459512180734e-143
+  },
+  "max_abs_integrated_charge_residual": 2.7591280371552784e-09,
+  "max_abs_robin_residual": 3.552713678800501e-15,
+  "max_first_integral_span": 6.666288854262348e-09,
+  "max_nonlinear_pb_rms_residual": 9.989668655916909e-09,
+  "max_relative_current_balance_residual": 3.480974820123773e-13,
+  "numerical_convergence": {
+    "max_abs_delta_E_mix_V": 2.8048674494129955e-12,
+    "max_abs_delta_phi_RP_tilde": 1.4741985410182679e-10,
+    "max_abs_relative_i_mix_difference": 1.9094059666713292e-11
+  },
+  "passed": true
+}

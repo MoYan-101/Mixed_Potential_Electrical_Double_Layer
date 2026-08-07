@@ -1,0 +1,61 @@
+{
+  "csv": [
+    "csv/summary_cases.csv",
+    "csv/figure3_endpoint_metrics.csv",
+    "csv/gap_profile_d0001nm.csv",
+    "csv/gap_profile_d0002nm.csv",
+    "csv/gap_profile_d0003nm.csv",
+    "csv/gap_profile_d0005nm.csv",
+    "csv/gap_profile_d0010nm.csv",
+    "csv/gap_profile_d1000nm.csv",
+    "csv/nonlinear_pb_convergence_check.csv"
+  ],
+  "figure3": [
+    "figures/Figure_3/figure_3_panel_a_emix_imix_vs_gap_facing_gap.png",
+    "figures/Figure_3/figure_3_panel_a_emix_imix_vs_gap_facing_gap.svg",
+    "figures/Figure_3/figure_3_panel_b_solution_potential_profiles_facing_gap.png",
+    "figures/Figure_3/figure_3_panel_b_solution_potential_profiles_facing_gap.svg",
+    "figures/Figure_3/figure_3_panel_c_reactant_concentration_profiles_facing_gap.png",
+    "figures/Figure_3/figure_3_panel_c_reactant_concentration_profiles_facing_gap.svg",
+    "figures/Figure_3/figure_3_panel_d_interfacial_overpotential_vs_gap.png",
+    "figures/Figure_3/figure_3_panel_d_interfacial_overpotential_vs_gap.svg",
+    "figures/Figure_3/figure_3_panel_e_interfacial_current_density_vs_gap.png",
+    "figures/Figure_3/figure_3_panel_e_interfacial_current_density_vs_gap.svg",
+    "figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_facing_gap.png",
+    "figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_facing_gap.svg"
+  ],
+  "metadata": [
+    "params.json",
+    "derived.json",
+    "summary.json",
+    "validation.json",
+    "reference_scope.json",
+    "nonlinear_pb_convergence.json"
+  ],
+  "rp_2d": [
+    "figures/rp_2d/facing_solution_potential_2d_d0001nm.png",
+    "figures/rp_2d/facing_solution_potential_2d_d0001nm.svg",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0001nm.png",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0001nm.svg",
+    "figures/rp_2d/facing_solution_potential_2d_d0002nm.png",
+    "figures/rp_2d/facing_solution_potential_2d_d0002nm.svg",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0002nm.png",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0002nm.svg",
+    "figures/rp_2d/facing_solution_potential_2d_d0003nm.png",
+    "figures/rp_2d/facing_solution_potential_2d_d0003nm.svg",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0003nm.png",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0003nm.svg",
+    "figures/rp_2d/facing_solution_potential_2d_d0005nm.png",
+    "figures/rp_2d/facing_solution_potential_2d_d0005nm.svg",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0005nm.png",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0005nm.svg",
+    "figures/rp_2d/facing_solution_potential_2d_d0010nm.png",
+    "figures/rp_2d/facing_solution_potential_2d_d0010nm.svg",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0010nm.png",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d0010nm.svg",
+    "figures/rp_2d/facing_solution_potential_2d_d1000nm.png",
+    "figures/rp_2d/facing_solution_potential_2d_d1000nm.svg",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d1000nm.png",
+    "figures/rp_2d/facing_phi_s_reactants_2d_d1000nm.svg"
+  ]
+}

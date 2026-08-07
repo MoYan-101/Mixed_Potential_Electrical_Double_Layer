@@ -1,0 +1,21 @@
+{
+  "created_local": "2026-08-03T14:00:21.183449+09:00",
+  "debye_huckel_caveat": {
+    "max_abs_phi_tilde": 5.9826611151919336,
+    "threshold": 1.0,
+    "threshold_exceeded": true
+  },
+  "electrolyte_reference": "separate local half-spaces with a common bulk solution-potential reference",
+  "electronic_constraint": "ideal wire; shared E_mix; I_Au + I_Pd = 0",
+  "electrostatic_backend": "analytic_independent_planar_linear_pb",
+  "figure_counts": {
+    "pdf": 0,
+    "png": 8,
+    "svg": 8
+  },
+  "model_id": "independent_planar_edls_shared_mixed_potential",
+  "output_path_policy": "artifact paths are relative to run root",
+  "python": "3.14.6",
+  "result_schema_version": 1,
+  "topology_id": "two_independent_planar_half_spaces"
+}

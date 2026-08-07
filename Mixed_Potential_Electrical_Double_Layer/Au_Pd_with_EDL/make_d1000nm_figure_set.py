@@ -510,8 +510,8 @@ def _plot_figure3_cut_axis(
         {
             "panel": "b",
             "stem": "solution_potential_y0",
-            "title": "Solution potential along y = 0",
-            "ylabel": r"$\phi_s(x,y=0)$ (V)",
+            "title": r"Solution potential along $\mathit{y}=0$",
+            "ylabel": r"$\mathit{\phi}_{\mathrm{RP}}(\mathit{x})$ (V)",
             "plot": lambda ax: (
                 ax.plot(data.x_nm, data.phi_s_V, color=COLORS["with_edl"], lw=2.0, label="with EDL", zorder=4),
                 ax.plot(data.x_nm, np.zeros_like(data.x_nm), color=COLORS["without_edl"], lw=1.8, label="w/o EDL", zorder=3),
@@ -522,11 +522,11 @@ def _plot_figure3_cut_axis(
         {
             "panel": "c",
             "stem": "reactant_concentration_y0",
-            "title": "Reactant concentration along y = 0",
-            "ylabel": r"$c_i/c_{\mathrm{bulk}}$ (-)",
+            "title": r"Reactant concentration along $\mathit{y}=0$",
+            "ylabel": r"$\mathit{c}_{\mathit{i}}/\mathit{c}_{\mathrm{bulk}}$ (-)",
             "plot": lambda ax: (
-                ax.plot(data.x_nm, data.c_red1, color=COLORS["red1_i1"], lw=2.0, label=r"$c_{\mathrm{Red1}}/c_{\mathrm{bulk}}$ (with EDL)", zorder=4),
-                ax.plot(data.x_nm, data.c_ox2, color=COLORS["ox2_i2"], lw=2.0, label=r"$c_{\mathrm{Ox2}}/c_{\mathrm{bulk}}$ (with EDL)", zorder=4),
+                ax.plot(data.x_nm, data.c_red1, color=COLORS["red1_i1"], lw=2.0, label=r"$\mathit{c}_{\mathrm{Red1}}/\mathit{c}_{\mathrm{bulk}}$ (with EDL)", zorder=4),
+                ax.plot(data.x_nm, data.c_ox2, color=COLORS["ox2_i2"], lw=2.0, label=r"$\mathit{c}_{\mathrm{Ox2}}/\mathit{c}_{\mathrm{bulk}}$ (with EDL)", zorder=4),
                 ax.plot(data.x_nm, np.ones_like(data.x_nm), color=COLORS["without_edl"], lw=1.6, ls=(0, (4, 2)), label="w/o EDL", zorder=3),
             ),
             "ylim_arrays": [data.c_red1[active_mask], data.c_ox2[active_mask], np.asarray([1.0])],
@@ -537,7 +537,7 @@ def _plot_figure3_cut_axis(
             "panel": "d",
             "stem": "local_overpotential",
             "title": "Local overpotential at RP",
-            "ylabel": r"Local overpotential, $\eta$ (V)",
+            "ylabel": r"$\mathit{\eta}(\mathit{x})$ (V)",
             "plot": lambda ax: (
                 ax.plot(data.x_nm, data.eta_with, color=COLORS["with_edl"], lw=2.0, label="with EDL", zorder=4),
                 ax.plot(data.x_nm, data.eta_no, color=COLORS["without_edl"], lw=1.8, label="w/o EDL", zorder=3),
@@ -549,12 +549,12 @@ def _plot_figure3_cut_axis(
             "panel": "e",
             "stem": "local_current_density",
             "title": "Local current density at RP",
-            "ylabel": r"Local current density (A/m$^2$)",
+            "ylabel": r"$\mathit{i}(\mathit{x})$ (A/m$^2$)",
             "plot": lambda ax: (
-                ax.plot(data.x_nm, data.j_au_with, color=COLORS["red1_i1"], lw=2.0, label=r"$i_1$ (Au), with EDL", zorder=5),
-                ax.plot(data.x_nm, data.j_pd_with, color=COLORS["ox2_i2"], lw=2.0, label=r"$i_2$ (Pd), with EDL", zorder=5),
-                ax.plot(data.x_nm, data.j_au_no, color=COLORS["red1_i1"], lw=1.7, ls=(0, (4, 2)), label=r"$i_1$ (Au), w/o EDL", zorder=4),
-                ax.plot(data.x_nm, data.j_pd_no, color=COLORS["ox2_i2"], lw=1.7, ls=(0, (4, 2)), label=r"$i_2$ (Pd), w/o EDL", zorder=4),
+                ax.plot(data.x_nm, data.j_au_with, color=COLORS["red1_i1"], lw=2.0, label=r"$\mathit{i}_1$ (Au), with EDL", zorder=5),
+                ax.plot(data.x_nm, data.j_pd_with, color=COLORS["ox2_i2"], lw=2.0, label=r"$\mathit{i}_2$ (Pd), with EDL", zorder=5),
+                ax.plot(data.x_nm, data.j_au_no, color=COLORS["red1_i1"], lw=1.7, ls=(0, (4, 2)), label=r"$\mathit{i}_1$ (Au), w/o EDL", zorder=4),
+                ax.plot(data.x_nm, data.j_pd_no, color=COLORS["ox2_i2"], lw=1.7, ls=(0, (4, 2)), label=r"$\mathit{i}_2$ (Pd), w/o EDL", zorder=4),
             ),
             "ylim_arrays": [
                 data.j_au_with[active_mask],
@@ -645,7 +645,7 @@ def _plot_figure3_cut_axis(
             fig.text(
                 0.575,
                 0.875,
-                rf"$d_{{\mathrm{{Au-Pd}}}}$ = {data.d_nm:g} nm; 990 nm omitted",
+                rf"$\mathit{{d}}_{{\mathrm{{Au-Pd}}}}$ = {data.d_nm:g} nm; 990 nm omitted",
                 ha="center",
                 va="center",
                 fontsize=6.4,
@@ -925,40 +925,6 @@ def _add_material_lane_window(
         )
 
 
-def _add_material_schematic_bar(ax: plt.Axes) -> None:
-    """Draw the compact Au/C/Pd model bar using the supplied reference palette."""
-
-    segments = (
-        ("Au", 0.00, 0.42, RP_MODEL_AU_COLOR, COLORS["dark"]),
-        ("C", 0.42, 0.60, RP_MODEL_C_COLOR, "white"),
-        ("Pd", 0.60, 1.00, RP_MODEL_PD_COLOR, "white"),
-    )
-    for label, left, right, face, text_color in segments:
-        ax.add_patch(
-            Rectangle(
-                (left, 0.0),
-                right - left,
-                1.0,
-                facecolor=face,
-                edgecolor="white",
-                linewidth=0.8,
-            )
-        )
-        ax.text(
-            0.5 * (left + right),
-            0.5,
-            label,
-            ha="center",
-            va="center",
-            fontsize=8.3,
-            fontweight="bold",
-            color=text_color,
-        )
-    ax.set_xlim(0.0, 1.0)
-    ax.set_ylim(0.0, 1.0)
-    ax.set_axis_off()
-
-
 def _map_ticks(fields: Mapping[str, Any], window_index: int) -> list[float]:
     xmin = float(fields["x_nm"][window_index][0])
     xmax = float(fields["x_nm"][window_index][-1])
@@ -1149,10 +1115,10 @@ def _plot_composite_active_zoom(
     with plt.rc_context(PUBLICATION_RCPARAMS):
         fig = plt.figure(figsize=RP_COMPOSITE_FIGSIZE)
         grid = fig.add_gridspec(
-            nrows=4,
+            nrows=3,
             ncols=3,
             width_ratios=(1.0, 1.0, 0.070),
-            height_ratios=(1.0, 1.0, 1.0, 0.12),
+            height_ratios=(1.0, 1.0, 1.0),
             hspace=0.31,
             wspace=0.10,
             left=0.16,
@@ -1206,9 +1172,6 @@ def _plot_composite_active_zoom(
             colorbar.set_label(cbar_label, labelpad=5)
             colorbar.ax.tick_params(length=2.8, width=0.75, labelsize=7.5, pad=2.2)
             colorbar.outline.set_linewidth(0.8)
-        lane_axis = fig.add_subplot(grid[3, 0:2])
-        fig.add_subplot(grid[3, 2]).set_axis_off()
-        _add_material_schematic_bar(lane_axis)
         fig.text(
             0.16,
             0.985,
@@ -1224,7 +1187,7 @@ def _plot_composite_active_zoom(
         )
         fig.text(
             0.52,
-            0.112,
+            0.025,
             "x (nm)",
             ha="center",
             va="center",

@@ -317,8 +317,14 @@ def _panel_a(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
     x = np.array([0.0, 1.0])
     colors = [COLORS["without_edl"], COLORS["with_edl"]]
     values = ((data.E_mix_no, data.E_mix_with), (data.i_mix_no, data.i_mix_with))
-    titles = (r"$E_{\mathrm{mix}}$", r"$\bar{i}_{\mathrm{mix}}$")
-    ylabels = (r"$E_{\mathrm{mix}}$ (V)", r"$\bar{i}_{\mathrm{mix}}$ (A/m$^2$)")
+    titles = (
+        r"$\mathit{E}_{\mathrm{mix}}$",
+        r"$\bar{\mathit{i}}_{\mathrm{mix}}$",
+    )
+    ylabels = (
+        r"$\mathit{E}_{\mathrm{mix}}$ (V)",
+        r"$\bar{\mathit{i}}_{\mathrm{mix}}$ (A/m$^2$)",
+    )
     for ax, vals, title, ylabel in zip(axes, values, titles, ylabels, strict=True):
         ax.bar(x, vals, width=0.58, color=colors, edgecolor=COLORS["dark"], linewidth=0.8)
         _style_axes(ax, "", ylabel, title)
@@ -334,7 +340,12 @@ def _panel_b(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
     ax.plot(data.x_nm, data.phi_s_V, color=COLORS["with_edl"], lw=2.0, label="with EDL", zorder=3)
     ax.plot(data.x_nm, np.zeros_like(data.x_nm), color=COLORS["without_edl"], lw=1.8, label="w/o EDL", zorder=2)
     _add_substrate_gap(ax, data)
-    _style_axes(ax, "x (nm)", r"$\phi_s(x,y=0)$ (V)", "Solution potential along y = 0")
+    _style_axes(
+        ax,
+        "x (nm)",
+        r"$\mathit{\phi}_{\mathrm{RP}}(\mathit{x})$ (V)",
+        r"Solution potential along $\mathit{y}=0$",
+    )
     ax.text(
         0.5 * (data.L_Au_nm + data.L_Pd_start_nm),
         0.38,
@@ -352,14 +363,19 @@ def _panel_b(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
 
 def _panel_c(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
     fig, ax = _single_axis()
-    ax.plot(data.x_nm, data.c_red1, color=COLORS["red1_i1"], lw=2.0, label=r"$c_{\mathrm{Red1}}/c_{\mathrm{bulk}}$ (with EDL)", zorder=3)
-    ax.plot(data.x_nm, data.c_ox2, color=COLORS["ox2_i2"], lw=2.0, label=r"$c_{\mathrm{Ox2}}/c_{\mathrm{bulk}}$ (with EDL)", zorder=3)
+    ax.plot(data.x_nm, data.c_red1, color=COLORS["red1_i1"], lw=2.0, label=r"$\mathit{c}_{\mathrm{Red1}}/\mathit{c}_{\mathrm{bulk}}$ (with EDL)", zorder=3)
+    ax.plot(data.x_nm, data.c_ox2, color=COLORS["ox2_i2"], lw=2.0, label=r"$\mathit{c}_{\mathrm{Ox2}}/\mathit{c}_{\mathrm{bulk}}$ (with EDL)", zorder=3)
     ax.plot(data.x_nm, np.ones_like(data.x_nm), color=COLORS["without_edl"], lw=1.6, ls=(0, (4, 2)), label="w/o EDL", zorder=2)
     _add_substrate_gap(ax, data)
     ax.set_yscale("log")
     positive = np.concatenate((data.c_red1[data.c_red1 > 0], data.c_ox2[data.c_ox2 > 0], [1.0]))
     ax.set_ylim(float(np.min(positive)) / 1.25, float(np.max(positive)) * 8.0)
-    _style_axes(ax, "x (nm)", r"$c_i/c_{\mathrm{bulk}}$ (-)", "Reactant concentration along y = 0")
+    _style_axes(
+        ax,
+        "x (nm)",
+        r"$\mathit{c}_{\mathit{i}}/\mathit{c}_{\mathrm{bulk}}$ (-)",
+        r"Reactant concentration along $\mathit{y}=0$",
+    )
     ax.legend(loc="upper right", fontsize=7.6, handlelength=1.7)
     return _save_panel(fig, output_dir, "figure_3_panel_c_reactant_concentration_y0", data, dpi)
 
@@ -369,7 +385,7 @@ def _panel_d(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
     ax.plot(data.x_nm, data.eta_with, color=COLORS["with_edl"], lw=2.0, label="with EDL", zorder=3)
     ax.plot(data.x_nm, data.eta_no, color=COLORS["without_edl"], lw=1.8, label="w/o EDL", zorder=2)
     _add_substrate_gap(ax, data)
-    _style_axes(ax, "x (nm)", r"Local overpotential, $\eta$ (V)", "Local overpotential at RP")
+    _style_axes(ax, "x (nm)", r"$\mathit{\eta}(\mathit{x})$ (V)", "Local overpotential at RP")
     _finite_ylim(ax, data.eta_with, data.eta_no)
     ax.legend(loc="center right", fontsize=8.9, handlelength=2.0)
     return _save_panel(fig, output_dir, "figure_3_panel_d_local_overpotential", data, dpi)
@@ -377,12 +393,12 @@ def _panel_d(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
 
 def _panel_e(data: Figure3SavedData, output_dir: Path, dpi: int) -> list[Path]:
     fig, ax = _single_axis()
-    ax.plot(data.x_nm, data.j_au_with, color=COLORS["red1_i1"], lw=2.0, label=r"$i_1$ (Au), with EDL", zorder=4)
-    ax.plot(data.x_nm, data.j_pd_with, color=COLORS["ox2_i2"], lw=2.0, label=r"$i_2$ (Pd), with EDL", zorder=4)
-    ax.plot(data.x_nm, data.j_au_no, color=COLORS["red1_i1"], lw=1.7, ls=(0, (4, 2)), label=r"$i_1$ (Au), w/o EDL", zorder=3)
-    ax.plot(data.x_nm, data.j_pd_no, color=COLORS["ox2_i2"], lw=1.7, ls=(0, (4, 2)), label=r"$i_2$ (Pd), w/o EDL", zorder=3)
+    ax.plot(data.x_nm, data.j_au_with, color=COLORS["red1_i1"], lw=2.0, label=r"$\mathit{i}_1$ (Au), with EDL", zorder=4)
+    ax.plot(data.x_nm, data.j_pd_with, color=COLORS["ox2_i2"], lw=2.0, label=r"$\mathit{i}_2$ (Pd), with EDL", zorder=4)
+    ax.plot(data.x_nm, data.j_au_no, color=COLORS["red1_i1"], lw=1.7, ls=(0, (4, 2)), label=r"$\mathit{i}_1$ (Au), w/o EDL", zorder=3)
+    ax.plot(data.x_nm, data.j_pd_no, color=COLORS["ox2_i2"], lw=1.7, ls=(0, (4, 2)), label=r"$\mathit{i}_2$ (Pd), w/o EDL", zorder=3)
     _add_substrate_gap(ax, data)
-    _style_axes(ax, "x (nm)", r"Local current density (A/m$^2$)", "Local current density at RP")
+    _style_axes(ax, "x (nm)", r"$\mathit{i}(\mathit{x})$ (A/m$^2$)", "Local current density at RP")
     _finite_ylim(ax, data.j_au_with, data.j_pd_with, data.j_au_no, data.j_pd_no)
     ax.legend(loc="upper right", fontsize=7.6, handlelength=1.8)
     return _save_panel(fig, output_dir, "figure_3_panel_e_local_current_density", data, dpi)

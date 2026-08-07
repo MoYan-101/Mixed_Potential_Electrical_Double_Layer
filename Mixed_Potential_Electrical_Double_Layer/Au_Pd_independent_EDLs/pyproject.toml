@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "au-pd-independent-edls"
+version = "0.1.0"
+description = "Mixed-potential Au/Pd model with two analytically independent planar EDLs"
+requires-python = ">=3.11"
+dependencies = ["matplotlib>=3.8", "numpy>=1.26", "scipy>=1.11"]
+
+[project.scripts]
+au-pd-independent-edls = "au_pd_independent_edls.cli:main"
+au-pd-independent-edls-ctot = "au_pd_independent_edls.ctot_study:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

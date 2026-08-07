@@ -1,0 +1,7 @@
+{
+  "doi": "10.1073/pnas.2307307120",
+  "nonlinear_relation_scope": "The Gouy-Chapman asinh relation is used only for the isolated-planar large-gap reference; finite overlapping gaps solve full nonlinear PB.",
+  "not_used_as": "a spatial nanometre-gap PB-overlap solver",
+  "reference": "Huang, Chen, Eikerling, PNAS 2023, e2307307120",
+  "used_for": "conceptual simultaneous two-electrode charging/current coupling"
+}

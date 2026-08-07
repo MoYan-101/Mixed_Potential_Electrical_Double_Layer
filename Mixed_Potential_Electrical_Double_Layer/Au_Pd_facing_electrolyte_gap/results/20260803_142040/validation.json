@@ -1,0 +1,12 @@
+{
+  "all_gaps_strictly_positive": true,
+  "large_gap_reference": {
+    "gap_nm": 1000.0,
+    "interpretation": "independent-planar-EDL limit",
+    "overlap_factor": 1.5746459512180734e-143
+  },
+  "max_abs_closed_form_minus_brent_V": 1.7863488466218769e-13,
+  "max_abs_robin_residual": 1.7763568394002505e-15,
+  "max_relative_current_balance_residual": 4.445563862040066e-15,
+  "passed": true
+}

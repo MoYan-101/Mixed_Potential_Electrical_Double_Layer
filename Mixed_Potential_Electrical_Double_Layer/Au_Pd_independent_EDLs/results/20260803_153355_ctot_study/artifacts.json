@@ -1,0 +1,81 @@
+{
+  "EDL_scheme": [
+    "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.png",
+    "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.svg"
+  ],
+  "Figure_4": [
+    "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.png",
+    "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.svg",
+    "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.png",
+    "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.svg",
+    "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.png",
+    "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.svg"
+  ],
+  "Mechanism": [
+    "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.png",
+    "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.svg"
+  ],
+  "csv": [
+    "csv/ctot_scan.csv",
+    "csv/ctot_mechanism_metrics_Au_Pd.csv",
+    "csv/ctot_representative_cases.csv",
+    "csv/ctot_polarization_curves.csv",
+    "csv/ctot_phi_bar_profiles_0p01M_1M_with_without_edl.csv"
+  ],
+  "metadata": [
+    "params.json",
+    "derived_at_0p01M.json",
+    "scan_config.json",
+    "summary.json",
+    "validation.json",
+    "run_manifest.json",
+    "artifacts.json"
+  ],
+  "self_checksum_note": "artifacts.json lists itself but cannot contain a stable checksum of itself",
+  "sha256": {
+    "csv/ctot_mechanism_metrics_Au_Pd.csv": "d8bcc02bf9f5f2be0f3726b64cf9db841b68fcbb66465725ec77a9324de27672",
+    "csv/ctot_phi_bar_profiles_0p01M_1M_with_without_edl.csv": "642f70f6084aaac490d9f2f1ddf5a1f10ad680fb4ef5410636a51cb5990bea86",
+    "csv/ctot_polarization_curves.csv": "267dcd6d935143f5ee641508eff2d7ae0bb9a6064d439ac2e53c6610a7f74235",
+    "csv/ctot_representative_cases.csv": "2ab31bfe6fe7728bc5ec4b0ff84e8d390297f472bd52b07adbf4c066f655c29d",
+    "csv/ctot_scan.csv": "d5a0960f6a7766f0db57ff32a993f9e2f87be2bf6271a78a763be26112780228",
+    "derived_at_0p01M.json": "37fa536fce53991f40604ccc9150482549af76769532e5009831c56373f8b2cc",
+    "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.png": "3188432a2f962abd81ad178036617b0549fc00b244cb428daf0f2e9b410ab796",
+    "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.svg": "d068062e41ba98b4cc44376f0d206ed6244dd1a23642ccb7ebb3c37ead7d479a",
+    "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.png": "1aa36e2c3bdc24a490cbffd8a17edb0e05327f16aee7093a7007094cc63627c3",
+    "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.svg": "7ab23fff514c4305f0439b299669e82c48fc55644d8ac83c06aafdebd171cdb7",
+    "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.png": "b95a38778861a886ad48aa150b1916990e1cf486bf949cd40d5a54d911afaad2",
+    "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.svg": "bf7ee4d09e11b3ada8350e2dd624e48ff23a3b50ffc4ffcbd05f0f692ac42fca",
+    "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.png": "f7305427ddc4f5f11ec91c005acc646b78b9659cd56c200aee8ffe1dbe2c423f",
+    "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.svg": "2ff8048b8aaa90501cba05a7ee60a5a9e97d93f4fedfdc9bd76ceb0a11b29ade",
+    "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.png": "84527e640bdc8dee8b273264e9d7b05029d0d6201209af88eef06e3bf3088e8d",
+    "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.svg": "35abd02fc5d19b943a1bd448b3c0311536530f309a4423059421198d8ddf6e3f",
+    "params.json": "298b28734b673c7b276caa0b6ae9c905cba6230fa6b23e51218df28ffb33f70e",
+    "run_manifest.json": "50a98633e33ac67a81b1c58c55f4975775e4a0ad240711711abeddd5ef8a4616",
+    "scan_config.json": "890efda2a485bea60412b8dc4b59ff8c1fc9988da1d4053335c4c3655018efaf",
+    "summary.json": "d4b11b3f859881b0d7fbde2ff1d4951bac8ac0cb51a7302852605fc98bf3d404",
+    "validation.json": "13c396ce774742ff27f1247889100353e42810006c0e55f82b90a3f8024b866e"
+  },
+  "size_bytes": {
+    "csv/ctot_mechanism_metrics_Au_Pd.csv": 30614,
+    "csv/ctot_phi_bar_profiles_0p01M_1M_with_without_edl.csv": 314580,
+    "csv/ctot_polarization_curves.csv": 624778,
+    "csv/ctot_representative_cases.csv": 6023,
+    "csv/ctot_scan.csv": 44837,
+    "derived_at_0p01M.json": 357,
+    "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.png": 94905,
+    "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.svg": 14020,
+    "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.png": 141512,
+    "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.svg": 43929,
+    "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.png": 276380,
+    "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.svg": 33149,
+    "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.png": 127527,
+    "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.svg": 42550,
+    "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.png": 784742,
+    "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.svg": 353102,
+    "params.json": 869,
+    "run_manifest.json": 1549,
+    "scan_config.json": 1998,
+    "summary.json": 9887,
+    "validation.json": 477
+  }
+}

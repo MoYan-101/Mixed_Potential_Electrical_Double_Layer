@@ -1,0 +1,12 @@
+{
+  "max_abs_charge_relation_residual_C_per_m2": 4.163336342344337e-17,
+  "max_abs_closed_form_minus_brent_V": 2.1997181853805614e-11,
+  "max_abs_kinetic_reconstruction_residual_A_per_m2": 4.163336342344337e-16,
+  "max_abs_without_edl_profile_phi_tilde": 0.0,
+  "max_no_edl_E_mix_variation_V": 0.0,
+  "max_no_edl_i_mix_avg_variation_A_per_m2": 0.0,
+  "max_relative_current_balance_residual": 5.373497857068118e-15,
+  "passed": true,
+  "profile_rows": 1926,
+  "scan_rows": 36
+}

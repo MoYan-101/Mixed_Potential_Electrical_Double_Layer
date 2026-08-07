@@ -1,0 +1,32 @@
+{
+  "csv": [
+    "csv/summary_cases.csv",
+    "csv/independent_local_edl_profiles.csv"
+  ],
+  "figure3": [
+    "figures/Figure_3/figure_3_panel_a_emix_imix_independent_edls.png",
+    "figures/Figure_3/figure_3_panel_a_emix_imix_independent_edls.svg",
+    "figures/Figure_3/figure_3_panel_b_reaction_plane_potential_independent_edls.png",
+    "figures/Figure_3/figure_3_panel_b_reaction_plane_potential_independent_edls.svg",
+    "figures/Figure_3/figure_3_panel_c_reactant_concentration_independent_edls.png",
+    "figures/Figure_3/figure_3_panel_c_reactant_concentration_independent_edls.svg",
+    "figures/Figure_3/figure_3_panel_d_local_overpotential_independent_edls.png",
+    "figures/Figure_3/figure_3_panel_d_local_overpotential_independent_edls.svg",
+    "figures/Figure_3/figure_3_panel_e_local_current_density_independent_edls.png",
+    "figures/Figure_3/figure_3_panel_e_local_current_density_independent_edls.svg",
+    "figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_independent_edls.png",
+    "figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_independent_edls.svg"
+  ],
+  "metadata": [
+    "params.json",
+    "derived.json",
+    "summary.json",
+    "validation.json"
+  ],
+  "rp_2d": [
+    "figures/rp_2d/solution_phase_potential_2d_independent_edls.png",
+    "figures/rp_2d/solution_phase_potential_2d_independent_edls.svg",
+    "figures/rp_2d/phi_s_reactants_2d_independent_edls.png",
+    "figures/rp_2d/phi_s_reactants_2d_independent_edls.svg"
+  ]
+}

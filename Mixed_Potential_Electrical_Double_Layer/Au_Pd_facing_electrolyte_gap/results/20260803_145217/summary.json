@@ -1,0 +1,557 @@
+{
+  "cases": [
+    {
+      "E_mix_V": 0.5867425176112065,
+      "I_Au_A": 5.4942426990420704e-11,
+      "I_Pd_A": -5.4942426990458955e-11,
+      "electrolyte_ensemble": "grand-canonical bulk chemical-potential reference",
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+      "gap_nm": 1.0,
+      "gap_over_lambda_D": 0.328815637844018,
+      "i_mix_abs_A": 5.4942426990420704e-11,
+      "i_mix_avg_A_per_m2": 0.1098848539808414,
+      "j_Au_A_per_m2": 0.2197697079616828,
+      "j_Pd_A_per_m2": -0.21976970796183581,
+      "linearization_diagnostic": {
+        "linearized_pb_would_exceed_threshold": true,
+        "max_abs_phi_tilde": 4.798214654159931,
+        "threshold": 1.0
+      },
+      "log_current_balance_residual": -6.963318810448982e-13,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+      "nonlinear_pb_diagnostics": {
+        "first_integral_max": -32.53273282652445,
+        "first_integral_min": -32.532732826881016,
+        "first_integral_span": 3.565645556591335e-10,
+        "integrated_charge_residual": 1.4921752722329984e-10,
+        "max_rms_residual": 8.352810067111894e-11,
+        "mesh_nodes": 1801,
+        "message": "The algorithm converged to the desired accuracy.",
+        "midplane_phi_tilde": -4.1825839728543635,
+        "solver_method": "scipy_solve_bvp_full_nonlinear_poisson_boltzmann",
+        "status": 0
+      },
+      "overlap_factor_exp_minus_d_over_lambda": 0.7197757039160507,
+      "phi_RP_Au_V": -0.123210056248498,
+      "phi_RP_Au_tilde": -4.798214654159931,
+      "phi_RP_Pd_V": -0.11627497897395088,
+      "phi_RP_Pd_tilde": -4.528139382549387,
+      "relative_balance_residual": 3.480974820123773e-13,
+      "residual_A": -3.825064098204196e-23,
+      "result_schema_version": 2,
+      "robin_residuals": {
+        "Au": 0.0,
+        "Pd": 1.7763568394002505e-15
+      },
+      "root": {
+        "bracket_V": [
+          0.3230516745396045,
+          0.8230516745396045
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 8,
+        "iterations": 7,
+        "method": "brentq_on_log_current_magnitudes_with_nested_nonlinear_bvp"
+      },
+      "sigma_Au_C_per_m2": -0.0440094852280591,
+      "sigma_Pd_C_per_m2": -0.03079300136593704,
+      "surface_derivative_Au_dpsi_dxi": 7.499096728222596,
+      "surface_derivative_Pd_dpsi_dxi": -5.247043781557913,
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.5797208960537704,
+      "I_Au_A": 5.4485757238741725e-11,
+      "I_Pd_A": -5.448575723874333e-11,
+      "electrolyte_ensemble": "grand-canonical bulk chemical-potential reference",
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+      "gap_nm": 2.0,
+      "gap_over_lambda_D": 0.657631275688036,
+      "i_mix_abs_A": 5.4485757238741725e-11,
+      "i_mix_avg_A_per_m2": 0.10897151447748345,
+      "j_Au_A_per_m2": 0.2179430289549669,
+      "j_Pd_A_per_m2": -0.2179430289549733,
+      "linearization_diagnostic": {
+        "linearized_pb_would_exceed_threshold": true,
+        "max_abs_phi_tilde": 4.541462101697525,
+        "threshold": 1.0
+      },
+      "log_current_balance_residual": -2.842170943040401e-14,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+      "nonlinear_pb_diagnostics": {
+        "first_integral_max": -15.213992533995171,
+        "first_integral_min": -15.213992535370707,
+        "first_integral_span": 1.3755361294442991e-09,
+        "integrated_charge_residual": 5.689955173693306e-10,
+        "max_rms_residual": 5.723387148584442e-10,
+        "mesh_nodes": 1801,
+        "message": "The algorithm converged to the desired accuracy.",
+        "midplane_phi_tilde": -3.417794423694121,
+        "solver_method": "scipy_solve_bvp_full_nonlinear_poisson_boltzmann",
+        "status": 0
+      },
+      "overlap_factor_exp_minus_d_over_lambda": 0.5180770639478463,
+      "phi_RP_Au_V": -0.11661708392213237,
+      "phi_RP_Au_tilde": -4.541462101697525,
+      "phi_RP_Pd_V": -0.10882470818541003,
+      "phi_RP_Pd_tilde": -4.238000739945917,
+      "relative_balance_residual": 1.4707168607376032e-14,
+      "residual_A": -1.6026624368214911e-24,
+      "result_schema_version": 2,
+      "robin_residuals": {
+        "Au": -1.7763568394002505e-15,
+        "Pd": -1.7763568394002505e-15
+      },
+      "root": {
+        "bracket_V": [
+          0.3230516745396045,
+          0.8230516745396045
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 8,
+        "iterations": 7,
+        "method": "brentq_on_log_current_magnitudes_with_nested_nonlinear_bvp"
+      },
+      "sigma_Au_C_per_m2": -0.046732404004819456,
+      "sigma_Pd_C_per_m2": -0.03658175830432783,
+      "surface_derivative_Au_dpsi_dxi": 7.963074690796007,
+      "surface_derivative_Pd_dpsi_dxi": -6.233432238323711,
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.576929358660115,
+      "I_Au_A": 5.4380916268897446e-11,
+      "I_Pd_A": -5.4380916268897685e-11,
+      "electrolyte_ensemble": "grand-canonical bulk chemical-potential reference",
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+      "gap_nm": 3.0,
+      "gap_over_lambda_D": 0.9864469135320542,
+      "i_mix_abs_A": 5.4380916268897446e-11,
+      "i_mix_avg_A_per_m2": 0.10876183253779488,
+      "j_Au_A_per_m2": 0.21752366507558976,
+      "j_Pd_A_per_m2": -0.21752366507559073,
+      "linearization_diagnostic": {
+        "linearized_pb_would_exceed_threshold": true,
+        "max_abs_phi_tilde": 4.436602319619786,
+        "threshold": 1.0
+      },
+      "log_current_balance_residual": -3.552713678800501e-15,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+      "nonlinear_pb_diagnostics": {
+        "first_integral_max": -9.038593421378133,
+        "first_integral_min": -9.038593428044422,
+        "first_integral_span": 6.666288854262348e-09,
+        "integrated_charge_residual": 2.7591280371552784e-09,
+        "max_rms_residual": 1.838472975558708e-09,
+        "mesh_nodes": 1801,
+        "message": "The algorithm converged to the desired accuracy.",
+        "midplane_phi_tilde": -2.893592069409851,
+        "solver_method": "scipy_solve_bvp_full_nonlinear_poisson_boltzmann",
+        "status": 0
+      },
+      "overlap_factor_exp_minus_d_over_lambda": 0.37289928338582184,
+      "phi_RP_Au_V": -0.11392446164922043,
+      "phi_RP_Au_tilde": -4.436602319619786,
+      "phi_RP_Pd_V": -0.10593425567100978,
+      "phi_RP_Pd_tilde": -4.125436781824051,
+      "relative_balance_residual": 2.1984448977817565e-15,
+      "residual_A": -2.3910689581610956e-25,
+      "result_schema_version": 2,
+      "robin_residuals": {
+        "Au": 0.0,
+        "Pd": 1.7763568394002505e-15
+      },
+      "root": {
+        "bracket_V": [
+          0.3230516745396045,
+          0.8230516745396045
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 8,
+        "iterations": 7,
+        "method": "brentq_on_log_current_magnitudes_with_nested_nonlinear_bvp"
+      },
+      "sigma_Au_C_per_m2": -0.04782923593813293,
+      "sigma_Pd_C_per_m2": -0.038854554267550113,
+      "surface_derivative_Au_dpsi_dxi": 8.149971872617096,
+      "surface_derivative_Pd_dpsi_dxi": -6.620710496258228,
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.5747082034780083,
+      "I_Au_A": 5.43397337665906e-11,
+      "I_Pd_A": -5.4339733766590315e-11,
+      "electrolyte_ensemble": "grand-canonical bulk chemical-potential reference",
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+      "gap_nm": 5.0,
+      "gap_over_lambda_D": 1.6440781892200902,
+      "i_mix_abs_A": 5.43397337665906e-11,
+      "i_mix_avg_A_per_m2": 0.1086794675331812,
+      "j_Au_A_per_m2": 0.2173589350663624,
+      "j_Pd_A_per_m2": -0.21735893506636125,
+      "linearization_diagnostic": {
+        "linearized_pb_would_exceed_threshold": true,
+        "max_abs_phi_tilde": 4.351618222011254,
+        "threshold": 1.0
+      },
+      "log_current_balance_residual": 3.552713678800501e-15,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+      "nonlinear_pb_diagnostics": {
+        "first_integral_max": -4.363102870946088,
+        "first_integral_min": -4.363102871953245,
+        "first_integral_span": 1.0071570244463146e-09,
+        "integrated_charge_residual": 1.7429968579563138e-10,
+        "max_rms_residual": 8.13650449496366e-09,
+        "mesh_nodes": 1801,
+        "message": "The algorithm converged to the desired accuracy.",
+        "midplane_phi_tilde": -2.1538445369435397,
+        "solver_method": "scipy_solve_bvp_full_nonlinear_poisson_boltzmann",
+        "status": 0
+      },
+      "overlap_factor_exp_minus_d_over_lambda": 0.19319056588478248,
+      "phi_RP_Au_V": -0.11174221341705827,
+      "phi_RP_Au_tilde": -4.351618222011254,
+      "phi_RP_Pd_V": -0.10367419353895822,
+      "phi_RP_Pd_tilde": -4.037422348818272,
+      "relative_balance_residual": 2.6163482580395457e-15,
+      "residual_A": 2.8434333556510326e-25,
+      "result_schema_version": 2,
+      "robin_residuals": {
+        "Au": 0.0,
+        "Pd": 0.0
+      },
+      "root": {
+        "bracket_V": [
+          0.3230516745396045,
+          0.8230516745396045
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 8,
+        "iterations": 7,
+        "method": "brentq_on_log_current_magnitudes_with_nested_nonlinear_bvp"
+      },
+      "sigma_Au_C_per_m2": -0.0487099166209867,
+      "sigma_Pd_C_per_m2": -0.04064704119321339,
+      "surface_derivative_Au_dpsi_dxi": 8.30003746854883,
+      "surface_derivative_Pd_dpsi_dxi": -6.92614539898354,
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.5733646165458715,
+      "I_Au_A": 5.4335691788092364e-11,
+      "I_Pd_A": -5.4335691788092364e-11,
+      "electrolyte_ensemble": "grand-canonical bulk chemical-potential reference",
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+      "gap_nm": 10.0,
+      "gap_over_lambda_D": 3.2881563784401804,
+      "i_mix_abs_A": 5.4335691788092364e-11,
+      "i_mix_avg_A_per_m2": 0.10867138357618472,
+      "j_Au_A_per_m2": 0.21734276715236944,
+      "j_Pd_A_per_m2": -0.21734276715236944,
+      "linearization_diagnostic": {
+        "linearized_pb_would_exceed_threshold": true,
+        "max_abs_phi_tilde": 4.299443193158849,
+        "threshold": 1.0
+      },
+      "log_current_balance_residual": 0.0,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+      "nonlinear_pb_diagnostics": {
+        "first_integral_max": -1.6276645873744755,
+        "first_integral_min": -1.6276645880733653,
+        "first_integral_span": 6.988898348936345e-10,
+        "integrated_charge_residual": 1.7363710469453508e-10,
+        "max_rms_residual": 9.989668655916909e-09,
+        "mesh_nodes": 1245,
+        "message": "The algorithm converged to the desired accuracy.",
+        "midplane_phi_tilde": -1.0690766241641383,
+        "solver_method": "scipy_solve_bvp_full_nonlinear_poisson_boltzmann",
+        "status": 0
+      },
+      "overlap_factor_exp_minus_d_over_lambda": 0.03732259474688248,
+      "phi_RP_Au_V": -0.11040244671151947,
+      "phi_RP_Au_tilde": -4.299443193158849,
+      "phi_RP_Pd_V": -0.10232678638022347,
+      "phi_RP_Pd_tilde": -3.9849497749796416,
+      "relative_balance_residual": 0.0,
+      "residual_A": 0.0,
+      "result_schema_version": 2,
+      "robin_residuals": {
+        "Au": 0.0,
+        "Pd": -3.552713678800501e-15
+      },
+      "root": {
+        "bracket_V": [
+          0.3230516745396045,
+          0.8230516745396045
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 7,
+        "iterations": 6,
+        "method": "brentq_on_log_current_magnitudes_with_nested_nonlinear_bvp"
+      },
+      "sigma_Au_C_per_m2": -0.04924658734852183,
+      "sigma_Pd_C_per_m2": -0.041723438829562046,
+      "surface_derivative_Au_dpsi_dxi": 8.391484702619762,
+      "surface_derivative_Pd_dpsi_dxi": -7.109560632112928,
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.5730516745396045,
+      "I_Au_A": 5.433719215072305e-11,
+      "I_Pd_A": -5.4337192150722865e-11,
+      "electrolyte_ensemble": "grand-canonical bulk chemical-potential reference",
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+      "gap_nm": 1000.0,
+      "gap_over_lambda_D": 328.81563784401806,
+      "i_mix_abs_A": 5.433719215072305e-11,
+      "i_mix_avg_A_per_m2": 0.1086743843014461,
+      "j_Au_A_per_m2": 0.2173487686028922,
+      "j_Pd_A_per_m2": -0.21734876860289146,
+      "linearization_diagnostic": {
+        "linearized_pb_would_exceed_threshold": true,
+        "max_abs_phi_tilde": 4.287200952298865,
+        "threshold": 1.0
+      },
+      "log_current_balance_residual": 0.0,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+      "nonlinear_pb_diagnostics": {
+        "cross_gap_tail_bound": 6.298583804872294e-143,
+        "first_integral_span": 0.0,
+        "integrated_charge_residual": 0.0,
+        "max_rms_residual": 0.0,
+        "mesh_nodes": 0,
+        "midplane_phi_tilde": -2.458468870505282e-71,
+        "planar_switch_lambda_D": 50.0,
+        "solver_method": "analytic_independent_gouy_chapman_asinh_stern_limit"
+      },
+      "overlap_factor_exp_minus_d_over_lambda": 1.5746459512180734e-143,
+      "phi_RP_Au_V": -0.11008808662267713,
+      "phi_RP_Au_tilde": -4.287200952298865,
+      "phi_RP_Pd_V": -0.10201526245653175,
+      "phi_RP_Pd_tilde": -3.9728179839449536,
+      "relative_balance_residual": 1.7244920110309e-15,
+      "residual_A": 1.8740810753154533e-25,
+      "result_schema_version": 2,
+      "robin_residuals": {
+        "Au": -3.552713678800501e-15,
+        "Pd": -3.552713678800501e-15
+      },
+      "root": {
+        "bracket_V": [
+          -0.15,
+          1.084
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 9,
+        "iterations": 8,
+        "method": "brentq_on_log_current_magnitudes"
+      },
+      "sigma_Au_C_per_m2": -0.04937204776754369,
+      "sigma_Pd_C_per_m2": -0.04197322520154552,
+      "surface_derivative_Au_dpsi_dxi": 8.412862817199674,
+      "surface_derivative_Pd_dpsi_dxi": -7.15212355133793,
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    }
+  ],
+  "derived": {
+    "area_Au_m2": 2.5e-10,
+    "area_Pd_m2": 2.5e-10,
+    "beta_per_V": 38.943368749727554,
+    "epsilon_s": 6.950537433048001e-10,
+    "g_Au": 0.8751029451499736,
+    "g_Pd": 1.750205890299947,
+    "lambda_D": 3.0412178890177212e-09,
+    "reactive_area_m2": 5e-10,
+    "thermal_voltage_V": 0.02567831269109188
+  },
+  "effective_reaction": {
+    "E1_eq_eff": 0.1,
+    "E2_eq_eff": 0.834,
+    "it0_1_eff": 0.0001852573885166257,
+    "it0_2_eff": 0.0001852573885166257
+  },
+  "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+  "large_gap_comparison": {
+    "delta_E_mix_V": 0.0,
+    "delta_phi_RP_Au_tilde": 0.0,
+    "delta_phi_RP_Pd_tilde": -4.440892098500626e-16,
+    "gap_nm": 1000.0,
+    "relative_i_mix_difference": 3.1086244689504383e-15
+  },
+  "large_gap_gouy_chapman_stern_reference": {
+    "E_mix_V": 0.5730516745396045,
+    "I_Au_A": 5.4337192150722884e-11,
+    "I_Pd_A": -5.433719215072269e-11,
+    "i_mix_abs_A": 5.4337192150722884e-11,
+    "i_mix_avg_A_per_m2": 0.10867438430144576,
+    "j_Au_A_per_m2": 0.2173487686028915,
+    "j_Pd_A_per_m2": -0.21734876860289074,
+    "log_current_balance_residual": 3.552713678800501e-15,
+    "phi_RP_Au_V": -0.11008808662267713,
+    "phi_RP_Au_tilde": -4.287200952298865,
+    "phi_RP_Pd_V": -0.10201526245653175,
+    "phi_RP_Pd_tilde": -3.972817983944953,
+    "relative_balance_residual": 1.783957252790592e-15,
+    "root": {
+      "bracket_V": [
+        -0.15,
+        1.084
+      ],
+      "bracket_expansions": 0,
+      "function_calls": 9,
+      "iterations": 8,
+      "method": "brentq_on_log_current_magnitudes"
+    },
+    "sigma_Au_C_per_m2": -0.04937204776754369,
+    "sigma_Pd_C_per_m2": -0.04197322520154552,
+    "solver": "isolated_planar_gouy_chapman_asinh_stern"
+  },
+  "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+  "numerical_convergence": {
+    "base_settings": {
+      "nonlinear_pb_edge_points_large": 401,
+      "nonlinear_pb_initial_points_small": 601,
+      "nonlinear_pb_tol": 1e-08
+    },
+    "max_abs_delta_E_mix_V": 2.8048674494129955e-12,
+    "max_abs_delta_phi_RP_tilde": 1.4741985410182679e-10,
+    "max_abs_relative_i_mix_difference": 1.9094059666713292e-11,
+    "refined_settings": {
+      "nonlinear_pb_edge_points_large": 801,
+      "nonlinear_pb_initial_points_small": 1201,
+      "nonlinear_pb_tol": 2e-09
+    },
+    "rows": [
+      {
+        "base_E_mix_V": 0.5867425176112065,
+        "base_mesh_nodes": 1801,
+        "delta_E_mix_V": 1.1102230246251565e-16,
+        "delta_phi_RP_Au_tilde": -5.329070518200751e-15,
+        "delta_phi_RP_Pd_tilde": -8.881784197001252e-16,
+        "gap_nm": 1.0,
+        "refined_E_mix_V": 0.5867425176112067,
+        "refined_mesh_nodes": 3601,
+        "relative_i_mix_difference": -9.992007221626409e-16
+      },
+      {
+        "base_E_mix_V": 0.5797208960537704,
+        "base_mesh_nodes": 1801,
+        "delta_E_mix_V": 1.3322676295501878e-15,
+        "delta_phi_RP_Au_tilde": -8.615330671091215e-14,
+        "delta_phi_RP_Pd_tilde": -2.220446049250313e-14,
+        "gap_nm": 2.0,
+        "refined_E_mix_V": 0.5797208960537718,
+        "refined_mesh_nodes": 3601,
+        "relative_i_mix_difference": -1.765254609153999e-14
+      },
+      {
+        "base_E_mix_V": 0.576929358660115,
+        "base_mesh_nodes": 1801,
+        "delta_E_mix_V": -2.8048674494129955e-12,
+        "delta_phi_RP_Au_tilde": 1.4741985410182679e-10,
+        "delta_phi_RP_Pd_tilde": 7.104450361339332e-11,
+        "gap_nm": 3.0,
+        "refined_E_mix_V": 0.5769293586573101,
+        "refined_mesh_nodes": 3601,
+        "relative_i_mix_difference": 1.9094059666713292e-11
+      },
+      {
+        "base_E_mix_V": 0.5747082034780083,
+        "base_mesh_nodes": 1801,
+        "delta_E_mix_V": 4.8405723873656825e-14,
+        "delta_phi_RP_Au_tilde": -2.9753977059954195e-12,
+        "delta_phi_RP_Pd_tilde": -8.020251129892131e-13,
+        "gap_nm": 5.0,
+        "refined_E_mix_V": 0.5747082034780567,
+        "refined_mesh_nodes": 3601,
+        "relative_i_mix_difference": -5.46007683510652e-13
+      },
+      {
+        "base_E_mix_V": 0.5733646165458715,
+        "base_mesh_nodes": 1245,
+        "delta_E_mix_V": 9.281464485866309e-14,
+        "delta_phi_RP_Au_tilde": -4.6771475581408595e-12,
+        "delta_phi_RP_Pd_tilde": -2.55218068900831e-12,
+        "gap_nm": 10.0,
+        "refined_E_mix_V": 0.5733646165459643,
+        "refined_mesh_nodes": 2191,
+        "relative_i_mix_difference": -5.302425165609748e-13
+      },
+      {
+        "base_E_mix_V": 0.5730516745396045,
+        "base_mesh_nodes": 0,
+        "delta_E_mix_V": 0.0,
+        "delta_phi_RP_Au_tilde": 0.0,
+        "delta_phi_RP_Pd_tilde": 0.0,
+        "gap_nm": 1000.0,
+        "refined_E_mix_V": 0.5730516745396045,
+        "refined_mesh_nodes": 0,
+        "relative_i_mix_difference": 0.0
+      }
+    ]
+  },
+  "params": {
+    "C_H_Au": 0.2,
+    "C_H_Pd": 0.4,
+    "C_tot": 10.0,
+    "E1_eq": 0.1,
+    "E1_eq_pH_slope_V_per_pH": 0.0,
+    "E2_eq": 0.834,
+    "E2_eq_pH_slope_V_per_pH": -0.059126500015747985,
+    "F": 96485.0,
+    "L_face": 2.5e-08,
+    "R": 8.314,
+    "T": 298.0,
+    "alpha1": 0.5,
+    "alpha2": 0.5,
+    "dh_warn_threshold": 1.0,
+    "epsilon0": 8.8541878128e-12,
+    "epsilon_r": 78.5,
+    "epsilon_s": null,
+    "g_Au": null,
+    "g_Pd": null,
+    "gap_distances_nm": [
+      1.0,
+      2.0,
+      3.0,
+      5.0,
+      10.0,
+      1000.0
+    ],
+    "it0_1": 0.0001852573885166257,
+    "it0_1_pH_order": 0.0,
+    "it0_2": 0.0001852573885166257,
+    "it0_2_pH_order": 1.0,
+    "lambda_D": null,
+    "large_gap_window_lambda_D": 5.0,
+    "max_bracket_expands": 12,
+    "nonlinear_pb_edge_points_large": 401,
+    "nonlinear_pb_initial_points_small": 601,
+    "nonlinear_pb_large_gap_edge_lambda_D": 15.0,
+    "nonlinear_pb_max_nodes": 100000,
+    "nonlinear_pb_planar_switch_lambda_D": 50.0,
+    "nonlinear_pb_tol": 1e-08,
+    "out_of_plane_width": 0.01,
+    "pH": 7.0,
+    "pH_ref": 7.0,
+    "plot_face_points": 181,
+    "profile_points_large": 5001,
+    "profile_points_small": 1601,
+    "pzc_Au": 0.93,
+    "pzc_Pd": 0.78,
+    "root_bracket_padding_V": 0.25,
+    "root_maxiter": 200,
+    "root_rtol": 1e-12,
+    "root_xtol_V": 1e-12,
+    "z_O2": 1.0,
+    "z_R1": -1.0
+  },
+  "result_schema_version": 2,
+  "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+}
