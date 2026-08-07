@@ -1,0 +1,115 @@
+{
+  "convergence_check_count": 15,
+  "debye_huckel_applicability": {
+    "main_scan_points_above_weak_field_threshold": 164,
+    "maximum_abs_phi_tilde_in_main_scan": 8.389847629826667,
+    "note": "Applicability warnings are retained separately from root balance and numerical-convergence validation.",
+    "threshold": 1.0
+  },
+  "far_field_anchor_count": 3,
+  "figure_counts": {
+    "pdf": 0,
+    "png": 27,
+    "svg": 27
+  },
+  "fourier_caveat": "Piecewise boundaries are represented by a truncated cosine series; boundary-local ringing must not be interpreted as a physical oscillation.",
+  "model": "Au|C|Pd linear-PB piecewise-Robin",
+  "negative_control_count": 2,
+  "original_requested_resolution_audit_count": 15,
+  "original_requested_resolution_failed_pair_count": 4,
+  "overlap_metric_output": "Retained in support_pzc_scan.csv and validation metadata; not displayed in support_pzc_trends_au2_pd2.",
+  "overlap_reference": "15 nm is a finite-length reference, not a universal no-overlap boundary; 1000 nm anchors quantify its residual distance from the far-field limit.",
+  "parameters": {
+    "C_H_Au_F_per_m2": 0.5,
+    "C_H_Pd_F_per_m2": 0.5,
+    "C_H_support_F_per_m2": 0.2,
+    "C_tot_mM": 10.0,
+    "C_tot_mol_per_m3": 10.0,
+    "L_Au_m": 2e-09,
+    "L_Pd_m": 2e-09,
+    "PZC_Au_RHE_V": 0.923885500110236,
+    "PZC_Au_SHE_V": 0.51,
+    "PZC_Au_minus_PZC_Pd_V": 0.30000000000000004,
+    "PZC_Pd_RHE_V": 0.6238855001102359,
+    "PZC_Pd_SHE_V": 0.21,
+    "alpha_Au": 0.5,
+    "alpha_Pd": 0.5,
+    "i0_Au_A_per_m2": 0.0001852573885166257,
+    "i0_Pd_A_per_m2": 0.0001852573885166257,
+    "out_of_plane_width_m": 0.01
+  },
+  "profile_pzc_styles": {
+    "0.10 V": {
+      "color": "#767676",
+      "linestyle": "(0, (1.2, 2.0))"
+    },
+    "0.50 V": {
+      "color": "#272727",
+      "linestyle": "solid"
+    },
+    "0.90 V": {
+      "color": "#3775BA",
+      "linestyle": "(0, (5.0, 2.5))"
+    }
+  },
+  "reference_15nm_vs_1000nm": {
+    "pzc_0.10_V": {
+      "active_RP_RMS_1000_vs_15_mV": 0.03320759129410731,
+      "delta_E_mix_1000_minus_15_mV": -0.09177223370993026,
+      "delta_i_mix_avg_1000_minus_15_percent": 0.11793478162380744
+    },
+    "pzc_0.50_V": {
+      "active_RP_RMS_1000_vs_15_mV": 0.025466906964905327,
+      "delta_E_mix_1000_minus_15_mV": -0.03474371993850145,
+      "delta_i_mix_avg_1000_minus_15_percent": 0.001366869409924476
+    },
+    "pzc_0.90_V": {
+      "active_RP_RMS_1000_vs_15_mV": 0.016987473597415793,
+      "delta_E_mix_1000_minus_15_mV": 0.0036249737802585003,
+      "delta_i_mix_avg_1000_minus_15_percent": -0.02758971358065576
+    }
+  },
+  "representative_2d_case_count": 12,
+  "representative_2d_reactant_distributions": {
+    "case_count": 12,
+    "definition": "c_i/c_bulk = exp(-z_i F Phi_s / RT)",
+    "output_subdirectory": "figures/Figure_RP",
+    "shared_log_color_limits": [
+      0.0001,
+      10000.0
+    ],
+    "species": [
+      "Red1",
+      "Ox2"
+    ]
+  },
+  "representative_2d_solution_potential": {
+    "L_support_nm": [
+      1.0,
+      3.0,
+      6.0,
+      15.0
+    ],
+    "output_subdirectory": "figures/Figure_RP",
+    "pzc_support_V": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "shared_symmetric_color_limit_mV": 220.0,
+    "y_max_lambda_D": 5.0
+  },
+  "representative_profile_count": 12,
+  "scan_point_count": 164,
+  "study_id": "Au2nm_C_Pd2nm_PZC03V_support_PZC_study",
+  "trend_figure_panels": [
+    "Mixed potential",
+    "Mixed current density",
+    "Mean signed support charge"
+  ],
+  "visible_material_colors": {
+    "Au": "#E4C133",
+    "C": "#8C8C8C",
+    "Pd": "#5A90C8"
+  }
+}

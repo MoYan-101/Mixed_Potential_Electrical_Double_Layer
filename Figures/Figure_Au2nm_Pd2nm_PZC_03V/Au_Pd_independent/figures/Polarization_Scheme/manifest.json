@@ -1,0 +1,20 @@
+{
+  "data_files": [
+    "csv/independent_au_pd_polarization_curves.csv"
+  ],
+  "figure_files": [
+    "independent_au_pd_polarization_with_without_edl.png",
+    "independent_au_pd_polarization_with_without_edl.svg"
+  ],
+  "metadata_files": [
+    "summary.json",
+    "validation.json",
+    "manifest.json"
+  ],
+  "source_sha256": {
+    "independent_model": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e",
+    "parameter_wrapper": "6e98e4fdd66571f3c525649dac773fd8088841e9f7001b204899ffe82c04dae7",
+    "polarization_wrapper": "3bcd5e31900f4fa6df50c6535e82fef46519f16e339bf0ca2a6f4c7e4679e8fc"
+  },
+  "study_id": "independent_Au2nm_Pd2nm_CH50_polarization"
+}

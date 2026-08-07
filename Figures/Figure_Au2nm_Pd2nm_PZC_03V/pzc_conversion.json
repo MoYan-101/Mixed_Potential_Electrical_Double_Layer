@@ -1,0 +1,12 @@
+{
+  "conversion_equation": "E_RHE = E_SHE + slope_V_per_pH * pH",
+  "model_temperature_K": 298.0,
+  "pH": 7.0,
+  "slope_V_per_pH": 0.059126500015747985,
+  "offset_SHE_to_RHE_V": 0.4138855001102359,
+  "PZC_Au_SHE_V": 0.51,
+  "PZC_Au_RHE_V": 0.9238855001102359,
+  "PZC_Pd_SHE_V": 0.21,
+  "PZC_Pd_RHE_V": 0.6238855001102359,
+  "PZC_Au_minus_PZC_Pd_V": 0.3
+}

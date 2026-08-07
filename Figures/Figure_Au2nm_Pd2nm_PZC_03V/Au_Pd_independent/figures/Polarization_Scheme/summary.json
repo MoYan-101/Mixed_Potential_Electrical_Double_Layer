@@ -1,0 +1,103 @@
+{
+  "I_mix_drop_fraction": 0.8652739842639829,
+  "I_mix_drop_percent": 86.52739842639829,
+  "I_mix_ratio_with_over_without": 0.134726015736017,
+  "applicability_caveat": "The with-EDL result exceeds the linear Debye-Huckel weak-field threshold; this is a model-internal comparison.",
+  "curve_styles": {
+    "Au": "#3B7A57",
+    "Pd": "#B64342",
+    "w/o EDL": "dashed",
+    "with EDL": "solid"
+  },
+  "delta_E_mix_V": 0.12489799520213729,
+  "model_id": "independent_planar_edls_shared_mixed_potential",
+  "parameters": {
+    "C_H_Au_uF_per_cm2": 50.0,
+    "C_H_Pd_uF_per_cm2": 50.0,
+    "C_tot_mM": 10.0,
+    "L_Au_nm": 2.0,
+    "L_Pd_nm": 2.0,
+    "active_faces_Au": 1,
+    "active_faces_Pd": 1,
+    "out_of_plane_width_m": 0.01
+  },
+  "plot_current_unit": "10^-3 uA = 10^-9 A",
+  "study_id": "independent_Au2nm_Pd2nm_CH50_polarization",
+  "topology_id": "two_independent_planar_half_spaces",
+  "with_edl": {
+    "E_mix_V": 0.5918979952021372,
+    "I_Au_A": 6.335375245416762e-13,
+    "I_Pd_A": -6.33537524541678e-13,
+    "closed_form_minus_brent_V": -1.7661760942644378e-11,
+    "condition": "with EDL",
+    "debye_huckel_validity": {
+      "max_abs_phi_tilde": 8.872972834983754,
+      "threshold": 1.0,
+      "threshold_exceeded": true
+    },
+    "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+    "electrostatic_backend": "analytic_independent_planar_linear_pb",
+    "i_mix_abs_A": 6.335375245416762e-13,
+    "i_mix_avg_A_per_m2": 0.015838438113541905,
+    "j_Au_A_per_m2": 0.03167687622708381,
+    "j_Pd_A_per_m2": -0.03167687622708389,
+    "model_id": "independent_planar_edls_shared_mixed_potential",
+    "phi_RP_Au_V": -0.2278429709562768,
+    "phi_RP_Au_tilde": -8.872972834983754,
+    "phi_RP_Pd_V": -0.021953019447997657,
+    "phi_RP_Pd_tilde": -0.8549245315333133,
+    "relative_balance_residual": 1.3547432182511538e-15,
+    "residual_A": -1.7165613297609217e-27,
+    "result_schema_version": 1,
+    "root": {
+      "bracket_V": [
+        -0.15,
+        1.084
+      ],
+      "bracket_expansions": 0,
+      "function_calls": 17,
+      "iterations": 16,
+      "method": "brentq"
+    },
+    "topology_id": "two_independent_planar_half_spaces"
+  },
+  "without_edl": {
+    "E_mix_V": 0.46699999999999986,
+    "I_Au_A": 4.7024141631489615e-12,
+    "I_Pd_A": -4.702414163148978e-12,
+    "closed_form_minus_brent_V": -2.220446049250313e-16,
+    "condition": "w/o EDL",
+    "debye_huckel_validity": {
+      "max_abs_phi_tilde": 0.0,
+      "threshold": 1.0,
+      "threshold_exceeded": false
+    },
+    "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+    "electrostatic_backend": "disabled",
+    "i_mix_abs_A": 4.7024141631489615e-12,
+    "i_mix_avg_A_per_m2": 0.11756035407872402,
+    "j_Au_A_per_m2": 0.23512070815744804,
+    "j_Pd_A_per_m2": -0.23512070815744887,
+    "model_id": "independent_planar_edls_shared_mixed_potential",
+    "phi_RP_Au_V": 0.0,
+    "phi_RP_Au_tilde": 0.0,
+    "phi_RP_Pd_V": 0.0,
+    "phi_RP_Pd_tilde": 0.0,
+    "relative_balance_residual": 1.7178273519093383e-15,
+    "residual_A": -1.6155871338926322e-26,
+    "result_schema_version": 1,
+    "root": {
+      "bracket_V": [
+        -0.15,
+        1.084
+      ],
+      "bracket_expansions": 0,
+      "function_calls": 4,
+      "iterations": 3,
+      "method": "brentq"
+    },
+    "topology_id": "two_independent_planar_half_spaces"
+  },
+  "x_label": "Potential (V vs. RHE)",
+  "y_label": "Current (10^-3 uA)"
+}
