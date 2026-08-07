@@ -1,0 +1,1092 @@
+{
+  "applicability_warnings": {
+    "main_scan_points_above_weak_field_threshold": 164,
+    "maximum_abs_phi_tilde_in_main_scan": 8.366609732309396,
+    "note": "Applicability warnings are retained separately from root balance and numerical-convergence validation.",
+    "threshold": 1.0
+  },
+  "artifacts": {
+    "actual_figure_names": [
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/support_pzc_phi_RP_profiles_au2_pd2.png",
+      "figures/support_pzc_phi_RP_profiles_au2_pd2.svg",
+      "figures/support_pzc_surface_charge_profiles_au2_pd2.png",
+      "figures/support_pzc_surface_charge_profiles_au2_pd2.svg",
+      "figures/support_pzc_trends_au2_pd2.png",
+      "figures/support_pzc_trends_au2_pd2.svg"
+    ],
+    "expected_figure_names": [
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.svg",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.png",
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.svg",
+      "figures/support_pzc_phi_RP_profiles_au2_pd2.png",
+      "figures/support_pzc_phi_RP_profiles_au2_pd2.svg",
+      "figures/support_pzc_surface_charge_profiles_au2_pd2.png",
+      "figures/support_pzc_surface_charge_profiles_au2_pd2.svg",
+      "figures/support_pzc_trends_au2_pd2.png",
+      "figures/support_pzc_trends_au2_pd2.svg"
+    ],
+    "expected_representative_2d_summary_csv_count": 12,
+    "expected_representative_profile_csv_count": 12,
+    "figure_counts": {
+      "pdf": 0,
+      "png": 27,
+      "svg": 27
+    },
+    "passed": true,
+    "png": {
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 545004
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 463943
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 375369
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 365751
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 355105
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 358405
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 408665
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 377592
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 368475
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 480728
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 398994
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3321,
+          3421
+        ],
+        "size_bytes": 376437
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 256813
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 213529
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 185757
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 180954
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 181139
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 181464
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 197766
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 185844
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 185807
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 229518
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 191953
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          3325,
+          1715
+        ],
+        "size_bytes": 188447
+      },
+      "figures/support_pzc_phi_RP_profiles_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          4835,
+          3639
+        ],
+        "size_bytes": 626805
+      },
+      "figures/support_pzc_surface_charge_profiles_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          4832,
+          3640
+        ],
+        "size_bytes": 520587
+      },
+      "figures/support_pzc_trends_au2_pd2.png": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "passed": true,
+        "pixel_dimensions": [
+          6313,
+          2063
+        ],
+        "size_bytes": 555662
+      }
+    },
+    "representative_2d_summary_csv_count": 12,
+    "representative_profile_csv_count": 12,
+    "svg": {
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 225502
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 170778
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 108096
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 114077
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 103098
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 98808
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 153189
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 127507
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 103656
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 189922
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 150431
+      },
+      "figures/Figure_RP/phi_s_reactants_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 106734
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 87305
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 72973
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_15nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 47416
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 49897
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 45606
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_1nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 43867
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 66147
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 55390
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_3nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 45742
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p10V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 77875
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p50V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 64748
+      },
+      "figures/Figure_RP/solution_phase_potential_2d_L_support_6nm_pzc_support_0p90V_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": true,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": true,
+        "size_bytes": 46768
+      },
+      "figures/support_pzc_phi_RP_profiles_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": false,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": false,
+        "size_bytes": 78301
+      },
+      "figures/support_pzc_surface_charge_profiles_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": false,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": false,
+        "size_bytes": 85659
+      },
+      "figures/support_pzc_trends_au2_pd2.svg": {
+        "editable_text": true,
+        "embedded_raster_present": false,
+        "helvetica_first_stack_present": true,
+        "passed": true,
+        "rasterized_2d_field_expected": false,
+        "size_bytes": 56346
+      }
+    },
+    "svg_policy": "Line/profile SVGs contain vector graphics and editable text. The 12 potential-only maps and 12 potential-plus-reactant composites rasterize only their dense pcolormesh fields while retaining editable SVG text and vector annotations."
+  },
+  "numerical": {
+    "all_computed_values_finite": true,
+    "convergence": {
+      "all_passed": true,
+      "expected_row_count": 15,
+      "row_count": 15
+    },
+    "current_balance": {
+      "maximum_convergence_case_residual": 4.962307924158712e-14,
+      "maximum_relative_residual": 7.878733219459604e-13,
+      "maximum_requested_resolution_audit_residual": 4.962307924158712e-14,
+      "maximum_scan_anchor_control_residual": 7.878733219459604e-13,
+      "passed": true,
+      "threshold": 1e-10
+    },
+    "main_scan_shape": {
+      "expected_rows": 164,
+      "passed": true,
+      "rows": 164
+    },
+    "original_requested_resolution_audit": {
+      "all_requested_pairs_passed": false,
+      "disposition": "Production modes were raised only where the originally requested mode pairs failed their stated tolerances.",
+      "expected_row_count": 15,
+      "failed_pair_count": 4,
+      "failed_pairs": [
+        {
+          "L_support_nm": 6.0,
+          "mode_delta_E_mV": 0.0018272475027503177,
+          "mode_delta_i_percent": 0.00633184103785113,
+          "pzc_support_V": 0.1
+        },
+        {
+          "L_support_nm": 15.0,
+          "mode_delta_E_mV": 0.0071651368384051395,
+          "mode_delta_i_percent": 0.023066317946560475,
+          "pzc_support_V": 0.1
+        },
+        {
+          "L_support_nm": 15.0,
+          "mode_delta_E_mV": 0.0020801644075030268,
+          "mode_delta_i_percent": 0.006086615624300185,
+          "pzc_support_V": 0.5
+        },
+        {
+          "L_support_nm": 1000.0,
+          "mode_delta_E_mV": 0.0636311926973665,
+          "mode_delta_i_percent": 0.20498587760392306,
+          "pzc_support_V": 0.1
+        }
+      ],
+      "integrity_passed": true,
+      "row_count": 15
+    },
+    "parameter_lock": {
+      "checks": {
+        "C_tot": {
+          "absolute_tolerance": 1e-11,
+          "actual": 10.0,
+          "expected": 10.0,
+          "passed": true
+        },
+        "Cdl_Au": {
+          "absolute_tolerance": 5e-13,
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        "Cdl_C": {
+          "absolute_tolerance": 2e-13,
+          "actual": 0.2,
+          "expected": 0.2,
+          "passed": true
+        },
+        "Cdl_Pd": {
+          "absolute_tolerance": 5e-13,
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        "L_Au": {
+          "absolute_tolerance": 1e-15,
+          "actual": 2e-09,
+          "expected": 2e-09,
+          "passed": true
+        },
+        "L_Pd_len": {
+          "absolute_tolerance": 1e-15,
+          "actual": 2e-09,
+          "expected": 2e-09,
+          "passed": true
+        },
+        "alpha1": {
+          "absolute_tolerance": 5e-13,
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        "alpha2": {
+          "absolute_tolerance": 5e-13,
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        "it0_1": {
+          "absolute_tolerance": 1e-15,
+          "actual": 0.0001852573885166257,
+          "expected": 0.0001852573885166257,
+          "passed": true
+        },
+        "it0_2": {
+          "absolute_tolerance": 1e-15,
+          "actual": 0.0001852573885166257,
+          "expected": 0.0001852573885166257,
+          "passed": true
+        },
+        "out_of_plane_width": {
+          "absolute_tolerance": 1e-14,
+          "actual": 0.01,
+          "expected": 0.01,
+          "passed": true
+        }
+      },
+      "passed": true
+    },
+    "passed": true,
+    "production_resolution_policy": {
+      "convergence_low_N_modes_by_L_support_nm": {
+        "1": 480,
+        "1000": 9600,
+        "15": 1920,
+        "3": 480,
+        "6": 960
+      },
+      "passed": true,
+      "production_N_modes_by_L_support_nm": {
+        "1": 960,
+        "1000": 11520,
+        "15": 3840,
+        "3": 960,
+        "6": 1920
+      }
+    },
+    "pzc_0p50_regression_to_Figure_L_support": {
+      "checks": {
+        "15_nm": {
+          "E_mix_no_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.4670000000000002,
+            "passed": true,
+            "reference": 0.4670000000000002
+          },
+          "E_mix_with_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.5974179836404493,
+            "passed": true,
+            "reference": 0.5974179836404493
+          },
+          "i_mix_avg_no_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.11756035407872475,
+            "passed": true,
+            "reference": 0.11756035407872475
+          },
+          "i_mix_avg_with_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.05646214113811832,
+            "passed": true,
+            "reference": 0.05646214113811832
+          },
+          "phi_RP_Au_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -173.4712690644193,
+            "passed": true,
+            "reference": -173.4712690644193
+          },
+          "phi_RP_Pd_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -91.16277891305721,
+            "passed": true,
+            "reference": -91.16277891305721
+          },
+          "sigma_support_signed_mean_C_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-09,
+            "actual": 0.01442202971896493,
+            "passed": true,
+            "reference": 0.01442202971896493
+          }
+        },
+        "1_nm": {
+          "E_mix_no_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.4670000000000001,
+            "passed": true,
+            "reference": 0.4670000000000001
+          },
+          "E_mix_with_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.6119044004353885,
+            "passed": true,
+            "reference": 0.6119044004353885
+          },
+          "i_mix_avg_no_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.11756035407872445,
+            "passed": true,
+            "reference": 0.11756035407872445
+          },
+          "i_mix_avg_with_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.06037129665539306,
+            "passed": true,
+            "reference": 0.06037129665539306
+          },
+          "phi_RP_Au_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -182.13567957388935,
+            "passed": true,
+            "reference": -182.13567957388935
+          },
+          "phi_RP_Pd_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -110.44159650688975,
+            "passed": true,
+            "reference": -110.44159650688975
+          },
+          "sigma_support_signed_mean_C_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-09,
+            "actual": 0.03988274223010662,
+            "passed": true,
+            "reference": 0.03988274223010662
+          }
+        },
+        "3_nm": {
+          "E_mix_no_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.46699999999999964,
+            "passed": true,
+            "reference": 0.46699999999999964
+          },
+          "E_mix_with_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.6023350752719744,
+            "passed": true,
+            "reference": 0.6023350752719744
+          },
+          "i_mix_avg_no_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.1175603540787235,
+            "passed": true,
+            "reference": 0.1175603540787235
+          },
+          "i_mix_avg_with_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.05775933090201933,
+            "passed": true,
+            "reference": 0.05775933090201933
+          },
+          "phi_RP_Au_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -176.48576008272147,
+            "passed": true,
+            "reference": -176.48576008272147
+          },
+          "phi_RP_Pd_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -97.72239029477296,
+            "passed": true,
+            "reference": -97.72239029477296
+          },
+          "sigma_support_signed_mean_C_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-09,
+            "actual": 0.027371898235997793,
+            "passed": true,
+            "reference": 0.027371898235997793
+          }
+        },
+        "6_nm": {
+          "E_mix_no_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.4670000000000002,
+            "passed": true,
+            "reference": 0.4670000000000002
+          },
+          "E_mix_with_V": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.598576919109357,
+            "passed": true,
+            "reference": 0.598576919109357
+          },
+          "i_mix_avg_no_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.11756035407872475,
+            "passed": true,
+            "reference": 0.11756035407872475
+          },
+          "i_mix_avg_with_A_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-10,
+            "actual": 0.056789352442886014,
+            "passed": true,
+            "reference": 0.056789352442886014
+          },
+          "phi_RP_Au_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -174.1781214605253,
+            "passed": true,
+            "reference": -174.1781214605253
+          },
+          "phi_RP_Pd_mean_mV": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-07,
+            "actual": -92.72147573565557,
+            "passed": true,
+            "reference": -92.72147573565557
+          },
+          "sigma_support_signed_mean_C_per_m2": {
+            "absolute_difference": 0.0,
+            "absolute_tolerance": 5e-09,
+            "actual": 0.02015558921740411,
+            "passed": true,
+            "reference": 0.02015558921740411
+          }
+        }
+      },
+      "comparison_resolution_N_modes": 960,
+      "note": "Regression is evaluated at the existing Figure_L_support N=960 resolution; production rows use the independently validated adaptive mode policy.",
+      "passed": true,
+      "reference_file": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/Figure_L_support/csv/edl_overlap_vs_1000nm_L_support_au2_pd2_20260528_111255.csv"
+    },
+    "reference_15nm_vs_1000nm": {
+      "pzc_0.10_V": {
+        "active_RP_RMS_1000_vs_15_mV": 0.03777708967505648,
+        "delta_E_mix_1000_minus_15_mV": -0.09750985187184646,
+        "delta_i_mix_avg_1000_minus_15_percent": 0.14241565847765703
+      },
+      "pzc_0.50_V": {
+        "active_RP_RMS_1000_vs_15_mV": 0.028355021892519153,
+        "delta_E_mix_1000_minus_15_mV": -0.04089142805607793,
+        "delta_i_mix_avg_1000_minus_15_percent": 0.023601625087854572
+      },
+      "pzc_0.90_V": {
+        "active_RP_RMS_1000_vs_15_mV": 0.009356763023604903,
+        "delta_E_mix_1000_minus_15_mV": -0.004963552851733333,
+        "delta_i_mix_avg_1000_minus_15_percent": -0.014656919471389696
+      }
+    },
+    "representative_profiles": {
+      "all_profile_values_finite": true,
+      "passed": true,
+      "profile_to_scan_scalar_max_abs_error": 0.0,
+      "profile_to_scan_scalar_tolerance": 1e-12,
+      "representative_profile_count": 12,
+      "stern_relation_max_abs_error_C_per_m2": 0.0,
+      "stern_relation_tolerance_C_per_m2": 1e-13
+    },
+    "without_edl_invariance": {
+      "E_mix_range_V": 1.687538997430238e-14,
+      "E_mix_tolerance_V": 1e-11,
+      "i_mix_avg_range_A_per_m2": 3.862188346914763e-14,
+      "i_mix_avg_tolerance_A_per_m2": 1e-11,
+      "passed": true
+    },
+    "zero_length_negative_control": {
+      "absolute_tolerance": 1e-10,
+      "endpoint_differences": {
+        "E_mix_with_V": 0.0,
+        "i_mix_avg_with_A_per_m2": 0.0,
+        "phi_RP_Au_mean_mV": 0.0,
+        "phi_RP_Pd_mean_mV": 0.0
+      },
+      "passed": true
+    }
+  },
+  "passed": true,
+  "representative_2d": {
+    "all_values_finite": true,
+    "case_count": 12,
+    "expected_case_count": 12,
+    "max_E_mix_difference_from_main_scan_V": 0.0,
+    "max_i_mix_avg_difference_from_main_scan_A_per_m2": 0.0,
+    "max_reactant_reciprocity_error": 2.220446049250313e-16,
+    "max_surface_reconstruction_error_mV": 7.389644451905042e-13,
+    "max_surface_reconstruction_error_phi_tilde": 2.7533531010703882e-14,
+    "passed": true,
+    "shared_color_limit_contains_all_fields": true,
+    "shared_reactant_log_limits_contain_all_fields": true,
+    "surface_reconstruction_tolerance_phi_tilde": 5e-10
+  },
+  "study_id": "Au2nm_C_Pd2nm_support_PZC_study"
+}

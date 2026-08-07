@@ -768,8 +768,16 @@ def plot_mechanism(rows: list[dict[str, Any]], base_params: Mapping[str, Any], o
         wspace=0.30,
     )
     for row_index, (metric, generic_label, scale, formula) in enumerate(metric_rows):
+        shared_y_axis = None
         for column, material in enumerate(("Au", "Pd")):
-            ax = fig.add_subplot(grid[row_index, column])
+            # The paired Au/Pd panels show the same physical quantity, so they
+            # must use identical y limits and ticks for a direct comparison.
+            ax = fig.add_subplot(
+                grid[row_index, column],
+                sharey=shared_y_axis,
+            )
+            if shared_y_axis is None:
+                shared_y_axis = ax
             key = f"{material}_{metric}"
             values = np.asarray([row[key] for row in rows], dtype=float)
             color = COLORS["with_edl"] if material == "Au" else COLORS["profile_low"]

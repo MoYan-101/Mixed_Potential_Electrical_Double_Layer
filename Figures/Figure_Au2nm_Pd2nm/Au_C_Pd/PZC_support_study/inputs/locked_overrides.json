@@ -1,0 +1,14 @@
+{
+  "C_H_Au_F_per_m2": 0.5,
+  "C_H_Pd_F_per_m2": 0.5,
+  "C_H_support_F_per_m2": 0.2,
+  "C_tot_mM": 10.0,
+  "C_tot_mol_per_m3": 10.0,
+  "L_Au_m": 2e-09,
+  "L_Pd_m": 2e-09,
+  "alpha_Au": 0.5,
+  "alpha_Pd": 0.5,
+  "i0_Au_A_per_m2": 0.0001852573885166257,
+  "i0_Pd_A_per_m2": 0.0001852573885166257,
+  "out_of_plane_width_m": 0.01
+}

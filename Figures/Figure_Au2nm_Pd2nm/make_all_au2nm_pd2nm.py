@@ -22,7 +22,13 @@ LEGACY_RP_DIR = LEGACY_FIGURE_DIR / "Figure_RP"
 LEGACY_INPUTS_DIR = LEGACY_DIR / "inputs"
 LEGACY_CSV_DIR = LEGACY_DIR / "csv"
 LEGACY_OFAT_DIR = LEGACY_DIR / "Figure_L_support" / "OFAT"
+SUPPORT_PZC_STUDY_DIR = LEGACY_DIR / "PZC_support_study"
 INDEPENDENT_DIR = OUT_DIR / "Au_Pd_independent"
+INDEPENDENT_CTOT_DIR = INDEPENDENT_DIR / "C_tot_study"
+INDEPENDENT_POLARIZATION_DIR = INDEPENDENT_DIR / "figures" / "Polarization_Scheme"
+INDEPENDENT_UNIFORM_BARS_DIR = (
+    INDEPENDENT_DIR / "figures" / "Figure_3" / "Uniform_Bar_Comparison"
+)
 
 BASE_RESULT_ID = "20260528_111255"
 OUTPUT_TAG = f"au2_pd2_{BASE_RESULT_ID}"
@@ -30,22 +36,56 @@ EXPECTED_LEGACY_FIGURE_TYPES = 28
 EXPECTED_LEGACY_FIGURE3_TYPES = 14
 EXPECTED_LEGACY_RP_TYPES = 14
 EXPECTED_LEGACY_OFAT_TYPES = 8
+EXPECTED_SUPPORT_PZC_STUDY_FIGURE_TYPES = 27
 EXPECTED_INDEPENDENT_FIGURE_TYPES = 8
+EXPECTED_INDEPENDENT_CTOT_FIGURE_TYPES = 5
+EXPECTED_INDEPENDENT_POLARIZATION_FIGURE_TYPES = 1
+EXPECTED_INDEPENDENT_UNIFORM_BAR_FIGURE_TYPES = 1
 
 from legacy_au_c_pd_engine import LegacyCase, build_cases, run_convergence_checks  # noqa: E402
 from legacy_au_c_pd_plots import plot_all_cases  # noqa: E402
 from figure_l_support_ofat import build_figure_l_support_ofat  # noqa: E402
+from make_support_pzc_study import build_or_reuse_support_pzc_study  # noqa: E402
 from make_independent_au_pd import (  # noqa: E402
     EXPECTED_RESULTS,
     _source_hashes as independent_source_hashes,
     build_independent_au_pd,
+)
+from make_independent_au_pd_ctot_study import (  # noqa: E402
+    build_or_reuse_independent_au_pd_ctot_study,
+)
+from make_independent_au_pd_polarization import (  # noqa: E402
+    build_or_reuse_independent_au_pd_polarization,
+)
+from make_independent_au_pd_uniform_bar_comparison import (  # noqa: E402
+    build_or_reuse_independent_au_pd_uniform_bar_comparison,
 )
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate the Au=Pd=2 nm two-model figure collection.")
     parser.add_argument("--skip-legacy", action="store_true", help="Do not rebuild the Au|C|Pd cases.")
+    parser.add_argument(
+        "--skip-support-pzc-study",
+        action="store_true",
+        help="Do not build the Au|C|Pd support-PZC parameter study.",
+    )
     parser.add_argument("--skip-independent", action="store_true", help="Do not build the independent Au|Pd set.")
+    parser.add_argument(
+        "--skip-independent-ctot",
+        action="store_true",
+        help="Do not build the independent Au|Pd C_tot study.",
+    )
+    parser.add_argument(
+        "--skip-independent-polarization",
+        action="store_true",
+        help="Do not build the independent Au|Pd polarization figure.",
+    )
+    parser.add_argument(
+        "--skip-independent-uniform-bars",
+        action="store_true",
+        help="Do not build the independent Au|Pd uniform-interface bar figure.",
+    )
     return parser.parse_args()
 
 
@@ -468,8 +508,12 @@ def _validate_existing_independent() -> dict[str, Any]:
     for key, value in expected.items():
         if not math.isclose(float(params[key]), value, rel_tol=0.0, abs_tol=max(1.0e-15, abs(value) * 1.0e-12)):
             raise ValueError(f"Existing independent output has {key}={params[key]}, expected {value}")
-    pngs = sorted(INDEPENDENT_DIR.glob("figures/**/*.png"))
-    svgs = sorted(INDEPENDENT_DIR.glob("figures/**/*.svg"))
+    baseline_figure_dirs = (
+        INDEPENDENT_DIR / "figures" / "Figure_3",
+        INDEPENDENT_DIR / "figures" / "rp_2d",
+    )
+    pngs = sorted(path for directory in baseline_figure_dirs for path in directory.glob("*.png"))
+    svgs = sorted(path for directory in baseline_figure_dirs for path in directory.glob("*.svg"))
     pdfs = sorted(INDEPENDENT_DIR.glob("**/*.pdf"))
     if len(pngs) != EXPECTED_INDEPENDENT_FIGURE_TYPES or len(svgs) != EXPECTED_INDEPENDENT_FIGURE_TYPES:
         raise RuntimeError(f"Existing independent output is incomplete: {len(pngs)} PNG, {len(svgs)} SVG")
@@ -514,7 +558,11 @@ def _validate_existing_independent() -> dict[str, Any]:
     actual_paths = {
         path.relative_to(INDEPENDENT_DIR).as_posix()
         for path in INDEPENDENT_DIR.rglob("*")
-        if path.is_file() and path.name != checksum_path.name
+        if path.is_file()
+        and path.name != checksum_path.name
+        and INDEPENDENT_CTOT_DIR not in path.parents
+        and INDEPENDENT_POLARIZATION_DIR not in path.parents
+        and INDEPENDENT_UNIFORM_BARS_DIR not in path.parents
     }
     if listed_paths != actual_paths:
         missing = sorted(actual_paths - listed_paths)
@@ -549,14 +597,18 @@ def validate_total_outputs() -> dict[str, int]:
     expected = (
         EXPECTED_LEGACY_FIGURE_TYPES
         + EXPECTED_LEGACY_OFAT_TYPES
+        + EXPECTED_SUPPORT_PZC_STUDY_FIGURE_TYPES
         + EXPECTED_INDEPENDENT_FIGURE_TYPES
+        + EXPECTED_INDEPENDENT_CTOT_FIGURE_TYPES
+        + EXPECTED_INDEPENDENT_POLARIZATION_FIGURE_TYPES
+        + EXPECTED_INDEPENDENT_UNIFORM_BAR_FIGURE_TYPES
     )
     if len(pngs) != expected or len(svgs) != expected:
         raise RuntimeError(f"Expected {expected} PNG/SVG pairs, got {len(pngs)} PNG and {len(svgs)} SVG")
     if pdfs:
         raise RuntimeError(f"Expected zero PDF outputs, found {pdfs}")
     if any(path.stat().st_size == 0 for path in (*pngs, *svgs)):
-        raise RuntimeError("One or more of the 88 figure artifacts are empty")
+        raise RuntimeError(f"One or more of the {2 * expected} figure artifacts are empty")
     if not all("<text" in path.read_text(encoding="utf-8") for path in svgs):
         raise RuntimeError("One or more SVG outputs do not retain editable text")
     return {"png": len(pngs), "svg": len(svgs), "pdf": len(pdfs)}
@@ -565,9 +617,38 @@ def validate_total_outputs() -> dict[str, int]:
 def main() -> int:
     args = parse_args()
     legacy_result = None if args.skip_legacy else build_legacy_outputs()
+    support_pzc_study_result = (
+        None
+        if args.skip_support_pzc_study
+        else build_or_reuse_support_pzc_study(SUPPORT_PZC_STUDY_DIR)
+    )
     independent_result = None if args.skip_independent else build_or_reuse_independent()
+    independent_ctot_result = (
+        None
+        if args.skip_independent or args.skip_independent_ctot
+        else build_or_reuse_independent_au_pd_ctot_study(INDEPENDENT_CTOT_DIR)
+    )
+    independent_polarization_result = (
+        None
+        if args.skip_independent or args.skip_independent_polarization
+        else build_or_reuse_independent_au_pd_polarization(INDEPENDENT_POLARIZATION_DIR)
+    )
+    independent_uniform_bars_result = (
+        None
+        if args.skip_independent or args.skip_independent_uniform_bars
+        else build_or_reuse_independent_au_pd_uniform_bar_comparison(
+            INDEPENDENT_UNIFORM_BARS_DIR
+        )
+    )
     counts = None
-    if not args.skip_legacy and not args.skip_independent:
+    if (
+        not args.skip_legacy
+        and not args.skip_support_pzc_study
+        and not args.skip_independent
+        and not args.skip_independent_ctot
+        and not args.skip_independent_polarization
+        and not args.skip_independent_uniform_bars
+    ):
         counts = validate_total_outputs()
     print(f"Output directory: {OUT_DIR}")
     if legacy_result is not None:
@@ -586,8 +667,16 @@ def main() -> int:
             f"{ofat_validation['overlap_scan_points']} overlap points, "
             f"{ofat_validation['png_count']} PNG + {ofat_validation['svg_count']} SVG"
         )
+    if support_pzc_study_result is not None:
+        print("Au|C|Pd support-PZC parameter study validated")
     if independent_result is not None:
         print("Independent Au|Pd output validated")
+    if independent_ctot_result is not None:
+        print("Independent Au|Pd C_tot study validated")
+    if independent_polarization_result is not None:
+        print("Independent Au|Pd polarization figure validated")
+    if independent_uniform_bars_result is not None:
+        print("Independent Au|Pd uniform-interface bar figure validated")
     if counts is not None:
         print(f"Verified {counts['png']} PNG + {counts['svg']} SVG + {counts['pdf']} PDF")
     return 0

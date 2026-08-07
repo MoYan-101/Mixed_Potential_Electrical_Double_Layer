@@ -1,0 +1,21 @@
+metric,scope,species_or_reaction,condition,value,unit
+E_mix,mixed,,w/o EDL,0.46699999999999986,V vs. RHE
+i_mix_avg,mixed,,w/o EDL,0.11756035407872402,A/m^2
+E_mix,mixed,,with EDL,0.6249104327868923,V vs. RHE
+i_mix_avg,mixed,,with EDL,0.04315057812685645,A/m^2
+phi_RP,Au,,w/o EDL,0.0,mV
+phi_RP,Au,,with EDL,-209.38292066396218,mV
+phi_RP,Pd,,w/o EDL,0.0,mV
+phi_RP,Pd,,with EDL,-106.43794490982253,mV
+c_i_over_c_bulk,Au,Red1,w/o EDL,1.0,dimensionless
+c_i_over_c_bulk,Au,Red1,with EDL,0.00028756078634452754,dimensionless
+c_i_over_c_bulk,Pd,Ox2,w/o EDL,1.0,dimensionless
+c_i_over_c_bulk,Pd,Ox2,with EDL,63.120912787999366,dimensionless
+eta_RP,Au,,w/o EDL,0.3669999999999999,V
+eta_RP,Au,,with EDL,0.7342933534508544,V
+eta_RP,Pd,,w/o EDL,-0.3670000000000001,V
+eta_RP,Pd,,with EDL,-0.10265162230328514,V
+local_current_density,Au,i1,w/o EDL,0.23512070815744804,A/m^2
+local_current_density,Au,i1,with EDL,0.0863011562537129,A/m^2
+local_current_density,Pd,i2,w/o EDL,-0.23512070815744887,A/m^2
+local_current_density,Pd,i2,with EDL,-0.08630115625371307,A/m^2

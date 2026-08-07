@@ -79,6 +79,12 @@ LAMBDA_COLOR = "#5A90C8"
 PLATEAU_COLOR = "#D83A2E"
 OVERLAP_I_COLOR = "#4D8061"
 
+# The E_mix main trace occupies the upper-right region, so its inset needs a
+# dedicated lower-left position.  Current-density panels retain the existing
+# bounds because their curve geometry is different.
+E_MIX_INSET_BOUNDS = (0.20, 0.22, 0.50, 0.39)
+COMPARE_INSET_BOUNDS = (0.43, 0.43, 0.50, 0.39)
+
 
 def configure_style() -> None:
     """Apply the Figure 3 Helvetica-first publication style."""
@@ -671,6 +677,7 @@ def _plot_compare(
     ylabel: str,
     stem: str,
     show_markers: bool,
+    inset_bounds: tuple[float, float, float, float] = COMPARE_INSET_BOUNDS,
 ) -> list[Path]:
     x = np.asarray([row[x_key] for row in rows], dtype=float)
     y_with = np.asarray([row[y_with_key] for row in rows], dtype=float)
@@ -686,7 +693,7 @@ def _plot_compare(
     ax.set_ylim(ymin - pad, ymax + pad)
     ax.legend(loc="center right", bbox_to_anchor=(0.985, 0.29), fontsize=7.7, handlelength=1.8)
 
-    inset = ax.inset_axes([0.47, 0.52, 0.50, 0.39])
+    inset = ax.inset_axes(inset_bounds)
     inset.plot(x, y_with, color=WITH_COLOR, lw=1.45, marker="o", ms=2.1)
     detail_span = float(np.ptp(y_with))
     detail_pad = max(1e-8, 0.12 * detail_span)
@@ -1046,6 +1053,7 @@ def build_figure_l_support_ofat(base_cases: Sequence[Any] | None = None) -> dict
             ylabel=r"$E_{\mathrm{mix}}$ (V vs. RHE)",
             stem=f"ofat_compare_L_support_E_mix_0_10nm_{OUTPUT_TAG}",
             show_markers=True,
+            inset_bounds=E_MIX_INSET_BOUNDS,
         )
     )
     figures.extend(_plot_support_charge(main_rows, plateau))
@@ -1076,6 +1084,7 @@ def build_figure_l_support_ofat(base_cases: Sequence[Any] | None = None) -> dict
             ylabel=r"$E_{\mathrm{mix}}$ (V vs. RHE)",
             stem=f"ofat_compare_L_support_over_lambda_D_E_mix_0_10nm_{OUTPUT_TAG}",
             show_markers=True,
+            inset_bounds=E_MIX_INSET_BOUNDS,
         )
     )
     figures.extend(

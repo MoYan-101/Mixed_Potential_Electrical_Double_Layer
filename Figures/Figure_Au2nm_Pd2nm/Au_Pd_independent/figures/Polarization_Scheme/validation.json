@@ -1,0 +1,86 @@
+{
+  "artifacts": {
+    "passed": true,
+    "pdf_count": 0,
+    "png_count": 1,
+    "png_dimensions_px": [
+      4320,
+      2850
+    ],
+    "png_dpi": [
+      599.9988,
+      599.9988
+    ],
+    "svg_count": 1,
+    "svg_text_editable": true
+  },
+  "debye_huckel_applicability": {
+    "max_abs_phi_tilde": 8.154076289311629,
+    "threshold": 1.0,
+    "threshold_exceeded": true
+  },
+  "numerical": {
+    "all_curve_values_finite": true,
+    "current_balance_checks": {
+      "with_edl": {
+        "I_Au_A": 1.7260231250742582e-12,
+        "I_Au_plus_I_Pd_A": -3.4331226595218434e-27,
+        "I_Pd_A": -1.7260231250742616e-12,
+        "passed": true,
+        "relative_balance_residual": 9.945181526389276e-16,
+        "threshold": 1e-10
+      },
+      "without_edl": {
+        "I_Au_A": 4.7024141631489615e-12,
+        "I_Au_plus_I_Pd_A": -1.6155871338926322e-26,
+        "I_Pd_A": -4.702414163148978e-12,
+        "passed": true,
+        "relative_balance_residual": 1.7178273519093383e-15,
+        "threshold": 1e-10
+      }
+    },
+    "curve_point_count": 1201,
+    "curve_point_count_expected": 1201,
+    "expected_result_checks": {
+      "with_edl.E_mix_V": {
+        "absolute_tolerance": 5e-11,
+        "actual": 0.6249104327868923,
+        "expected": 0.6249104327868923,
+        "passed": true
+      },
+      "with_edl.i_mix_abs_A": {
+        "absolute_tolerance": 5e-22,
+        "actual": 1.7260231250742582e-12,
+        "expected": 1.7260231250742582e-12,
+        "passed": true
+      },
+      "with_edl.i_mix_avg_A_per_m2": {
+        "absolute_tolerance": 5e-12,
+        "actual": 0.04315057812685645,
+        "expected": 0.04315057812685645,
+        "passed": true
+      },
+      "without_edl.E_mix_V": {
+        "absolute_tolerance": 5e-11,
+        "actual": 0.46699999999999986,
+        "expected": 0.46699999999999986,
+        "passed": true
+      },
+      "without_edl.i_mix_abs_A": {
+        "absolute_tolerance": 5e-22,
+        "actual": 4.7024141631489615e-12,
+        "expected": 4.7024141631489615e-12,
+        "passed": true
+      },
+      "without_edl.i_mix_avg_A_per_m2": {
+        "absolute_tolerance": 5e-12,
+        "actual": 0.11756035407872402,
+        "expected": 0.11756035407872402,
+        "passed": true
+      }
+    },
+    "mixed_potentials_inside_plot_range": true,
+    "passed": true
+  },
+  "passed": true
+}

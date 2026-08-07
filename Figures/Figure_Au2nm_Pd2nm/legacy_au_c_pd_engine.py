@@ -7,10 +7,11 @@ potential balance.  The quadrature grid is therefore independent of the
 surface/2-D grids used by the figure scripts.
 
 The public entry points are :func:`build_case`, :func:`build_cases`,
-:func:`build_scan_case`, and :func:`run_convergence_checks`.  The regular
-``build_case`` API deliberately keeps the six publication-case lengths
-whitelisted, while ``build_scan_case`` accepts any finite non-negative support
-length for OFAT work.
+:func:`build_scan_case`, :func:`build_support_pzc_scan_case`,
+:func:`build_support_pzc_scan_family`, and :func:`run_convergence_checks`.
+The regular ``build_case`` API deliberately keeps the six publication-case
+lengths whitelisted, while the scan APIs accept any finite non-negative
+support length for parameter-study work.
 """
 
 from __future__ import annotations
@@ -356,6 +357,35 @@ def _evaluate_affine_components(edl: Any, x_tilde: np.ndarray) -> tuple[np.ndarr
         out_m[x_start:x_stop] = block_m
         out_pzc[x_start:x_stop] = block_pzc
     return out_m, out_pzc
+
+
+def _evaluate_coefficient_series(
+    rho: np.ndarray,
+    coefficients: np.ndarray,
+    x_tilde: np.ndarray,
+) -> np.ndarray:
+    """Evaluate one cosine-coefficient vector with bounded work arrays."""
+
+    x = np.asarray(x_tilde, dtype=float)
+    modes = np.asarray(rho, dtype=float)
+    values = np.asarray(coefficients, dtype=float)
+    if modes.shape != values.shape:
+        raise ValueError(
+            "rho and coefficients must have identical shapes; "
+            f"got {modes.shape} and {values.shape}"
+        )
+
+    out = np.zeros(x.size, dtype=float)
+    for x_start in range(0, x.size, X_BLOCK_SIZE):
+        x_stop = min(x_start + X_BLOCK_SIZE, x.size)
+        x_block = x[x_start:x_stop]
+        block = np.zeros(x_block.size, dtype=float)
+        for m_start in range(0, modes.size, MODE_BLOCK_SIZE):
+            m_stop = min(m_start + MODE_BLOCK_SIZE, modes.size)
+            basis = np.cos(np.outer(x_block, modes[m_start:m_stop]))
+            block += basis @ values[m_start:m_stop]
+        out[x_start:x_stop] = block
+    return out
 
 
 def _evaluate_surface_series(edl: Any, E_mix: float, x_tilde: np.ndarray) -> np.ndarray:
@@ -857,20 +887,25 @@ def _active_windows_nm(derived: Mapping[str, Any]) -> tuple[tuple[float, float],
     )
 
 
-def _build_case_from_params(
+def _build_case_from_existing_edl(
     support_nm: float,
     params: dict[str, Any],
+    edl: Any,
     *,
     gl_order: int = DEFAULT_GL_ORDER,
     include_2d: bool = True,
+    res_no_cached: Mapping[str, Any] | None = None,
 ) -> LegacyCase:
-    """Compute a validated support case without creating files or figures."""
+    """Assemble one case from an already-factorized coefficient model."""
 
-    edl = _build_coefficient_model(params)
     derived = copy.deepcopy(edl.derived)
     gauss = _build_gauss_data(edl, int(gl_order))
     res_edl = _solve_with_edl(edl, params, gauss)
-    res_no = _solve_without_edl(params)
+    res_no = (
+        _solve_without_edl(params)
+        if res_no_cached is None
+        else copy.deepcopy(dict(res_no_cached))
+    )
     profile = _build_profile_data(edl, params, res_edl, res_no)
     _attach_profile_diagnostics(res_edl, params, edl, gauss, profile)
 
@@ -909,7 +944,7 @@ def _build_case_from_params(
         "phi_2d_surface_max_error": surface_error,
     }
 
-    case = LegacyCase(
+    return LegacyCase(
         value_nm=support_nm,
         params=copy.deepcopy(params),
         derived=derived,
@@ -942,9 +977,29 @@ def _build_case_from_params(
         active_zoom_windows_nm=_active_windows_nm(derived),
         convergence=numerical_metadata,
     )
-    del edl
-    gc.collect()
-    return case
+
+
+def _build_case_from_params(
+    support_nm: float,
+    params: dict[str, Any],
+    *,
+    gl_order: int = DEFAULT_GL_ORDER,
+    include_2d: bool = True,
+) -> LegacyCase:
+    """Compute a validated support case without creating files or figures."""
+
+    edl = _build_coefficient_model(params)
+    try:
+        return _build_case_from_existing_edl(
+            support_nm,
+            params,
+            edl,
+            gl_order=gl_order,
+            include_2d=include_2d,
+        )
+    finally:
+        del edl
+        gc.collect()
 
 
 def build_case(
@@ -988,6 +1043,225 @@ def build_scan_case(
         gl_order=gl_order,
         include_2d=include_2d,
     )
+
+
+def build_support_pzc_scan_case(
+    L_support_nm: float,
+    pzc_C_V: float,
+    *,
+    n_modes: int | None = None,
+    gl_order: int = DEFAULT_GL_ORDER,
+    include_2d: bool = False,
+) -> LegacyCase:
+    """Compute one support-length/PZC point for a parameter study.
+
+    The geometry and all locked Au=Pd=2 nm baseline parameters come from
+    :func:`params_for_support_scan`; only the support PZC is overridden.  The
+    default skips the 2-D field because PZC scans use scalar and surface
+    diagnostics.
+    """
+
+    support_nm = _scan_support_nm(L_support_nm)
+    pzc_c = float(pzc_C_V)
+    if not math.isfinite(pzc_c):
+        raise ValueError(f"pzc_C_V must be finite; got {pzc_C_V!r}")
+
+    params = params_for_support_scan(support_nm, n_modes=n_modes)
+    params = solver.apply_param_overrides(
+        params,
+        {"pzc_C": pzc_c},
+        reset_lambda_D=False,
+    )
+    solver.validate_params(params)
+    return _build_case_from_params(
+        support_nm,
+        params,
+        gl_order=gl_order,
+        include_2d=include_2d,
+    )
+
+
+def build_support_pzc_scan_family(
+    L_support_nm: float,
+    pzc_C_values_V: Sequence[float],
+    *,
+    n_modes: int | None = None,
+    gl_orders: Sequence[int] = (DEFAULT_GL_ORDER,),
+    include_2d: bool = False,
+) -> dict[tuple[float, int], LegacyCase]:
+    """Build a support-PZC family with one dense EDL coefficient solve.
+
+    For the locked Au=Pd=2 nm geometry, the Au and Pd Robin coefficients are
+    mirror symmetric.  The matrix ``M``, the applied-potential response
+    ``A_M``, and all spatial/quadrature grids are therefore independent of
+    ``pzc_C``.  Reflection in the cosine basis maps coefficient ``n`` to
+    ``(-1)**n`` times itself, which isolates the centered-support response from
+    one reference solution.  Each requested PZC then needs only an affine
+    coefficient update and a FULL absolute-current root solve.
+
+    The returned mapping is keyed by ``(pzc_C_V, gl_order)``.  It is deliberately
+    separate from :func:`build_support_pzc_scan_case`, which remains the simple
+    independent single-point reference path.
+    """
+
+    support_nm = _scan_support_nm(L_support_nm)
+    pzc_values: list[float] = []
+    for raw_value in pzc_C_values_V:
+        value = float(raw_value)
+        if not math.isfinite(value):
+            raise ValueError(f"Every pzc_C value must be finite; got {raw_value!r}")
+        if value not in pzc_values:
+            pzc_values.append(value)
+
+    orders: list[int] = []
+    for raw_order in gl_orders:
+        order_float = float(raw_order)
+        order = int(raw_order)
+        if (
+            not math.isfinite(order_float)
+            or order_float != float(order)
+            or order < 2
+        ):
+            raise ValueError(
+                "Every Gauss-Legendre order must be a finite integer >= 2; "
+                f"got {raw_order!r}"
+            )
+        if order not in orders:
+            orders.append(order)
+    if not orders:
+        raise ValueError("gl_orders must contain at least one order")
+    if not pzc_values:
+        return {}
+
+    params_reference = params_for_support_scan(support_nm, n_modes=n_modes)
+    pzc_reference = float(params_reference["pzc_C"])
+    edl = _build_coefficient_model(params_reference)
+    try:
+        derived = edl.derived
+        l_au = float(derived["L_Au_tilde"])
+        l_pd = float(derived["L_tilde"] - derived["L_C_tilde"])
+        g_au = float(derived["g_Au"])
+        g_pd = float(derived["g_Pd"])
+        if not math.isclose(l_au, l_pd, rel_tol=1.0e-12, abs_tol=1.0e-14):
+            raise ValueError(
+                "Support-PZC family reuse requires mirror-symmetric Au/Pd "
+                f"lengths; got {l_au:.15g} and {l_pd:.15g}"
+            )
+        if not math.isclose(g_au, g_pd, rel_tol=1.0e-12, abs_tol=1.0e-14):
+            raise ValueError(
+                "Support-PZC family reuse requires mirror-symmetric Au/Pd "
+                f"Robin coefficients; got {g_au:.15g} and {g_pd:.15g}"
+            )
+
+        pzc_active_mean = 0.5 * (
+            float(params_reference["pzc_Au"])
+            + float(params_reference["pzc_Pd"])
+        )
+        pzc_denominator = pzc_active_mean - pzc_reference
+        if abs(pzc_denominator) <= 1.0e-12:
+            raise ValueError(
+                "Mirror/parity support-response isolation is singular when "
+                "pzc_C equals the mean Au/Pd PZC"
+            )
+
+        a_m = np.asarray(edl.pre["A_M"], dtype=float)
+        a_pzc_reference = np.asarray(edl.pre["A_pzc"], dtype=float).copy()
+        parity = np.where(np.arange(a_m.size) % 2 == 0, 1.0, -1.0)
+        symmetric_a_pzc = 0.5 * (
+            a_pzc_reference + parity * a_pzc_reference
+        )
+        beta = float(derived["beta"])
+        d_a_pzc_d_v = (
+            beta * pzc_active_mean * a_m - symmetric_a_pzc
+        ) / pzc_denominator
+        if math.isclose(support_nm, 0.0, rel_tol=0.0, abs_tol=1.0e-12):
+            # A zero-width segment has exactly zero source measure.  Enforce
+            # that mathematical negative control rather than retaining roundoff
+            # from subtracting two nearly equal symmetric coefficient vectors.
+            d_a_pzc_d_v = np.zeros_like(d_a_pzc_d_v)
+
+        a_m_reflection_error = float(
+            np.max(np.abs(a_m - parity * a_m))
+            / (np.max(np.abs(a_m)) + 1.0e-300)
+        )
+        support_response_reflection_error = float(
+            np.max(np.abs(d_a_pzc_d_v - parity * d_a_pzc_d_v))
+            / (np.max(np.abs(d_a_pzc_d_v)) + 1.0e-300)
+        ) if np.any(d_a_pzc_d_v) else 0.0
+        if a_m_reflection_error > 5.0e-10:
+            raise RuntimeError(
+                "Applied-potential coefficient response is not mirror "
+                f"symmetric: relative error={a_m_reflection_error:.3g}"
+            )
+        if support_response_reflection_error > 5.0e-10:
+            raise RuntimeError(
+                "Isolated support-PZC response is not mirror symmetric: "
+                f"relative error={support_response_reflection_error:.3g}"
+            )
+
+        rho = np.asarray(edl.pre["rho"], dtype=float)
+        x_internal = np.asarray(edl.pre["x_tilde"], dtype=float)
+        phi_pzc_reference_internal = np.asarray(
+            edl.pre["phi_tilde_pzc"], dtype=float
+        ).copy()
+        d_phi_pzc_internal_d_v = _evaluate_coefficient_series(
+            rho,
+            d_a_pzc_d_v,
+            x_internal,
+        )
+        c_au = np.asarray(edl.pre["c_Au"], dtype=float)
+        c_pd = np.asarray(edl.pre["c_Pd"], dtype=float)
+        thermal_v = 1.0 / beta
+        base_segs = tuple(edl.pre["segs"])
+        res_no_reference = _solve_without_edl(params_reference)
+        cases: dict[tuple[float, int], LegacyCase] = {}
+
+        for pzc_c in pzc_values:
+            params = solver.apply_param_overrides(
+                params_reference,
+                {"pzc_C": pzc_c},
+                reset_lambda_D=False,
+            )
+            solver.validate_params(params)
+            a_pzc = (
+                a_pzc_reference
+                + (pzc_c - pzc_reference) * d_a_pzc_d_v
+            )
+
+            edl.params = copy.deepcopy(params)
+            edl.derived["pzc_C"] = pzc_c
+            edl.derived["pzc_C_tilde"] = beta * pzc_c
+            edl.pre["A_pzc"] = a_pzc
+            edl.pre["b1"] = -thermal_v * float(np.dot(c_au, a_pzc))
+            edl.pre["b2"] = -thermal_v * float(np.dot(c_pd, a_pzc))
+            edl.pre["phi_tilde_pzc"] = (
+                phi_pzc_reference_internal
+                + (pzc_c - pzc_reference) * d_phi_pzc_internal_d_v
+            )
+            edl.pre["segs"] = [
+                (
+                    name,
+                    a,
+                    b,
+                    gseg,
+                    beta * pzc_c if name == "C" else pzc_tilde,
+                )
+                for name, a, b, gseg, pzc_tilde in base_segs
+            ]
+
+            for order in orders:
+                cases[(pzc_c, order)] = _build_case_from_existing_edl(
+                    support_nm,
+                    params,
+                    edl,
+                    gl_order=order,
+                    include_2d=include_2d,
+                    res_no_cached=res_no_reference,
+                )
+        return cases
+    finally:
+        del edl
+        gc.collect()
 
 
 def build_cases(
@@ -1142,6 +1416,8 @@ __all__ = [
     "surface_grid_nm",
     "build_case",
     "build_scan_case",
+    "build_support_pzc_scan_case",
+    "build_support_pzc_scan_family",
     "build_cases",
     "convergence_check",
     "run_convergence_checks",

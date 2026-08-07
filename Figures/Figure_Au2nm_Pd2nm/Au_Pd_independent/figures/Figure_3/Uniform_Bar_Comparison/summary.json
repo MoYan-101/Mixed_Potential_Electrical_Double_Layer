@@ -1,0 +1,79 @@
+{
+  "applicability_caveat": "The with-EDL result exceeds the linear Debye-Huckel weak-field threshold; this is a model-internal comparison.",
+  "bar_values": {
+    "E_mix_V": {
+      "w/o EDL": 0.46699999999999986,
+      "with EDL": 0.6249104327868923
+    },
+    "eta_RP_V": {
+      "Au": {
+        "w/o EDL": 0.3669999999999999,
+        "with EDL": 0.7342933534508544
+      },
+      "Pd": {
+        "w/o EDL": -0.3670000000000001,
+        "with EDL": -0.10265162230328514
+      }
+    },
+    "i_mix_avg_A_per_m2": {
+      "w/o EDL": 0.11756035407872402,
+      "with EDL": 0.04315057812685645
+    },
+    "local_current_density_A_per_m2": {
+      "Au": {
+        "reaction": "i1",
+        "w/o EDL": 0.23512070815744804,
+        "with EDL": 0.0863011562537129
+      },
+      "Pd": {
+        "reaction": "i2",
+        "w/o EDL": -0.23512070815744887,
+        "with EDL": -0.08630115625371307
+      }
+    },
+    "phi_RP_mV": {
+      "Au": {
+        "w/o EDL": 0.0,
+        "with EDL": -209.38292066396218
+      },
+      "Pd": {
+        "w/o EDL": 0.0,
+        "with EDL": -106.43794490982253
+      }
+    },
+    "reactant_concentration_over_bulk": {
+      "Au": {
+        "reactant": "Red1",
+        "w/o EDL": 1.0,
+        "with EDL": 0.00028756078634452754
+      },
+      "Pd": {
+        "reactant": "Ox2",
+        "w/o EDL": 1.0,
+        "with EDL": 63.120912787999366
+      }
+    }
+  },
+  "condition_colors": {
+    "w/o EDL": "#12355B",
+    "with EDL": "#F26B38"
+  },
+  "model_id": "independent_planar_edls_shared_mixed_potential",
+  "parameters": {
+    "C_H_Au_uF_per_cm2": 50.0,
+    "C_H_Pd_uF_per_cm2": 50.0,
+    "C_tot_mM": 10.0,
+    "L_Au_nm": 2.0,
+    "L_Pd_nm": 2.0
+  },
+  "reactant_mapping": {
+    "Au": "Red1, z_R1=-1",
+    "Pd": "Ox2, z_O2=+1"
+  },
+  "study_id": "independent_Au2nm_Pd2nm_CH50_uniform_bar_comparison",
+  "topology_id": "two_independent_planar_half_spaces",
+  "typography": {
+    "descriptive_subscripts_and_units": "upright roman",
+    "variables": "italic math"
+  }
+}

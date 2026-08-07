@@ -1,0 +1,315 @@
+{
+  "artifact_checks": {
+    "all_files_nonempty": true,
+    "all_png_600_dpi": true,
+    "edl_scheme_pair_count": 1,
+    "figure4_pair_count": 3,
+    "mechanism_pair_count": 1,
+    "no_delivery_pycache": true,
+    "passed": true,
+    "pdf_count": 0,
+    "png_count": 5,
+    "png_decodable": true,
+    "png_dpi": {
+      "figures/EDL_scheme/ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls.png": [
+        599.9988,
+        599.9988
+      ],
+      "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.png": [
+        599.9988,
+        599.9988
+      ],
+      "figures/Figure_4/ctot_half_reaction_polarization_overlay_independent_edls.png": [
+        599.9988,
+        599.9988
+      ],
+      "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.png": [
+        599.9988,
+        599.9988
+      ],
+      "figures/Mechanism/ctot_surface_mechanism_causal_chain_independent_edls.png": [
+        599.9988,
+        599.9988
+      ]
+    },
+    "png_svg_stems_match": true,
+    "svg_count": 5,
+    "svg_helvetica_first": true,
+    "svg_parseable": true,
+    "svg_text_editable": true
+  },
+  "debye_huckel_applicability_caveat": {
+    "first_sampled_concentration_within_threshold_M": 17.78279410038923,
+    "included_in_numerical_pass_fail": false,
+    "interpretation": "The numerical solution passed its internal identities, but the linear Debye-Huckel approximation is outside its nominal weak-potential range for the flagged scan points.",
+    "maximum_over_scan": 10.179289679787832,
+    "representative_max_abs_phi_tilde": {
+      "0.01_M": 8.154076289311629,
+      "1000_M": 0.12317676380172504,
+      "10_M": 1.1072869528375249,
+      "1_M": 2.823828391235876
+    },
+    "scan_points_exceeding_threshold": 27,
+    "scan_points_total": 36,
+    "threshold_exceeded": true,
+    "threshold_max_abs_phi_tilde": 1.0
+  },
+  "locked_parameter_checks": {
+    "fields": {
+      "C_H_Au": {
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      "C_H_Pd": {
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      "C_tot": {
+        "actual": 10.0,
+        "expected": 10.0,
+        "passed": true
+      },
+      "L_Au": {
+        "actual": 2e-09,
+        "expected": 2e-09,
+        "passed": true
+      },
+      "L_Pd": {
+        "actual": 2e-09,
+        "expected": 2e-09,
+        "passed": true
+      },
+      "active_faces_Au": {
+        "actual": 1,
+        "expected": 1,
+        "passed": true
+      },
+      "active_faces_Pd": {
+        "actual": 1,
+        "expected": 1,
+        "passed": true
+      },
+      "alpha1": {
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      "alpha2": {
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      "epsilon_s": {
+        "actual": null,
+        "expected": null,
+        "passed": true
+      },
+      "g_Au": {
+        "actual": null,
+        "expected": null,
+        "passed": true
+      },
+      "g_Pd": {
+        "actual": null,
+        "expected": null,
+        "passed": true
+      },
+      "it0_1": {
+        "actual": 0.0001852573885166257,
+        "expected": 0.0001852573885166257,
+        "passed": true
+      },
+      "it0_2": {
+        "actual": 0.0001852573885166257,
+        "expected": 0.0001852573885166257,
+        "passed": true
+      },
+      "lambda_D": {
+        "actual": null,
+        "expected": null,
+        "passed": true
+      },
+      "out_of_plane_width": {
+        "actual": 0.01,
+        "expected": 0.01,
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "max_abs_charge_relation_residual_C_per_m2": 5.551115123125783e-17,
+  "max_abs_closed_form_minus_brent_V": 2.2573498625888533e-11,
+  "max_abs_kinetic_reconstruction_residual_A_per_m2": 2.498001805406602e-16,
+  "max_abs_without_edl_profile_phi_tilde": 0.0,
+  "max_no_edl_E_mix_variation_V": 0.0,
+  "max_no_edl_i_mix_avg_variation_A_per_m2": 0.0,
+  "max_relative_current_balance_residual": 7.127367022284093e-15,
+  "passed": true,
+  "profile_rows": 1926,
+  "scan_rows": 36,
+  "study_id": "independent_Au2nm_Pd2nm_CH50_Ctot_scan",
+  "target_scan_checks": {
+    "g_Au_equals_g_Pd": true,
+    "passed": true,
+    "representative_regression": {
+      "0.01_M": {
+        "E_mix_with_EDL_V": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-11,
+          "actual": 0.6249104327868923,
+          "expected": 0.6249104327868923,
+          "passed": true
+        },
+        "i_mix_abs_with_EDL_A": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-22,
+          "actual": 1.7260231250742582e-12,
+          "expected": 1.7260231250742582e-12,
+          "passed": true
+        },
+        "i_mix_avg_ratio_with_over_without": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.3670504266936859,
+          "expected": 0.3670504266936859,
+          "passed": true
+        },
+        "i_mix_avg_with_EDL_A_per_m2": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.04315057812685645,
+          "expected": 0.04315057812685645,
+          "passed": true
+        }
+      },
+      "1000_M": {
+        "E_mix_with_EDL_V": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-11,
+          "actual": 0.4696476642872442,
+          "expected": 0.4696476642872442,
+          "passed": true
+        },
+        "i_mix_abs_with_EDL_A": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-22,
+          "actual": 4.655466544116426e-12,
+          "expected": 4.655466544116426e-12,
+          "passed": true
+        },
+        "i_mix_avg_ratio_with_over_without": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.9900162730453549,
+          "expected": 0.9900162730453549,
+          "passed": true
+        },
+        "i_mix_avg_with_EDL_A_per_m2": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.11638666360291064,
+          "expected": 0.11638666360291064,
+          "passed": true
+        }
+      },
+      "10_M": {
+        "E_mix_with_EDL_V": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-11,
+          "actual": 0.4905802818826732,
+          "expected": 0.4905802818826732,
+          "passed": true
+        },
+        "i_mix_abs_with_EDL_A": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-22,
+          "actual": 4.278405350234205e-12,
+          "expected": 4.278405350234205e-12,
+          "passed": true
+        },
+        "i_mix_avg_ratio_with_over_without": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.9098316740712563,
+          "expected": 0.9098316740712563,
+          "passed": true
+        },
+        "i_mix_avg_with_EDL_A_per_m2": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.10696013375585511,
+          "expected": 0.10696013375585511,
+          "passed": true
+        }
+      },
+      "1_M": {
+        "E_mix_with_EDL_V": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-11,
+          "actual": 0.5260483104771886,
+          "expected": 0.5260483104771886,
+          "passed": true
+        },
+        "i_mix_abs_with_EDL_A": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-22,
+          "actual": 3.618038027064661e-12,
+          "expected": 3.618038027064661e-12,
+          "passed": true
+        },
+        "i_mix_avg_ratio_with_over_without": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.7694001212011172,
+          "expected": 0.7694001212011172,
+          "passed": true
+        },
+        "i_mix_avg_with_EDL_A_per_m2": {
+          "absolute_difference": 0.0,
+          "absolute_tolerance": 5e-12,
+          "actual": 0.09045095067661652,
+          "expected": 0.09045095067661652,
+          "passed": true
+        }
+      }
+    },
+    "scan_grid_exact": true,
+    "scan_row_count": 36,
+    "target_trend": {
+      "E_mix_strictly_decreases": true,
+      "i_mix_avg_strictly_increases": true,
+      "interpretation": "with-EDL current approaches the w/o-EDL limit from below",
+      "ratio_max": 0.9900162730453549,
+      "ratio_min": 0.2474511916427317,
+      "ratio_remains_below_one": true,
+      "unity_crossings_M": []
+    },
+    "without_edl_regression": {
+      "E_mix_without_EDL_V": {
+        "absolute_tolerance": 5e-11,
+        "expected": 0.46699999999999986,
+        "max_absolute_difference": 0.0,
+        "passed": true,
+        "variation": 0.0
+      },
+      "i_mix_abs_without_EDL_A": {
+        "absolute_tolerance": 5e-22,
+        "expected": 4.7024141631489615e-12,
+        "max_absolute_difference": 0.0,
+        "passed": true,
+        "variation": 0.0
+      },
+      "i_mix_avg_without_EDL_A_per_m2": {
+        "absolute_tolerance": 5e-12,
+        "expected": 0.11756035407872402,
+        "max_absolute_difference": 0.0,
+        "passed": true,
+        "variation": 0.0
+      }
+    }
+  },
+  "topology_scope_caveat": "The 2 nm lengths set active areas only. The analytic model uses two independent infinite planar half-spaces and does not resolve finite-size edge fields or lateral EDL overlap.",
+  "upstream_numerical_validation_passed": true
+}
