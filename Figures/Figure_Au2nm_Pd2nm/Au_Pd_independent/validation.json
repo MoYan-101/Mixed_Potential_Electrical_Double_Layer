@@ -6,6 +6,15 @@
     "pdf_count": 0,
     "png_count": 8,
     "rp_2d_png_count": 2,
+    "solution_phase_canvas_px": [
+      2026,
+      1852
+    ],
+    "solution_phase_layout": "main-study-only_narrow_side_by_side",
+    "solution_phase_reflowed_files": [
+      "figures/rp_2d/solution_phase_potential_2d_independent_edls.png",
+      "figures/rp_2d/solution_phase_potential_2d_independent_edls.svg"
+    ],
     "svg_count": 8
   },
   "expected_reference_values": {

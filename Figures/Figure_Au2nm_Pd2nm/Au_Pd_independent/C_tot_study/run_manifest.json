@@ -4,17 +4,19 @@
     "params.json": "8748f63b516dbc38ba861240c5f03aca97bbbf28c364b5fe00118e01042cd402",
     "scan_config.json": "890efda2a485bea60412b8dc4b59ff8c1fc9988da1d4053335c4c3655018efaf",
     "source": {
-      "ctot_study.py": "d375e47ddc71a705a954be319182c37a1d9de9d4f531b5fb883b89f27ab3a4a0",
+      "ctot_study.py": "68dab3748b072d3e9e4ac5983da46977fcf0a9e96f3d9c1888ffafe239d22188",
       "model.py": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e"
     }
   },
-  "created_local": "2026-08-06T22:35:46.827967+09:00",
+  "created_local": "2026-08-07T15:00:22.745825+09:00",
   "electrolyte_reference": "separate local half-spaces with a common bulk solution-potential reference",
   "electronic_constraint": "ideal wire; shared E_mix; I_Au + I_Pd = 0",
   "electrostatic_backend": "analytic_independent_planar_linear_pb",
   "execution": {
     "argv": [
-      "Figures/Figure_Au2nm_Pd2nm/make_independent_au_pd_ctot_study.py"
+      "Figures/Figure_Au2nm_Pd2nm/make_independent_au_pd_ctot_study.py",
+      "--output",
+      "/private/tmp/ctot-no-titles.1OvIku/C_tot_study"
     ],
     "atomic_output_staging": true
   },
@@ -38,6 +40,12 @@
   "output_path_policy": "artifact paths are relative to run root",
   "parameter_provenance": "Figures/Figure_Au2nm_Pd2nm/make_independent_au_pd.py::independent_params",
   "parent_study_id": "independent_Au2nm_Pd2nm_CH50",
+  "publication_figure_adjustments": {
+    "ctot_emix_high_salt_regime": "E_mix axis fixed to 0.40-0.67 V on the shared 3 x 3.45 in fixed canvas; bbox_inches=None; the 10^3 M endpoint remains but its text annotation is omitted; no explanatory title",
+    "ctot_half_reaction_polarization_overlay": "signed absolute Au/Pd half-reaction currents in 10^-3 uA; y axis is symmetric about zero and labeled Current",
+    "ctot_imix_avg_high_salt_regime": "i_mix converted from A/m^2 to mA/cm^2, y axis fixed to 0-0.013 mA/cm^2, on the same 3 x 3.45 in fixed canvas as E_mix; bbox_inches=None; the 10^3 M endpoint remains but its text annotation is omitted; no explanatory title",
+    "ctot_phi_bar_profiles": "denser w/o-EDL dash from bulk to OHP/RP, plus a thin black Phi=0 reference; retain the original 2x1 version and add a fixed-canvas 1x2 Au/Pd version whose PNG width matches the half-reaction polarization overlay"
+  },
   "reference_result_for_layout_and_method_only": "Mixed_Potential_Electrical_Double_Layer/Au_Pd_independent_EDLs/results/20260803_153355_ctot_study",
   "result_schema_version": 1,
   "scan_points": 36,
@@ -48,14 +56,14 @@
   "software": {
     "matplotlib": "3.11.0",
     "numpy": "2.5.1",
-    "python": "3.14.6",
+    "python": "3.12.13",
     "scipy": "1.18.0"
   },
   "source_sha256": {
     "ctot_study": "68dab3748b072d3e9e4ac5983da46977fcf0a9e96f3d9c1888ffafe239d22188",
     "independent_model": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e",
-    "parameter_wrapper": "d0c7d8238e4b97a31c1b03fb26f1b796c12697a2f6c584b19811f2055230c6e5",
-    "study_wrapper": "3bb1da0f69c4e62d66591f019f2caa23b657ca4d7034872f66b2b907a9e2816a"
+    "parameter_wrapper": "5fcc7a230200475f90ef7f13fdeb3951c95603e24f6909d15feb6d062aa7c684",
+    "study_wrapper": "a58709de0b620d80b43de3a6ffc8657023010d14183f4eab3cf2bcb7b6b68767"
   },
   "study": "electrolyte_concentration_C_tot",
   "study_id": "independent_Au2nm_Pd2nm_CH50_Ctot_scan",

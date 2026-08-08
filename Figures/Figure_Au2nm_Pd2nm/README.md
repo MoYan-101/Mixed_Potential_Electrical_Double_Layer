@@ -70,8 +70,8 @@ Figures/Figure_Au2nm_Pd2nm/make_all_au2nm_pd2nm.py
   - panel e 与独立模型 Figure 3 一致：Au 为绿色、Pd 为蓝色；`with EDL` 为实线，`w/o EDL` 为同色虚线。
 - `Au_C_Pd/Case_Figures/Figure_RP/`：2D solution potential 和 surface charge distribution；六个正式 case 各两组全图，1000 nm 另有两组双侧 active-window 图，共 14 PNG + 14 SVG。材料显示色为 Au `#E4C133`、C `#8C8C8C`、Pd `#5A90C8`。
 - `Au_C_Pd/Figure_L_support/OFAT/`：8 组 support-length OFAT 图；`csv/`、`inputs/`、`manifest.json` 和 `validation.json` 保存扫描结果与追溯信息。
-- `Au_C_Pd/PZC_support_study/`：扫描 `L_support = 1, 3, 6, 15 nm` 与 `PZC_support = 0.10–0.90 V`（41 个等间距点，164 个主扫描结果），另算 `L_support = 1000 nm` 在 `0.10/0.50/0.90 V` 的远场锚点，并以 `L_support = 0 nm` 验证 support PZC 不应影响结果。除趋势、reaction-plane potential profiles 和 surface-charge profiles 三组 PNG/SVG 外，`figures/Figure_RP/` 还为 `4` 个长度 × `3` 个代表 PZC 保存 12 组 2D solution-phase-potential 图和 12 组 potential+Red1+Ox2 复合图；同时保存主扫描、12 个代表 profiles、2D summary、锚点、生产收敛表、原计划分辨率审计、inputs/config、summary、validation、manifest 和独立 checksums。
-  - 趋势图采用一行三栏，只显示 `E_mix`、`i_mix_avg` 和 support 平均有符号电荷；RP-overlap 指标继续保存在主扫描 CSV 与 validation 中，不在趋势图显示。曲线按 support 长度编码颜色，`w/o EDL` 为深蓝虚线，1000 nm 锚点为灰色空心标记。Profile 中 `PZC_support = 0.10/0.50/0.90 V` 分别使用灰色点线、黑色实线和蓝色虚线；材料区保持 Au `#E4C133`、C `#8C8C8C`、Pd `#5A90C8`。
+- `Au_C_Pd/PZC_support_study/`：主扫描仍为 `L_support = 1, 3, 6, 15 nm` 与 `PZC_support = 0.10–0.90 V`（41 个等间距点，164 个结果），另算 `L_support = 1000 nm` 在 `0.10/0.50/0.90 V` 的远场锚点，并以 `L_support = 0 nm` 验证 support PZC 不应影响结果。发布版长度趋势另外直接求解 `L_support = 2, 10 nm`，因此使用 `1, 2, 3, 6, 10, 1000 nm` 共六个横坐标和 `PZC_C = 0.10/0.50/0.90 V` 三条曲线；没有用插值替代直接求解。除趋势、reaction-plane potential profiles 和 surface-charge profiles 三组 PNG/SVG 外，`figures/Figure_RP/` 还为 `4` 个长度 × `3` 个代表 PZC 保存 12 组 2D solution-phase-potential 图和 12 组 potential+Red1+Ox2 复合图；同时保存主扫描、发布版长度趋势及其收敛表、12 个代表 profiles、2D summary、锚点、生产收敛表、原计划分辨率审计、inputs/config、summary、validation、manifest 和独立 checksums。
+  - 发布版趋势图以对数 `L_support` 为横坐标，只显示 `E_mix`、`i_mix_avg` 和 support 平均有符号电荷；三条线分别代表 `PZC_C = 0.10/0.50/0.90 V`。图中同时标出 separated electrodes 的 `E_mix = 0.624910432787 V`；它与对应 1000 nm 构型的差值依次为 `52.442/27.533/3.724 mV`。RP-overlap 指标继续保存在主扫描 CSV 与 validation 中，不在趋势图显示。Profile 中 `PZC_support = 0.10/0.50/0.90 V` 分别使用灰色点线、黑色实线和蓝色虚线；材料区保持 Au `#E4C133`、C `#8C8C8C`、Pd `#5A90C8`。
   - 可见变量使用斜体，说明性下标 `support/mix/RP` 和单位使用正体；字体为 Helvetica-first，单位统一放在圆括号中。GL 使用 128 点；为满足原定收敛阈值，生产 `N_modes` 按 `L_support=1/3/6/15/1000 nm` 分别提高为 `960/960/1920/3840/11520`，对应低阶检查为 `480/480/960/1920/9600`。
   - 12 张 potential-only 图和 12 张 potential+reactants 复合图的电势面板共用以 0 mV 为中心的对称色标，动态范围为 `-220` 至 `+220 mV`；复合图中的 Red1/Ox2 由 `c_i/c_bulk = exp(-z_i F Phi_s/RT)` 得到，并在全部 12 个 case、两种反应物之间共用同一个对数色标。纵向均为 `0–5 lambda_D`、`Ny=320`。SVG 仅将密集 pcolormesh 栅格化，文字和标注仍可编辑；`csv/support_pzc_2d_summary.csv` 保存网格、场极值、共同色标、reactant reciprocity 及 `y=0` 回代检查。
   - 原计划的短 support `480→960` 和 1000 nm `5760→7680` mode-pair 结果保存在 `csv/support_pzc_original_resolution_audit.csv`；GL64→128 则在实际生产分辨率下检查。15 组 mode-pair 中有 4 组超阈值：`6 nm, 0.10 V`、`15 nm, 0.10/0.50 V`、`1000 nm, 0.10 V`；因此没有把原计划阶数误报为收敛。
@@ -86,18 +86,19 @@ support-PZC 主扫描的端点结果如下；每行依次给出 `PZC_support=0.1
 | 15 | 0.572566 → 0.621191 | 0.066285 → 0.052988 | 5.7921 → -2.9188 |
 
 15 nm 与 1000 nm 锚点的差异仍很小但不为零：在 `PZC_support=0.10/0.50/0.90 V` 下，`E_mix(1000)-E_mix(15)` 分别为 `-0.0975/-0.0409/-0.0050 mV`，active-RP RMS 差分别为 `0.0378/0.0284/0.0094 mV`。
+- `support_pzc_trends_au2_pd2` 的 mixed-potential panel 使用 `0.460–0.645 V` y 范围，在 separated-electrodes 虚线上方保留专用空间；顶部数值标注使用不透明白底，避免与 separated reference 和 `PZC_C=0.90 V` 分支重合。
 - `Au_C_Pd/inputs/`：每个 case 的完整参数、可重放 overrides 和 CSV/JSON summary。
 - `Au_C_Pd/csv/`：每个 case 的独立 profile CSV、汇总 profile、case summary 和收敛检查。
 - `Au_C_Pd/validation.json`：电流平衡、2D 表面回代、图件数量和数值收敛验证。
 - `Au_Pd_independent/figures/Figure_3/`：Figure 3 a–f 六组图。
-- `Au_Pd_independent/figures/Figure_3/Uniform_Bar_Comparison/`：独立平面界面均匀条件下的 2×3 变量柱状图，比较 `E_mix`、`i_mix_avg`、Au/Pd 的 `phi_RP`、反应物 `c_i/c_bulk`、局部过电位和有符号局部电流密度；1 PNG + 1 SVG，并保存 bar-value CSV、summary、validation、manifest 和独立 checksums。
-- `Au_Pd_independent/figures/rp_2d/`：potential-only 与 potential+reactants 两组 2D 图。
+- `Au_Pd_independent/figures/Figure_3/Uniform_Bar_Comparison/`：保留原 2×3 均匀界面变量柱状图，并新增只包含 reaction-plane potential、带正确上下标/电荷的 RP reactant concentration、以及以 mV 表示的 RP overpotential 三栏版本；发表版使用 `8.0 × 3.60 in` 的单排窄 panel 版式，每个 panel 相对旧版约收窄 29%。第一、第三个标题保持单行，只有中间标题分两行；极小浓度柱值竖排，负 overpotential 柱值使用较小的柱外间距，避免与柱体或横轴重叠。标题、轴标签、刻度、柱值和图例字号均使用放大版；共 2 PNG + 2 SVG，并保存 bar-value CSV、summary、validation、manifest 和独立 checksums。
+- `Au_Pd_independent/figures/rp_2d/`：potential-only 与 potential+reactants 两组 2D 图；其中 potential-only 发布版在本 study wrapper 内使用 `2026 × 1852 px` 半宽画布，Au/Pd 两个窄 panel 保持横向并列并共用右侧 colorbar，不做整图水平压缩；共享 independent-EDL 绘图模块仍保留原默认版式。
 - `Au_Pd_independent/figures/Polarization_Scheme/`：10 mM 基准条件的 signed half-reaction polarization curve，Au 氧化为绿色、Pd 还原为红色，1 PNG + 1 SVG；同时保存 curve CSV、summary、validation、manifest 和独立 checksums。
 - `Au_Pd_independent/`：`params`、`derived`、`summary`、`validation`、`manifest`、profile CSV 和 SHA-256 checksums。
-- `Au_Pd_independent/C_tot_study/figures/Figure_4/`：`E_mix`、`i_mix_avg` 浓度趋势和 half-reaction polarization overlay，共 3 PNG + 3 SVG。
+- `Au_Pd_independent/C_tot_study/figures/Figure_4/`：`E_mix`、`i_mix_avg` 浓度趋势和 half-reaction polarization overlay，共 3 PNG + 3 SVG；两张趋势图统一使用 `3 × 3.45 in`（600 dpi 为 `1800 × 2070 px`）的固定窄画幅，导出明确使用 `bbox_inches=None`，不允许 tight bounding box 改变画布。两张趋势图不显示顶部解释性标题，并保留 `10^3 M` 端点与曲线但不显示 `10^3 M` 文字标注。`E_mix` 范围为 `0.40–0.67 V`；`i_mix_avg` 按 `1 A/m² = 0.1 mA/cm²` 换算，纵轴单位为 `mA/cm²` 且从 0 开始。polarization overlay 使用带符号的绝对 Au/Pd 半反应电流，纵轴写作 `Current (10^-3 uA)` 并关于 0 对称，不使用 current density 或非负 magnitude。
 - `Au_Pd_independent/C_tot_study/figures/Mechanism/`：Au/Pd 两侧的 `sigma → phi_RP → eta_RP → kinetic/concentration weight → i_mix_avg` 因果链，1 PNG + 1 SVG。
-- `Au_Pd_independent/C_tot_study/figures/EDL_scheme/`：0.01/1 M 解析电位 profile 与 w/o-EDL 零线，1 PNG + 1 SVG。
-- `Au_Pd_independent/C_tot_study/`：5 个 CSV、完整参数/derived/scan config/summary/validation/manifest、artifact hashes 和独立 SHA-256 checksums。方法和版式参考 `20260803_153355_ctot_study`，数值由本组 2 nm、`C_H=50/50` 参数重新计算。
+- `Au_Pd_independent/C_tot_study/figures/EDL_scheme/`：0.01/1 M 解析电位 profile 与 w/o-EDL 零线；保留原 `2×1` 版本，并新增 Au/Pd 横向并列的 `1×2` 版本，共 2 PNG + 2 SVG。横向版采用固定画幅，其 600 dpi PNG 宽度严格匹配 half-reaction polarization overlay，导出不使用 tight bounding box。
+- `Au_Pd_independent/C_tot_study/`：共 6 PNG + 6 SVG + 0 PDF；另含 5 个 CSV、完整参数/derived/scan config/summary/validation/manifest、artifact hashes 和独立 SHA-256 checksums。方法和版式参考 `20260803_153355_ctot_study`，数值由本组 2 nm、`C_H=50/50` 参数重新计算。
 
 `L_support` 主扫描使用 18 个点：`0, 0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10 nm`；overlap 诊断另算 `11, 12, 15 nm`，并以 `1000 nm` 为独立 EDL 参考。短扫描使用 `N_modes=960`、每侧 128 点 Gauss–Legendre 积分，1000 nm 参考使用 `N_modes=7680`。
 
@@ -109,7 +110,7 @@ support-PZC 主扫描的端点结果如下；每行依次给出 `PZC_support=0.1
 - 以 `0.1 mV / 0.1 mV / 0.1%` 的三项严格阈值判定时，连续边界为 `12.7567 nm`，首个采样点为 `15 nm`。
 - 指数拟合的 `0.1 mV` 平台位置为 `11.2489 nm`，位于 0–10 nm 主扫描之外，因此没有主扫描内的首个平台采样点。
 
-当前总输出为 78 PNG + 78 SVG + 0 PDF。
+当前总输出为 80 PNG + 80 SVG + 0 PDF。
 
 ## 适用范围
 

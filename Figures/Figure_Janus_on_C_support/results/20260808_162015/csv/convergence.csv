@@ -1,0 +1,2 @@
+attempt,lower_N_modes,upper_N_modes,fixed_gl_order_for_modes,mode_delta_E_mix_mV,mode_delta_i_mix_percent,mode_passed,fixed_N_modes_for_GL,lower_gl_order,upper_gl_order,GL_delta_E_mix_mV,GL_delta_i_mix_percent,GL_passed,attempt_passed
+1,480,960,128,0.0009691984079740479,0.005200684266790856,True,960,64,128,0.00029032323556332784,0.0013975496228246012,True,True

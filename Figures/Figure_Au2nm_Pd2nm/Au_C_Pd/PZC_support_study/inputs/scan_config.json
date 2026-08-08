@@ -46,21 +46,65 @@
     "production_GL_order": 128,
     "production_N_modes_by_L_support_nm": {
       "1": 960,
+      "10": 3840,
       "1000": 11520,
       "15": 3840,
+      "2": 960,
       "3": 960,
       "6": 1920
     },
     "production_convergence_low_N_modes_by_L_support_nm": {
       "1": 480,
+      "10": 1920,
       "1000": 9600,
       "15": 1920,
+      "2": 480,
       "3": 480,
       "6": 960
     }
   },
   "overlap_definition": "Equal-active-length RMS of Au and Pd material-mean reaction-plane potential differences relative to L_support=15 nm at the same support PZC.",
   "overlap_metric_visibility": "Retained in CSV and validation metadata; omitted from the trend figure.",
+  "publication_length_trend": {
+    "L_support_nm": [
+      1.0,
+      2.0,
+      3.0,
+      6.0,
+      10.0,
+      1000.0
+    ],
+    "case_count": 18,
+    "interpolation_used": false,
+    "line_variable": "pzc_C_V",
+    "mixed_potential_panel_layout": {
+      "purpose": "reserve headroom and prevent line-label overlap",
+      "separated_label_axes_fraction": [
+        0.035,
+        0.965
+      ],
+      "separated_label_background": "opaque white",
+      "y_axis_V": [
+        0.46,
+        0.645
+      ]
+    },
+    "new_direct_solve_lengths_nm": [
+      2.0,
+      10.0
+    ],
+    "pzc_C_V": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "separated_electrodes_reference": {
+      "E_mix_with_V": 0.6249104327868923,
+      "source": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/summary.json"
+    },
+    "x_scale": "logarithmic with explicit ticks",
+    "x_variable": "L_support_nm"
+  },
   "pzc_support_V": {
     "count": 41,
     "start": 0.1,

@@ -1,6 +1,8 @@
 """Support-PZC study for the Au=Pd=2 nm Au|C|Pd legacy model.
 
 The main scan evaluates four finite support lengths at 41 support-PZC values.
+The publication trend view uses six explicitly calculated support lengths at
+three representative support PZCs, including dedicated 2 and 10 nm solves.
 Three 1000 nm cases act as far-field anchors and two zero-length cases are a
 negative control.  All mixed potentials use the FULL absolute-current balance
 and separate 128-point Gauss--Legendre integration on Au and Pd.
@@ -44,6 +46,9 @@ REFERENCE_OFAT_CSV = (
     / "csv"
     / f"edl_overlap_vs_1000nm_L_support_au2_pd2_20260528_111255.csv"
 )
+SEPARATED_ELECTRODES_SUMMARY = (
+    PROJECT_DIR / "Au_Pd_independent" / "summary.json"
+)
 CHECKSUM_FILE = "checksums.sha256"
 STUDY_ID = "Au2nm_C_Pd2nm_support_PZC_study"
 
@@ -54,6 +59,7 @@ import legacy_au_c_pd_engine as engine  # noqa: E402
 
 
 MAIN_LENGTHS_NM = (1.0, 3.0, 6.0, 15.0)
+TREND_LENGTHS_NM = (1.0, 2.0, 3.0, 6.0, 10.0, 1000.0)
 PZC_VALUES_V = tuple(round(float(value), 12) for value in np.linspace(0.10, 0.90, 41))
 REPRESENTATIVE_PZC_V = (0.10, 0.50, 0.90)
 ANCHOR_LENGTH_NM = 1000.0
@@ -65,15 +71,19 @@ REQUESTED_LONG_HIGH_MODES = 7680
 REQUESTED_LONG_LOW_MODES = 5760
 PRODUCTION_MODES_BY_LENGTH = {
     1.0: 960,
+    2.0: 960,
     3.0: 960,
     6.0: 1920,
+    10.0: 3840,
     15.0: 3840,
     1000.0: 11520,
 }
 CONVERGENCE_LOW_MODES_BY_LENGTH = {
     1.0: 480,
+    2.0: 480,
     3.0: 480,
     6.0: 960,
+    10.0: 1920,
     15.0: 1920,
     1000.0: 9600,
 }
@@ -96,6 +106,8 @@ MATERIAL_COLORS = {"Au": "#E4C133", "C": "#8C8C8C", "Pd": "#5A90C8"}
 WITHOUT_EDL_COLOR = "#12355B"
 ANCHOR_COLOR = "#8C8C8C"
 DARK = "#272727"
+TREND_EMIX_YLIM_V = (0.460, 0.645)
+SEPARATED_LABEL_AXES_FRACTION = (0.035, 0.965)
 
 FIGURE_STEMS = (
     "support_pzc_trends_au2_pd2",
@@ -178,6 +190,19 @@ def _read_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _separated_electrodes_emix_v() -> float:
+    summary = _read_json(SEPARATED_ELECTRODES_SUMMARY)
+    try:
+        value = float(summary["with_edl"]["E_mix_V"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RuntimeError(
+            "Independent-electrode summary does not contain with_edl.E_mix_V"
+        ) from exc
+    if not math.isfinite(value):
+        raise RuntimeError(f"Invalid separated-electrodes E_mix: {value!r}")
+    return value
+
+
 def _write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
     if not rows:
         raise ValueError(f"Cannot write empty CSV: {path}")
@@ -213,6 +238,7 @@ def _source_hashes() -> dict[str, str]:
         "linear_solver": solver_path,
         "baseline_params": engine.BASE_PARAMS_PATH,
         "support_length_reference_csv": REFERENCE_OFAT_CSV,
+        "separated_electrodes_summary": SEPARATED_ELECTRODES_SUMMARY,
     }
     missing = [str(path) for path in sources.values() if not path.is_file()]
     if missing:
@@ -520,6 +546,90 @@ def _run_convergence(
         )
         raise RuntimeError(f"Support-PZC convergence thresholds failed: {detail}")
     return rows
+
+
+def _build_length_trend_data(
+    representatives: Mapping[tuple[float, float], Any],
+    representative_low_gl_cases: Mapping[tuple[float, float], Any],
+    anchors: Mapping[float, Any],
+    anchor_low_gl_cases: Mapping[float, Any],
+    existing_convergence_rows: Sequence[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Build the six-length publication trend from computed model cases.
+
+    The 1, 3, 6 and 1000 nm cases reuse the production cases already built by
+    the study.  The previously absent 2 and 10 nm points are solved explicitly
+    at both production and lower mode counts and at GL64/GL128; no interpolation
+    is used.
+    """
+
+    production_cases: dict[tuple[float, float], Any] = {}
+    for length_nm in (1.0, 3.0, 6.0):
+        for pzc_v in REPRESENTATIVE_PZC_V:
+            production_cases[(length_nm, pzc_v)] = representatives[
+                (length_nm, pzc_v)
+            ]
+    for pzc_v in REPRESENTATIVE_PZC_V:
+        production_cases[(ANCHOR_LENGTH_NM, pzc_v)] = anchors[pzc_v]
+
+    new_convergence_rows: list[dict[str, Any]] = []
+    for length_nm in (2.0, 10.0):
+        production_family = engine.build_support_pzc_scan_family(
+            length_nm,
+            REPRESENTATIVE_PZC_V,
+            n_modes=_modes_for_length(PRODUCTION_MODES_BY_LENGTH, length_nm),
+            gl_orders=(LOW_GL_ORDER, HIGH_GL_ORDER),
+            include_2d=False,
+        )
+        low_mode_family = engine.build_support_pzc_scan_family(
+            length_nm,
+            REPRESENTATIVE_PZC_V,
+            n_modes=_modes_for_length(CONVERGENCE_LOW_MODES_BY_LENGTH, length_nm),
+            gl_orders=(HIGH_GL_ORDER,),
+            include_2d=False,
+        )
+        for pzc_v in REPRESENTATIVE_PZC_V:
+            production = production_family[(pzc_v, HIGH_GL_ORDER)]
+            production_cases[(length_nm, pzc_v)] = production
+            new_convergence_rows.append(
+                _convergence_row(
+                    production,
+                    low_mode_family[(pzc_v, HIGH_GL_ORDER)],
+                    production_family[(pzc_v, LOW_GL_ORDER)],
+                    length_nm=length_nm,
+                    pzc_v=pzc_v,
+                )
+            )
+
+    trend_convergence_rows = [
+        dict(row)
+        for row in existing_convergence_rows
+        if float(row["L_support_nm"]) in {1.0, 3.0, 6.0, ANCHOR_LENGTH_NM}
+    ]
+    trend_convergence_rows.extend(new_convergence_rows)
+    trend_convergence_rows.sort(
+        key=lambda row: (float(row["L_support_nm"]), float(row["pzc_support_V"]))
+    )
+    failures = [row for row in trend_convergence_rows if not bool(row["passed"])]
+    if failures:
+        detail = "; ".join(
+            f"L={float(row['L_support_nm']):g} nm, "
+            f"PZC={float(row['pzc_support_V']):.2f} V"
+            for row in failures
+        )
+        raise RuntimeError(f"Publication length-trend convergence failed: {detail}")
+
+    separated_emix_v = _separated_electrodes_emix_v()
+    rows: list[dict[str, Any]] = []
+    for pzc_v in REPRESENTATIVE_PZC_V:
+        for length_nm in TREND_LENGTHS_NM:
+            row = _case_metrics(production_cases[(length_nm, pzc_v)])
+            row["separated_electrodes_E_mix_with_V"] = separated_emix_v
+            row["delta_E_mix_separated_minus_case_mV"] = 1.0e3 * (
+                separated_emix_v - float(row["E_mix_with_V"])
+            )
+            rows.append(row)
+    return rows, trend_convergence_rows
 
 
 def _requested_resolution_audit_row(
@@ -1284,36 +1394,42 @@ def _material_background(ax: plt.Axes, length_nm: float) -> None:
 
 def _plot_trends(
     rows: Sequence[Mapping[str, Any]],
-    anchors: Sequence[Mapping[str, Any]],
     figure_dir: Path,
 ) -> list[Path]:
-    fig, axes = plt.subplots(1, 3, figsize=(10.6, 3.45), sharex=True)
+    fig, axes = plt.subplots(1, 3, figsize=(10.8, 3.55), sharex=True)
     specifications = (
         ("E_mix_with_V", r"$E_{\mathrm{mix}}$ ($\mathrm{V\ vs.\ RHE}$)", "Mixed potential"),
         ("i_mix_avg_with_A_per_m2", r"$\bar{i}_{\mathrm{mix}}$ ($\mathrm{A\,m^{-2}}$)", "Mixed current density"),
         ("sigma_support_signed_mean_uC_per_cm2", r"$\langle\sigma_{\mathrm{support}}\rangle$ ($\mathrm{\mu C\,cm^{-2}}$)", "Mean signed support charge"),
     )
+    separated_emix_v = float(rows[0]["separated_electrodes_E_mix_with_V"])
     for ax, (key, ylabel, title) in zip(axes, specifications, strict=True):
-        for length_nm in MAIN_LENGTHS_NM:
+        for pzc_v in REPRESENTATIVE_PZC_V:
             subset = sorted(
-                (row for row in rows if float(row["L_support_nm"]) == length_nm),
-                key=lambda row: float(row["pzc_support_V"]),
+                (
+                    row
+                    for row in rows
+                    if math.isclose(
+                        float(row["pzc_support_V"]),
+                        pzc_v,
+                        rel_tol=0.0,
+                        abs_tol=1.0e-12,
+                    )
+                ),
+                key=lambda row: float(row["L_support_nm"]),
             )
+            style = PROFILE_STYLES[pzc_v]
             ax.plot(
-                [float(row["pzc_support_V"]) for row in subset],
+                [float(row["L_support_nm"]) for row in subset],
                 [float(row[key]) for row in subset],
-                color=LENGTH_COLORS[length_nm],
-                linewidth=1.9,
+                color=style["color"],
+                linestyle=style["linestyle"],
+                marker="o",
+                markersize=4.1,
+                markerfacecolor="white",
+                markeredgewidth=1.05,
+                linewidth=1.8,
             )
-        ax.scatter(
-            [float(row["pzc_support_V"]) for row in anchors],
-            [float(row[key]) for row in anchors],
-            s=35,
-            facecolors="white",
-            edgecolors=ANCHOR_COLOR,
-            linewidths=1.25,
-            zorder=5,
-        )
         if key in {"E_mix_with_V", "i_mix_avg_with_A_per_m2"}:
             no_key = "E_mix_no_V" if key == "E_mix_with_V" else "i_mix_avg_no_A_per_m2"
             baseline = float(rows[0][no_key])
@@ -1323,29 +1439,134 @@ def _plot_trends(
                 linestyle=(0, (4.0, 2.0)),
                 linewidth=1.4,
             )
+        if key == "E_mix_with_V":
+            # Keep the separated-electrodes label in dedicated headroom rather
+            # than placing it directly over the separated/0.90-V trend lines.
+            ax.set_ylim(*TREND_EMIX_YLIM_V)
+            ax.axhline(
+                separated_emix_v,
+                color="#F26B38",
+                linestyle=(0, (6.0, 2.2)),
+                linewidth=1.55,
+                zorder=1,
+            )
+            gaps = []
+            for pzc_v in REPRESENTATIVE_PZC_V:
+                anchor = _row_lookup(rows, ANCHOR_LENGTH_NM, pzc_v)
+                gaps.append(
+                    rf"{pzc_v:.2f} V: "
+                    rf"{float(anchor['delta_E_mix_separated_minus_case_mV']):.2f} mV"
+                )
+            ax.text(
+                *SEPARATED_LABEL_AXES_FRACTION,
+                rf"Separated electrodes: $E_{{\mathrm{{mix}}}}={separated_emix_v:.6f}\,\mathrm{{V}}$",
+                transform=ax.transAxes,
+                ha="left",
+                va="top",
+                fontsize=7.6,
+                color="#B64625",
+                bbox={
+                    "facecolor": "white",
+                    "edgecolor": "none",
+                    "alpha": 1.0,
+                    "pad": 1.4,
+                },
+                zorder=5,
+            )
+            ax.text(
+                0.965,
+                0.055,
+                "Separated minus 1000 nm\n"
+                + "\n".join(gaps),
+                transform=ax.transAxes,
+                ha="right",
+                va="bottom",
+                fontsize=7.35,
+                linespacing=1.18,
+                color=DARK,
+                bbox={
+                    "facecolor": "white",
+                    "edgecolor": "#D2D2D2",
+                    "linewidth": 0.55,
+                    "alpha": 0.92,
+                    "pad": 2.0,
+                },
+            )
         ax.set_ylabel(ylabel)
         ax.set_title(title, loc="left", pad=4.0)
-        ax.set_xlim(0.08, 0.92)
+        ax.set_xscale("log")
+        ax.set_xlim(0.80, 1300.0)
+        ax.set_xticks(TREND_LENGTHS_NM)
+        ax.set_xticklabels([_format_nm_tick(value) for value in TREND_LENGTHS_NM])
+        ax.tick_params(which="minor", bottom=False)
         ax.tick_params(pad=2.5)
     for ax in axes:
-        ax.set_xlabel(r"$\mathrm{PZC}_{\mathrm{support}}$ ($\mathrm{V\ vs.\ RHE}$)")
+        ax.set_xlabel(r"$L_{\mathrm{support}}$ ($\mathrm{nm}$)")
     handles = [
-        Line2D([0], [0], color=LENGTH_COLORS[length], lw=2.2, label=rf"{length:g} $\mathrm{{nm}}$")
-        for length in MAIN_LENGTHS_NM
+        Line2D(
+            [0],
+            [0],
+            color=PROFILE_STYLES[pzc]["color"],
+            linestyle=PROFILE_STYLES[pzc]["linestyle"],
+            marker="o",
+            markerfacecolor="white",
+            markeredgewidth=1.0,
+            lw=1.9,
+            label=rf"$\mathrm{{PZC}}_C={pzc:.2f}\,\mathrm{{V}}$",
+        )
+        for pzc in REPRESENTATIVE_PZC_V
     ]
     handles.extend(
         [
-            Line2D([0], [0], marker="o", markerfacecolor="white", markeredgecolor=ANCHOR_COLOR, color="none", label=r"1000 $\mathrm{nm}$ anchors"),
+            Line2D(
+                [0],
+                [0],
+                color="#F26B38",
+                lw=1.6,
+                linestyle=(0, (6.0, 2.2)),
+                label="Separated electrodes",
+            ),
             Line2D([0], [0], color=WITHOUT_EDL_COLOR, lw=1.5, linestyle=(0, (4, 2)), label="w/o EDL"),
         ]
     )
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.015), ncol=6, handlelength=2.4, columnspacing=1.1, fontsize=8.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.86), w_pad=1.35)
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.015), ncol=5, handlelength=2.7, columnspacing=1.25, fontsize=8.4)
+    fig.tight_layout(rect=(0, 0, 1, 0.87), w_pad=1.35)
     return _save_figure(fig, figure_dir, FIGURE_STEMS[0])
 
 
+def _shared_profile_ylim(
+    representatives: Mapping[tuple[float, float], Any],
+    reference_length_nm: float,
+    field: str,
+) -> tuple[float, float]:
+    values: list[np.ndarray] = [np.asarray([0.0], dtype=float)]
+    for pzc_v in REPRESENTATIVE_PZC_V:
+        case = representatives[(reference_length_nm, pzc_v)]
+        if field == "phi_RP_mV":
+            values.append(1.0e3 * np.asarray(case.phi_rp_with_V, dtype=float))
+        elif field == "sigma_uC_per_cm2":
+            values.extend(
+                np.asarray(segment.sigma_uC_per_cm2, dtype=float)
+                for segment in case.sigma_segments
+            )
+        else:
+            raise ValueError(f"Unknown shared profile field: {field}")
+    combined = np.concatenate(values)
+    if not np.all(np.isfinite(combined)):
+        raise RuntimeError(f"Non-finite {field} values in reference profile")
+    lower = float(np.min(combined))
+    upper = float(np.max(combined))
+    span = upper - lower
+    if span <= 0.0:
+        span = max(abs(lower), 1.0)
+    margin = float(plt.rcParams.get("axes.ymargin", 0.05)) * span
+    return lower - margin, upper + margin
+
+
 def _plot_phi_profiles(
-    representatives: Mapping[tuple[float, float], Any], figure_dir: Path
+    representatives: Mapping[tuple[float, float], Any],
+    figure_dir: Path,
+    shared_ylim_mV: tuple[float, float],
 ) -> list[Path]:
     fig, axes = plt.subplots(2, 2, figsize=(8.2, 6.1))
     for ax, length_nm in zip(axes.flat, MAIN_LENGTHS_NM, strict=True):
@@ -1356,6 +1577,7 @@ def _plot_phi_profiles(
             ax.plot(case.x_nm, 1.0e3 * case.phi_rp_with_V, color=style["color"], linestyle=style["linestyle"], linewidth=1.75)
         ax.axhline(0.0, color=WITHOUT_EDL_COLOR, linestyle=(0, (4, 2)), linewidth=1.2)
         _format_profile_axis(ax, length_nm, r"$\phi_{\mathrm{RP}}$ ($\mathrm{mV}$)")
+        ax.set_ylim(*shared_ylim_mV)
     handles = [Line2D([0], [0], color=PROFILE_STYLES[pzc]["color"], linestyle=PROFILE_STYLES[pzc]["linestyle"], lw=2.0, label=rf"$\mathrm{{PZC}}_{{\mathrm{{support}}}}={pzc:.2f}\,\mathrm{{V}}$") for pzc in REPRESENTATIVE_PZC_V]
     handles.append(Line2D([0], [0], color=WITHOUT_EDL_COLOR, linestyle=(0, (4, 2)), lw=1.5, label=r"w/o EDL ($\phi_{\mathrm{RP}}=0$)"))
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.005), ncol=4, handlelength=3.0, fontsize=8.5)
@@ -1364,7 +1586,9 @@ def _plot_phi_profiles(
 
 
 def _plot_sigma_profiles(
-    representatives: Mapping[tuple[float, float], Any], figure_dir: Path
+    representatives: Mapping[tuple[float, float], Any],
+    figure_dir: Path,
+    shared_ylim_uC_per_cm2: tuple[float, float],
 ) -> list[Path]:
     fig, axes = plt.subplots(2, 2, figsize=(8.2, 6.1))
     for ax, length_nm in zip(axes.flat, MAIN_LENGTHS_NM, strict=True):
@@ -1376,13 +1600,14 @@ def _plot_sigma_profiles(
                 ax.plot(segment.x_nm, segment.sigma_uC_per_cm2, color=style["color"], linestyle=style["linestyle"], linewidth=1.75)
         ax.axhline(0.0, color="#B8B8B8", linewidth=0.7)
         _format_profile_axis(ax, length_nm, r"$\sigma$ ($\mathrm{\mu C\,cm^{-2}}$)")
+        ax.set_ylim(*shared_ylim_uC_per_cm2)
     pzc_handles = [Line2D([0], [0], color=PROFILE_STYLES[pzc]["color"], linestyle=PROFILE_STYLES[pzc]["linestyle"], lw=2.0, label=rf"$\mathrm{{PZC}}_{{\mathrm{{support}}}}={pzc:.2f}\,\mathrm{{V}}$") for pzc in REPRESENTATIVE_PZC_V]
     material_handles = [
         Patch(
             facecolor=MATERIAL_COLORS[name],
             edgecolor="none",
             alpha=0.55,
-            label="support" if name == "C" else name,
+            label=name,
         )
         for name in ("Au", "C", "Pd")
     ]
@@ -1543,9 +1768,99 @@ def _stern_and_profile_checks(
     }
 
 
+def _length_trend_validation(
+    rows: Sequence[Mapping[str, Any]],
+    convergence_rows: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    expected_count = len(TREND_LENGTHS_NM) * len(REPRESENTATIVE_PZC_V)
+    shape_passed = bool(
+        len(rows) == expected_count
+        and sorted({float(row["L_support_nm"]) for row in rows})
+        == list(TREND_LENGTHS_NM)
+        and sorted({float(row["pzc_support_V"]) for row in rows})
+        == list(REPRESENTATIVE_PZC_V)
+    )
+    finite = all(
+        math.isfinite(float(value))
+        for row in rows
+        for key, value in row.items()
+        if key != "debye_huckel_ok_with_edl"
+    )
+    max_balance = max(
+        max(float(row["relative_balance_with"]), float(row["relative_balance_no"]))
+        for row in rows
+    )
+    mode_policy = all(
+        int(row["N_modes"])
+        == _modes_for_length(PRODUCTION_MODES_BY_LENGTH, float(row["L_support_nm"]))
+        for row in rows
+    )
+    convergence_passed = bool(
+        len(convergence_rows) == expected_count
+        and all(bool(row["passed"]) for row in convergence_rows)
+    )
+    separated_source = _separated_electrodes_emix_v()
+    separated_consistency = max(
+        abs(float(row["separated_electrodes_E_mix_with_V"]) - separated_source)
+        for row in rows
+    )
+    pzc_summaries: dict[str, Any] = {}
+    for pzc_v in REPRESENTATIVE_PZC_V:
+        branch = [
+            _row_lookup(rows, length_nm, pzc_v)
+            for length_nm in TREND_LENGTHS_NM
+        ]
+        emix = np.asarray(
+            [float(row["E_mix_with_V"]) for row in branch], dtype=float
+        )
+        anchor = branch[-1]
+        pzc_summaries[f"{pzc_v:.2f}_V"] = {
+            "E_mix_1nm_minus_1000nm_mV": 1.0e3 * (emix[0] - emix[-1]),
+            "E_mix_max_minus_min_mV": 1.0e3 * float(np.ptp(emix)),
+            "separated_minus_1000nm_mV": float(
+                anchor["delta_E_mix_separated_minus_case_mV"]
+            ),
+            "E_mix_monotonic_nonincreasing_with_length": bool(
+                np.all(np.diff(emix) <= 1.0e-12)
+            ),
+        }
+    passed = bool(
+        shape_passed
+        and finite
+        and max_balance < BALANCE_TOL
+        and mode_policy
+        and convergence_passed
+        and separated_consistency < 1.0e-14
+    )
+    return {
+        "row_count": len(rows),
+        "expected_row_count": expected_count,
+        "lengths_nm": list(TREND_LENGTHS_NM),
+        "pzc_C_V": list(REPRESENTATIVE_PZC_V),
+        "shape_passed": shape_passed,
+        "all_values_finite": finite,
+        "maximum_relative_current_balance_residual": max_balance,
+        "current_balance_threshold": BALANCE_TOL,
+        "production_mode_policy_passed": mode_policy,
+        "convergence_row_count": len(convergence_rows),
+        "convergence_all_passed": convergence_passed,
+        "separated_electrodes_source": str(SEPARATED_ELECTRODES_SUMMARY),
+        "separated_electrodes_E_mix_with_V": separated_source,
+        "maximum_separated_reference_copy_error_V": separated_consistency,
+        "PZC_C_branch_summaries": pzc_summaries,
+        "calculation_note": (
+            "All 18 points are direct FULL-model solves. The 2 and 10 nm cases "
+            "were computed explicitly and were not interpolated."
+        ),
+        "passed": passed,
+    }
+
+
 def _numeric_validation(
     rows: Sequence[Mapping[str, Any]],
     anchor_rows: Sequence[Mapping[str, Any]],
+    trend_rows: Sequence[Mapping[str, Any]],
+    trend_convergence_rows: Sequence[Mapping[str, Any]],
     negative_rows: Sequence[Mapping[str, Any]],
     convergence_rows: Sequence[Mapping[str, Any]],
     requested_resolution_rows: Sequence[Mapping[str, Any]],
@@ -1703,6 +2018,10 @@ def _numeric_validation(
         }
         for pzc_v in REPRESENTATIVE_PZC_V
     }
+    length_trends = _length_trend_validation(
+        trend_rows,
+        trend_convergence_rows,
+    )
     passed = bool(
         scan_shape_passed
         and finite
@@ -1715,6 +2034,7 @@ def _numeric_validation(
         and baseline["passed"]
         and profiles["passed"]
         and parameter_lock["passed"]
+        and length_trends["passed"]
     )
     return {
         "main_scan_shape": {"rows": len(rows), "expected_rows": 164, "passed": scan_shape_passed},
@@ -1757,6 +2077,7 @@ def _numeric_validation(
             "passed": production_mode_policy,
         },
         "reference_15nm_vs_1000nm": reference_differences,
+        "publication_length_trends": length_trends,
         "passed": passed,
     }
 
@@ -1946,6 +2267,28 @@ def _scan_config() -> dict[str, Any]:
             "i_mix_avg_with_A_per_m2",
             "sigma_support_signed_mean_uC_per_cm2",
         ],
+        "publication_length_trend": {
+            "x_variable": "L_support_nm",
+            "x_scale": "logarithmic with explicit ticks",
+            "L_support_nm": list(TREND_LENGTHS_NM),
+            "line_variable": "pzc_C_V",
+            "pzc_C_V": list(REPRESENTATIVE_PZC_V),
+            "case_count": len(TREND_LENGTHS_NM) * len(REPRESENTATIVE_PZC_V),
+            "new_direct_solve_lengths_nm": [2.0, 10.0],
+            "interpolation_used": False,
+            "separated_electrodes_reference": {
+                "source": str(SEPARATED_ELECTRODES_SUMMARY),
+                "E_mix_with_V": _separated_electrodes_emix_v(),
+            },
+            "mixed_potential_panel_layout": {
+                "y_axis_V": list(TREND_EMIX_YLIM_V),
+                "separated_label_axes_fraction": list(
+                    SEPARATED_LABEL_AXES_FRACTION
+                ),
+                "separated_label_background": "opaque white",
+                "purpose": "reserve headroom and prevent line-label overlap",
+            },
+        },
         "overlap_metric_visibility": (
             "Retained in CSV and validation metadata; omitted from the trend figure."
         ),
@@ -2035,6 +2378,8 @@ def _expected_relative_files() -> set[str]:
         "csv/support_pzc_zero_length_negative_control.csv",
         "csv/support_pzc_convergence.csv",
         "csv/support_pzc_original_resolution_audit.csv",
+        "csv/support_pzc_length_trends.csv",
+        "csv/support_pzc_length_trend_convergence.csv",
         "csv/support_pzc_2d_summary.csv",
         "inputs/baseline_params.json",
         "inputs/locked_overrides.json",
@@ -2082,6 +2427,13 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
             anchors,
             anchor_low_gl_cases,
         )
+        trend_rows, trend_convergence_rows = _build_length_trend_data(
+            representatives,
+            representative_low_gl_cases,
+            anchors,
+            anchor_low_gl_cases,
+            convergence_rows,
+        )
         requested_resolution_rows, requested_short_high_cases = (
             _run_requested_resolution_audit()
         )
@@ -2098,6 +2450,14 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
         )
         _write_csv(staging / "csv" / "support_pzc_convergence.csv", convergence_rows)
         _write_csv(
+            staging / "csv" / "support_pzc_length_trends.csv",
+            trend_rows,
+        )
+        _write_csv(
+            staging / "csv" / "support_pzc_length_trend_convergence.csv",
+            trend_convergence_rows,
+        )
+        _write_csv(
             staging / "csv" / "support_pzc_original_resolution_audit.csv",
             requested_resolution_rows,
         )
@@ -2112,10 +2472,32 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
 
         figure_dir = staging / "figures"
         figure_dir.mkdir(parents=True, exist_ok=True)
+        phi_profile_ylim_mV = _shared_profile_ylim(
+            representatives,
+            15.0,
+            "phi_RP_mV",
+        )
+        sigma_profile_ylim_uC_per_cm2 = _shared_profile_ylim(
+            representatives,
+            1.0,
+            "sigma_uC_per_cm2",
+        )
         figure_paths = []
-        figure_paths.extend(_plot_trends(rows, anchor_rows, figure_dir))
-        figure_paths.extend(_plot_phi_profiles(representatives, figure_dir))
-        figure_paths.extend(_plot_sigma_profiles(representatives, figure_dir))
+        figure_paths.extend(_plot_trends(trend_rows, figure_dir))
+        figure_paths.extend(
+            _plot_phi_profiles(
+                representatives,
+                figure_dir,
+                phi_profile_ylim_mV,
+            )
+        )
+        figure_paths.extend(
+            _plot_sigma_profiles(
+                representatives,
+                figure_dir,
+                sigma_profile_ylim_uC_per_cm2,
+            )
+        )
         figure_paths.extend(
             _plot_representative_solution_potentials_2d(
                 representative_2d_cases,
@@ -2136,6 +2518,8 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
         numeric = _numeric_validation(
             rows,
             anchor_rows,
+            trend_rows,
+            trend_convergence_rows,
             negative_rows,
             convergence_rows,
             requested_resolution_rows,
@@ -2152,6 +2536,10 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
             "model": "Au|C|Pd linear-PB piecewise-Robin",
             "parameters": _locked_overrides(),
             "scan_point_count": len(rows),
+            "publication_length_trend_point_count": len(trend_rows),
+            "publication_length_trend_convergence_check_count": len(
+                trend_convergence_rows
+            ),
             "representative_profile_count": len(profile_files),
             "representative_2d_case_count": len(representative_2d_rows),
             "far_field_anchor_count": len(anchor_rows),
@@ -2173,6 +2561,45 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
                 "Mixed current density",
                 "Mean signed support charge",
             ],
+            "trend_figure_encoding": {
+                "x": "L_support_nm",
+                "x_scale": "logarithmic with ticks at 1, 2, 3, 6, 10, 1000 nm",
+                "line_color_and_style": "PZC_C = 0.10, 0.50, 0.90 V",
+                "separated_electrodes_E_mix_with_V": (
+                    _separated_electrodes_emix_v()
+                ),
+                "separated_electrodes_source": str(
+                    SEPARATED_ELECTRODES_SUMMARY
+                ),
+                "mixed_potential_y_axis_V": list(TREND_EMIX_YLIM_V),
+                "separated_label_axes_fraction": list(
+                    SEPARATED_LABEL_AXES_FRACTION
+                ),
+                "separated_label_overlap_avoidance": (
+                    "opaque white label in reserved top headroom"
+                ),
+                "branch_metrics": numeric["publication_length_trends"][
+                    "PZC_C_branch_summaries"
+                ],
+            },
+            "profile_shared_y_axis_ranges": {
+                "phi_RP_mV": {
+                    "reference_L_support_nm": 15.0,
+                    "limits": list(phi_profile_ylim_mV),
+                    "definition": (
+                        "Global min/max over PZC_C=0.10/0.50/0.90 V at "
+                        "L_support=15 nm, including zero, plus the original 5% margin."
+                    ),
+                },
+                "surface_charge_uC_per_cm2": {
+                    "reference_L_support_nm": 1.0,
+                    "limits": list(sigma_profile_ylim_uC_per_cm2),
+                    "definition": (
+                        "Global min/max over PZC_C=0.10/0.50/0.90 V at "
+                        "L_support=1 nm, including zero, plus the original 5% margin."
+                    ),
+                },
+            },
             "overlap_metric_output": (
                 "Retained in support_pzc_scan.csv and validation metadata; "
                 "not displayed in support_pzc_trends_au2_pd2."
@@ -2255,6 +2682,8 @@ def build_support_pzc_study(output_dir: str | Path) -> dict[str, Any]:
                     "csv/support_pzc_zero_length_negative_control.csv",
                     "csv/support_pzc_convergence.csv",
                     "csv/support_pzc_original_resolution_audit.csv",
+                    "csv/support_pzc_length_trends.csv",
+                    "csv/support_pzc_length_trend_convergence.csv",
                     "csv/support_pzc_2d_summary.csv",
                     *profile_files,
                 ]

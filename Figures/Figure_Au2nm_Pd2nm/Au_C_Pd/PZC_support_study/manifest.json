@@ -15,6 +15,8 @@
     "csv/support_pzc_1000nm_anchors.csv",
     "csv/support_pzc_2d_summary.csv",
     "csv/support_pzc_convergence.csv",
+    "csv/support_pzc_length_trend_convergence.csv",
+    "csv/support_pzc_length_trends.csv",
     "csv/support_pzc_original_resolution_audit.csv",
     "csv/support_pzc_scan.csv",
     "csv/support_pzc_zero_length_negative_control.csv"
@@ -95,7 +97,8 @@
     "baseline_params": "b09bc8f628cbfd8747f0c899fdd7216e60c81bfa038b6e7ec82c7b5041fa4158",
     "legacy_engine": "3e9e4c46bdb4855530f4228f437e079b53e0be495db67a706f20e7f6cfb7a5d6",
     "linear_solver": "1223e00cf6502f104a311059ae61fb058f9093f70fe96ba90366377399763358",
-    "study_generator": "34ed1ee1bb28cde15b8f9c28c2902965ff8670ba03cdaa8888be0c96fe6544b1",
+    "separated_electrodes_summary": "85b31a8a6c091d514c5781a5aaa80fb9a5812b95c784c1c1434e8f0c100eff4e",
+    "study_generator": "18ba6d6a23219934fb7627f6b402dbcb9ea413d31686373ec7efb408dbfa0c0a",
     "support_length_reference_csv": "83de2cf73918f428a09112db672527db049ff9db8567b36ec971425fd342037f"
   },
   "study_id": "Au2nm_C_Pd2nm_support_PZC_study",

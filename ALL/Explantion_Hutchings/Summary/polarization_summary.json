@@ -1,0 +1,190 @@
+{
+  "conditions": [
+    {
+      "E_mix_V": 0.6249104327868923,
+      "I_mix_A": 3.4520462501485164e-12,
+      "I_mix_pA": 3.4520462501485163,
+      "condition_key": "au_pd_independent",
+      "condition_order": 1,
+      "display_label": "Independent Au/Pd",
+      "edl_condition": "with EDL",
+      "source_current_scale_factor": 2.0
+    },
+    {
+      "E_mix_V": 0.6249104327869085,
+      "I_mix_A": 5.319995190264642e-12,
+      "I_mix_pA": 5.319995190264642,
+      "condition_key": "janus_au_pd",
+      "condition_order": 2,
+      "display_label": "Janus Au|Pd",
+      "edl_condition": "with EDL",
+      "source_current_scale_factor": 2.0
+    },
+    {
+      "E_mix_V": 0.5976004686075482,
+      "I_mix_A": 4.521278834428626e-12,
+      "I_mix_pA": 4.521278834428626,
+      "condition_key": "physical_mixture_c10",
+      "condition_order": 3,
+      "display_label": "Physical mixture (C = 10 nm)",
+      "edl_condition": "with EDL",
+      "source_current_scale_factor": 2.0
+    },
+    {
+      "E_mix_V": 0.6109997601404451,
+      "I_mix_A": 5.1664374594672866e-12,
+      "I_mix_pA": 5.166437459467287,
+      "condition_key": "janus_on_c_support",
+      "condition_order": 4,
+      "display_label": "C-supported Janus",
+      "edl_condition": "with EDL",
+      "source_current_scale_factor": 1.0
+    },
+    {
+      "E_mix_V": 0.4669999999999999,
+      "I_mix_A": 9.40482832629793e-12,
+      "I_mix_pA": 9.40482832629793,
+      "condition_key": "without_edl_common",
+      "condition_order": 5,
+      "display_label": "Common w/o EDL",
+      "edl_condition": "w/o EDL",
+      "source_current_scale_factor": null
+    }
+  ],
+  "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+  "curve_csv": "csv/four_case_polarization_curves.csv",
+  "figure_stem": "summary_half_reaction_polarization_overlay",
+  "figure_stems": [
+    "summary_half_reaction_polarization_overlay",
+    "summary_half_reaction_polarization_overlay_xmin045V"
+  ],
+  "figure_variants": [
+    {
+      "stem": "summary_half_reaction_polarization_overlay",
+      "variant_key": "xmin040V",
+      "x_max_V": 0.64,
+      "x_min_V": 0.4
+    },
+    {
+      "stem": "summary_half_reaction_polarization_overlay_xmin045V",
+      "variant_key": "xmin045V",
+      "x_max_V": 0.75,
+      "x_min_V": 0.45
+    }
+  ],
+  "method": {
+    "au_pd_independent": "IndependentPlanarEDLModel.current_components",
+    "janus_au_pd": "legacy cosine-Galerkin model with GL128 current quadrature",
+    "janus_on_c_support": "LinearPBModel with cached GL current quadrature",
+    "normalization": "none; signed absolute currents on common Au4+Pd4 area",
+    "physical_mixture_c10": "legacy cosine-Galerkin model with GL128 current quadrature",
+    "without_edl_common": "analytic uniform-interface limit"
+  },
+  "potential_grid": {
+    "maximum_V": 0.75,
+    "minimum_V": 0.4,
+    "point_count": 1401,
+    "spacing": "linear"
+  },
+  "reaction_legend_labels": [
+    "Oxidation on Au",
+    "Reduction on Pd"
+  ],
+  "validation": {
+    "common_reactive_area_m2": 8.000000000000001e-11,
+    "csv_row_count": 7005,
+    "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+    "curve_count": 5,
+    "figure_variant_count": 2,
+    "half_reaction_curve_count": 10,
+    "marker_checks": [
+      {
+        "Au_magnitude_error_A": 0.0,
+        "E_mix_V": 0.6249104327868923,
+        "Pd_magnitude_error_A": 6.866245319043687e-27,
+        "computed_I_Au_A": 3.4520462501485164e-12,
+        "computed_I_Pd_A": -3.4520462501485232e-12,
+        "condition_key": "au_pd_independent",
+        "expected_I_mix_A": 3.4520462501485164e-12,
+        "passed": true,
+        "relative_balance_residual": 9.945181526389276e-16
+      },
+      {
+        "Au_magnitude_error_A": 8.077935669463161e-28,
+        "E_mix_V": 0.6249104327869085,
+        "Pd_magnitude_error_A": 5.6489004136555884e-24,
+        "computed_I_Au_A": 5.319995190264643e-12,
+        "computed_I_Pd_A": -5.319995190258993e-12,
+        "condition_key": "janus_au_pd",
+        "expected_I_mix_A": 5.319995190264642e-12,
+        "passed": true,
+        "relative_balance_residual": 5.309880935197321e-13
+      },
+      {
+        "Au_magnitude_error_A": 0.0,
+        "E_mix_V": 0.5976004686075482,
+        "Pd_magnitude_error_A": 2.5849394142282115e-26,
+        "computed_I_Au_A": 4.521278834428626e-12,
+        "computed_I_Pd_A": -4.521278834428652e-12,
+        "condition_key": "physical_mixture_c10",
+        "expected_I_mix_A": 4.521278834428626e-12,
+        "passed": true,
+        "relative_balance_residual": 2.858637466179272e-15
+      },
+      {
+        "Au_magnitude_error_A": 0.0,
+        "E_mix_V": 0.6109997601404451,
+        "Pd_magnitude_error_A": 5.412216898540318e-26,
+        "computed_I_Au_A": 5.1664374594672866e-12,
+        "computed_I_Pd_A": -5.1664374594672324e-12,
+        "condition_key": "janus_on_c_support",
+        "expected_I_mix_A": 5.1664374594672866e-12,
+        "passed": true,
+        "relative_balance_residual": 5.2378616222506265e-15
+      },
+      {
+        "Au_magnitude_error_A": 6.462348535570529e-27,
+        "E_mix_V": 0.4669999999999999,
+        "Pd_magnitude_error_A": 1.7771458472818954e-26,
+        "computed_I_Au_A": 9.404828326297923e-12,
+        "computed_I_Pd_A": -9.404828326297947e-12,
+        "condition_key": "without_edl_common",
+        "expected_I_mix_A": 9.40482832629793e-12,
+        "passed": true,
+        "relative_balance_residual": 1.288370513932004e-15
+      }
+    ],
+    "maximum_marker_magnitude_error_A": 5.6489004136555884e-24,
+    "maximum_marker_relative_balance_residual": 5.309880935197321e-13,
+    "passed": true,
+    "potential_point_count_per_condition": 1401,
+    "without_edl_cross_case_curve_checks": [
+      {
+        "case_key": "au_pd_independent",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      },
+      {
+        "case_key": "janus_au_pd",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      },
+      {
+        "case_key": "physical_mixture_c10",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      },
+      {
+        "case_key": "janus_on_c_support",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      }
+    ]
+  },
+  "x_axis_label": "Electrode potential (V vs. RHE)",
+  "y_axis_label": "Current (10$^{-3}$ µA)"
+}

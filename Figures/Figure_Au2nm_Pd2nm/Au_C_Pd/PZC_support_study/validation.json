@@ -425,7 +425,7 @@
           4835,
           3639
         ],
-        "size_bytes": 626805
+        "size_bytes": 577008
       },
       "figures/support_pzc_surface_charge_profiles_au2_pd2.png": {
         "dpi": [
@@ -437,7 +437,7 @@
           4832,
           3640
         ],
-        "size_bytes": 520587
+        "size_bytes": 511543
       },
       "figures/support_pzc_trends_au2_pd2.png": {
         "dpi": [
@@ -446,10 +446,10 @@
         ],
         "passed": true,
         "pixel_dimensions": [
-          6313,
-          2063
+          6384,
+          2124
         ],
-        "size_bytes": 555662
+        "size_bytes": 510583
       }
     },
     "representative_2d_summary_csv_count": 12,
@@ -653,7 +653,7 @@
         "helvetica_first_stack_present": true,
         "passed": true,
         "rasterized_2d_field_expected": false,
-        "size_bytes": 78301
+        "size_bytes": 76074
       },
       "figures/support_pzc_surface_charge_profiles_au2_pd2.svg": {
         "editable_text": true,
@@ -661,7 +661,7 @@
         "helvetica_first_stack_present": true,
         "passed": true,
         "rasterized_2d_field_expected": false,
-        "size_bytes": 85659
+        "size_bytes": 84474
       },
       "figures/support_pzc_trends_au2_pd2.svg": {
         "editable_text": true,
@@ -669,7 +669,7 @@
         "helvetica_first_stack_present": true,
         "passed": true,
         "rasterized_2d_field_expected": false,
-        "size_bytes": 56346
+        "size_bytes": 61072
       }
     },
     "svg_policy": "Line/profile SVGs contain vector graphics and editable text. The 12 potential-only maps and 12 potential-plus-reactant composites rasterize only their dense pcolormesh fields while retaining editable SVG text and vector annotations."
@@ -803,19 +803,72 @@
     "production_resolution_policy": {
       "convergence_low_N_modes_by_L_support_nm": {
         "1": 480,
+        "10": 1920,
         "1000": 9600,
         "15": 1920,
+        "2": 480,
         "3": 480,
         "6": 960
       },
       "passed": true,
       "production_N_modes_by_L_support_nm": {
         "1": 960,
+        "10": 3840,
         "1000": 11520,
         "15": 3840,
+        "2": 960,
         "3": 960,
         "6": 1920
       }
+    },
+    "publication_length_trends": {
+      "PZC_C_branch_summaries": {
+        "0.10_V": {
+          "E_mix_1nm_minus_1000nm_mV": 27.888231047539016,
+          "E_mix_max_minus_min_mV": 27.888231047539016,
+          "E_mix_monotonic_nonincreasing_with_length": true,
+          "separated_minus_1000nm_mV": 52.44178860428905
+        },
+        "0.50_V": {
+          "E_mix_1nm_minus_1000nm_mV": 14.526612597964617,
+          "E_mix_max_minus_min_mV": 14.526612597964617,
+          "E_mix_monotonic_nonincreasing_with_length": true,
+          "separated_minus_1000nm_mV": 27.532644949468388
+        },
+        "0.90_V": {
+          "E_mix_1nm_minus_1000nm_mV": 1.9574877171086857,
+          "E_mix_max_minus_min_mV": 1.9574877171086857,
+          "E_mix_monotonic_nonincreasing_with_length": true,
+          "separated_minus_1000nm_mV": 3.724212994301923
+        }
+      },
+      "all_values_finite": true,
+      "calculation_note": "All 18 points are direct FULL-model solves. The 2 and 10 nm cases were computed explicitly and were not interpolated.",
+      "convergence_all_passed": true,
+      "convergence_row_count": 18,
+      "current_balance_threshold": 1e-10,
+      "expected_row_count": 18,
+      "lengths_nm": [
+        1.0,
+        2.0,
+        3.0,
+        6.0,
+        10.0,
+        1000.0
+      ],
+      "maximum_relative_current_balance_residual": 3.033636931151246e-13,
+      "maximum_separated_reference_copy_error_V": 0.0,
+      "passed": true,
+      "production_mode_policy_passed": true,
+      "pzc_C_V": [
+        0.1,
+        0.5,
+        0.9
+      ],
+      "row_count": 18,
+      "separated_electrodes_E_mix_with_V": 0.6249104327868923,
+      "separated_electrodes_source": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/summary.json",
+      "shape_passed": true
     },
     "pzc_0p50_regression_to_Figure_L_support": {
       "checks": {

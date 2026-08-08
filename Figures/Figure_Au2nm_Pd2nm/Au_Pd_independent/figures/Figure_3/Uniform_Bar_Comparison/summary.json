@@ -70,6 +70,46 @@
     "Au": "Red1, z_R1=-1",
     "Pd": "Ox2, z_O2=+1"
   },
+  "selected_panels_variant": {
+    "approximate_panel_width_reduction_percent": 29.0,
+    "bar_label_layout": {
+      "overpotential_label_pad_fraction": 0.01,
+      "purpose": "avoid label-bar and label-axis overlap",
+      "small_concentration_label_rotation_deg": 90.0
+    },
+    "expected_png_dimensions_px_at_600_dpi": [
+      4800,
+      2160
+    ],
+    "figsize_inches": [
+      8.0,
+      3.6
+    ],
+    "figure_stem": "figure_3_uniform_interface_bar_comparison_selected_panels_independent_edls",
+    "font_sizes_pt": {
+      "bar_value": 9.1,
+      "legend": 10.3,
+      "tick": 9.7,
+      "title": 11.4,
+      "ylabel": 10.8
+    },
+    "layout": "three_narrow_panels_in_one_horizontal_row",
+    "overpotential_display_unit": "mV",
+    "panels": [
+      "Reaction-plane potential",
+      "Reactant concentration at RP",
+      "Overpotential at RP"
+    ],
+    "reactant_labels": {
+      "Au": "Red_1^-",
+      "Pd": "Ox_2^+"
+    },
+    "title_line_policy": {
+      "Overpotential at RP": "single line",
+      "Reactant concentration at RP": "two lines",
+      "Reaction-plane potential": "single line"
+    }
+  },
   "study_id": "independent_Au2nm_Pd2nm_CH50_uniform_bar_comparison",
   "topology_id": "two_independent_planar_half_spaces",
   "typography": {

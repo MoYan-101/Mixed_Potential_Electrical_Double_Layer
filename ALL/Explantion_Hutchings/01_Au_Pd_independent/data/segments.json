@@ -1,0 +1,20 @@
+[
+  {
+    "coordinate_system": "independent_Au_half_space",
+    "faradaic": true,
+    "length_nm": 2.0,
+    "material": "Au",
+    "name": "Au",
+    "x_end_nm": 2.0,
+    "x_start_nm": 0.0
+  },
+  {
+    "coordinate_system": "independent_Pd_half_space",
+    "faradaic": true,
+    "length_nm": 2.0,
+    "material": "Pd",
+    "name": "Pd",
+    "x_end_nm": 2.0,
+    "x_start_nm": 0.0
+  }
+]

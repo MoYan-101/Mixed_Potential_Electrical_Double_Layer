@@ -42,6 +42,24 @@ DEFAULT_OUTPUT = (
 )
 CHECKSUM_FILE = "checksums.sha256"
 FIGURE_STEM = "figure_3_uniform_interface_bar_comparison_independent_edls"
+SELECTED_PANELS_STEM = (
+    "figure_3_uniform_interface_bar_comparison_selected_panels_independent_edls"
+)
+SELECTED_PANELS_FIGSIZE_IN = (8.0, 3.60)
+SELECTED_PANELS_FONT_SIZES_PT = {
+    "title": 11.4,
+    "ylabel": 10.8,
+    "tick": 9.7,
+    "bar_value": 9.1,
+    "legend": 10.3,
+}
+SELECTED_PANELS_TITLES = (
+    "Reaction-plane potential",
+    "Reactant concentration\nat RP",
+    "Overpotential at RP",
+)
+SELECTED_PANELS_OVERPOTENTIAL_LABEL_PAD_FRACTION = 0.010
+SELECTED_PANELS_SMALL_CONCENTRATION_LABEL_ROTATION_DEG = 90.0
 
 if str(MODEL_SRC) not in sys.path:
     sys.path.insert(0, str(MODEL_SRC))
@@ -340,6 +358,8 @@ def _grouped_panel(
     ylabel: str,
     ylim: tuple[float, float],
     formatter: Any,
+    *,
+    label_pad_fraction: float = 0.026,
 ) -> None:
     x = np.arange(2, dtype=float)
     width = 0.34
@@ -365,11 +385,29 @@ def _grouped_panel(
     ax.set_xticks(x, labels)
     ax.set_ylim(*ylim)
     _style_axis(ax, title, ylabel)
-    _label_linear_bars(ax, bars_without, without, formatter)
-    _label_linear_bars(ax, bars_with, with_edl, formatter)
+    _label_linear_bars(
+        ax,
+        bars_without,
+        without,
+        formatter,
+        pad_fraction=label_pad_fraction,
+    )
+    _label_linear_bars(
+        ax,
+        bars_with,
+        with_edl,
+        formatter,
+        pad_fraction=label_pad_fraction,
+    )
 
 
-def _concentration_panel(ax: plt.Axes, values: Mapping[str, Mapping[str, Any]]) -> None:
+def _concentration_panel(
+    ax: plt.Axes,
+    values: Mapping[str, Mapping[str, Any]],
+    *,
+    charged_species_labels: bool = False,
+    vertical_small_value_labels: bool = False,
+) -> None:
     x = np.arange(2, dtype=float)
     width = 0.34
     lower = 1.0e-4
@@ -395,10 +433,12 @@ def _concentration_panel(ax: plt.Axes, values: Mapping[str, Mapping[str, Any]]) 
     )
     ax.set_yscale("log")
     ax.set_ylim(lower, 180.0)
-    ax.set_xticks(
-        x,
-        (r"Au ($\mathrm{Red1}$)", r"Pd ($\mathrm{Ox2}$)"),
+    species_labels = (
+        (r"Au ($\mathrm{Red}_{1}^{-}$)", r"Pd ($\mathrm{Ox}_{2}^{+}$)")
+        if charged_species_labels
+        else (r"Au ($\mathrm{Red1}$)", r"Pd ($\mathrm{Ox2}$)")
     )
+    ax.set_xticks(x, species_labels)
     _style_axis(
         ax,
         "Reactant concentration at RP",
@@ -406,7 +446,8 @@ def _concentration_panel(ax: plt.Axes, values: Mapping[str, Mapping[str, Any]]) 
     )
 
     def label(bar: Any, value: float) -> None:
-        if value < 1.0e-2:
+        is_small_value = value < 1.0e-2
+        if is_small_value:
             exponent = int(math.floor(math.log10(value)))
             coefficient = value / 10.0**exponent
             text = rf"${coefficient:.2f}\times10^{{{exponent}}}$"
@@ -422,11 +463,39 @@ def _concentration_panel(ax: plt.Axes, values: Mapping[str, Mapping[str, Any]]) 
             va="bottom",
             fontsize=7.8,
             color=COLORS["dark"],
+            rotation=(
+                SELECTED_PANELS_SMALL_CONCENTRATION_LABEL_ROTATION_DEG
+                if is_small_value and vertical_small_value_labels
+                else 0.0
+            ),
         )
 
     for bars, numeric in ((bars_without, without), (bars_with, with_edl)):
         for bar, value in zip(bars, numeric, strict=True):
             label(bar, value)
+
+
+def _restyle_selected_panels(axes: np.ndarray) -> None:
+    """Apply publication typography and title wrapping to the 1x3 variant."""
+
+    for ax, title in zip(axes, SELECTED_PANELS_TITLES, strict=True):
+        ax.set_title(
+            title,
+            loc="left",
+            fontsize=SELECTED_PANELS_FONT_SIZES_PT["title"],
+            pad=4.0,
+            linespacing=1.0,
+        )
+        ax.yaxis.label.set_fontsize(SELECTED_PANELS_FONT_SIZES_PT["ylabel"])
+        ax.tick_params(
+            axis="both",
+            labelsize=SELECTED_PANELS_FONT_SIZES_PT["tick"],
+            length=3.5,
+            width=0.9,
+            pad=2.8,
+        )
+        for annotation in ax.texts:
+            annotation.set_fontsize(SELECTED_PANELS_FONT_SIZES_PT["bar_value"])
 
 
 def _plot(values: Mapping[str, Any], output: Path) -> list[Path]:
@@ -516,6 +585,66 @@ def _plot(values: Mapping[str, Any], output: Path) -> list[Path]:
         fig.savefig(path, dpi=600, facecolor="white", transparent=False)
         saved.append(path)
     plt.close(fig)
+
+    # Publication variant requested for the main text: retain only the three
+    # reaction-plane quantities and express overpotential in mV.  The original
+    # six-panel comparison above is intentionally preserved as a separate
+    # artifact for traceability.
+    fig, axes = plt.subplots(1, 3, figsize=SELECTED_PANELS_FIGSIZE_IN)
+    _grouped_panel(
+        axes[0],
+        values["phi_RP_mV"],
+        ("Au", "Pd"),
+        "Reaction-plane potential",
+        r"$\phi_{\mathrm{RP}}$ (mV)",
+        (-245.0, 25.0),
+        lambda value: f"{value:.0f}",
+    )
+    _concentration_panel(
+        axes[1],
+        values["reactant_concentration_over_bulk"],
+        charged_species_labels=True,
+        vertical_small_value_labels=True,
+    )
+    eta_rp_mv = {
+        material: {
+            condition: 1.0e3 * float(values["eta_RP_V"][material][condition])
+            for condition in CONDITIONS
+        }
+        for material in ("Au", "Pd")
+    }
+    _grouped_panel(
+        axes[2],
+        eta_rp_mv,
+        ("Au", "Pd"),
+        "Overpotential at RP",
+        r"$\eta_{\mathrm{RP}}$ (mV)",
+        (-460.0, 840.0),
+        lambda value: f"{value:.0f}",
+        label_pad_fraction=SELECTED_PANELS_OVERPOTENTIAL_LABEL_PAD_FRACTION,
+    )
+    _restyle_selected_panels(axes)
+    fig.legend(
+        handles=legend_handles,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.99),
+        ncols=2,
+        fontsize=SELECTED_PANELS_FONT_SIZES_PT["legend"],
+        handlelength=1.8,
+        columnspacing=1.8,
+    )
+    fig.subplots_adjust(
+        left=0.105,
+        right=0.985,
+        bottom=0.19,
+        top=0.76,
+        wspace=0.52,
+    )
+    for suffix in ("png", "svg"):
+        path = output / f"{SELECTED_PANELS_STEM}.{suffix}"
+        fig.savefig(path, dpi=600, facecolor="white", transparent=False)
+        saved.append(path)
+    plt.close(fig)
     return saved
 
 
@@ -523,29 +652,38 @@ def _verify_artifacts(output: Path) -> dict[str, Any]:
     pngs = sorted(output.glob("*.png"))
     svgs = sorted(output.glob("*.svg"))
     pdfs = sorted(output.rglob("*.pdf"))
-    if len(pngs) != 1 or len(svgs) != 1 or pdfs:
+    if len(pngs) != 2 or len(svgs) != 2 or pdfs:
         raise RuntimeError(
-            f"Expected 1 PNG + 1 SVG + 0 PDF, got {len(pngs)}, {len(svgs)}, {len(pdfs)}"
+            f"Expected 2 PNG + 2 SVG + 0 PDF, got {len(pngs)}, {len(svgs)}, {len(pdfs)}"
         )
     if any(path.stat().st_size == 0 for path in (*pngs, *svgs)):
         raise RuntimeError("A uniform-interface bar artifact is empty")
-    with Image.open(pngs[0]) as image:
-        image.verify()
-    with Image.open(pngs[0]) as image:
-        dpi = image.info.get("dpi", (0.0, 0.0))
-        dpi_ok = all(595.0 <= float(value) <= 605.0 for value in dpi)
-        size = [int(image.width), int(image.height)]
-    svg_text = svgs[0].read_text(encoding="utf-8")
-    ET.parse(svgs[0])
-    editable = "<text" in svg_text and "Helvetica" in svg_text
+    png_metadata: dict[str, Any] = {}
+    dpi_ok = True
+    for path in pngs:
+        with Image.open(path) as image:
+            image.verify()
+        with Image.open(path) as image:
+            dpi = image.info.get("dpi", (0.0, 0.0))
+            dpi_ok = dpi_ok and all(595.0 <= float(value) <= 605.0 for value in dpi)
+            png_metadata[path.name] = {
+                "dimensions_px": [int(image.width), int(image.height)],
+                "dpi": [float(value) for value in dpi],
+            }
+    editable = True
+    for path in svgs:
+        svg_text = path.read_text(encoding="utf-8")
+        ET.parse(path)
+        editable = editable and "<text" in svg_text and "Helvetica" in svg_text
     if not dpi_ok or not editable:
-        raise RuntimeError(f"Bar export validation failed: dpi={dpi}, editable_svg={editable}")
+        raise RuntimeError(
+            f"Bar export validation failed: dpi_ok={dpi_ok}, editable_svg={editable}"
+        )
     return {
-        "png_count": 1,
-        "svg_count": 1,
+        "png_count": 2,
+        "svg_count": 2,
         "pdf_count": 0,
-        "png_dimensions_px": size,
-        "png_dpi": [float(value) for value in dpi],
+        "png_artifacts": png_metadata,
         "svg_text_editable": editable,
         "passed": True,
     }
@@ -684,6 +822,38 @@ def build_independent_au_pd_uniform_bar_comparison(
                 "variables": "italic math",
                 "descriptive_subscripts_and_units": "upright roman",
             },
+            "selected_panels_variant": {
+                "figure_stem": SELECTED_PANELS_STEM,
+                "figsize_inches": list(SELECTED_PANELS_FIGSIZE_IN),
+                "expected_png_dimensions_px_at_600_dpi": [4800, 2160],
+                "layout": "three_narrow_panels_in_one_horizontal_row",
+                "approximate_panel_width_reduction_percent": 29.0,
+                "font_sizes_pt": SELECTED_PANELS_FONT_SIZES_PT,
+                "panels": [
+                    "Reaction-plane potential",
+                    "Reactant concentration at RP",
+                    "Overpotential at RP",
+                ],
+                "title_line_policy": {
+                    "Reaction-plane potential": "single line",
+                    "Reactant concentration at RP": "two lines",
+                    "Overpotential at RP": "single line",
+                },
+                "bar_label_layout": {
+                    "small_concentration_label_rotation_deg": (
+                        SELECTED_PANELS_SMALL_CONCENTRATION_LABEL_ROTATION_DEG
+                    ),
+                    "overpotential_label_pad_fraction": (
+                        SELECTED_PANELS_OVERPOTENTIAL_LABEL_PAD_FRACTION
+                    ),
+                    "purpose": "avoid label-bar and label-axis overlap",
+                },
+                "reactant_labels": {
+                    "Au": "Red_1^-",
+                    "Pd": "Ox_2^+",
+                },
+                "overpotential_display_unit": "mV",
+            },
             "applicability_caveat": (
                 "The with-EDL result exceeds the linear Debye-Huckel weak-field "
                 "threshold; this is a model-internal comparison."
@@ -736,6 +906,8 @@ def _validate_existing(output: Path) -> dict[str, Any]:
     required = {
         f"{FIGURE_STEM}.png",
         f"{FIGURE_STEM}.svg",
+        f"{SELECTED_PANELS_STEM}.png",
+        f"{SELECTED_PANELS_STEM}.svg",
         "csv/uniform_interface_bar_values.csv",
         "summary.json",
         "validation.json",

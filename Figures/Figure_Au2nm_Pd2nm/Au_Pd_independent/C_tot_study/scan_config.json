@@ -72,8 +72,20 @@
   ],
   "surface_average_convention": "Each independent planar face is uniform, so angle-bracket means equal the corresponding analytic local scalar.",
   "target_figure_adaptations": {
-    "current_title_is_data_dependent": true,
+    "current_trend_interpretation_is_data_dependent": true,
     "dpi_png": 600,
+    "emix_y_axis_V": [
+      0.4,
+      0.67
+    ],
+    "formal_high_salt_marker_visible": true,
+    "formal_high_salt_text_annotation_visible": false,
+    "imix_trend_display_unit": "mA/cm^2",
+    "imix_trend_unit_conversion": "1 A/m^2 = 0.1 mA/cm^2",
+    "imix_trend_y_axis_mA_per_cm2": [
+      0.0,
+      0.013
+    ],
     "mechanism_Au_Pd_corresponding_metrics_share_y_scale": true,
     "palette": {
       "au": "#E4C133",
@@ -83,7 +95,32 @@
       "with_edl": "#F26B38",
       "without_edl": "#12355B"
     },
-    "polarization_y_axis_uses_absolute_current_and_is_zoomed_for_2_nm": true
+    "phi_zero_reference_style": "thin black solid line",
+    "polarization_display_unit": "10^-3 uA",
+    "polarization_normalization": "none",
+    "polarization_y_axis_is_symmetric_about_zero": true,
+    "polarization_y_axis_uses_signed_absolute_current": true,
+    "polarization_y_label": "Current (10^-3 uA)",
+    "profile_side_by_side_export_bbox_inches": null,
+    "profile_side_by_side_height_inches": 3.45,
+    "profile_side_by_side_layout": "1x2 Au/Pd",
+    "profile_side_by_side_width_reference": "ctot_half_reaction_polarization_overlay_independent_edls",
+    "trend_canvas_px_at_600_dpi": [
+      1800,
+      2070
+    ],
+    "trend_canvases_fixed_and_identical": true,
+    "trend_explanatory_titles_visible": false,
+    "trend_export_bbox_inches": null,
+    "trend_figsize_inches": [
+      3.0,
+      3.45
+    ],
+    "without_edl_profile_dense_dash": [
+      2.4,
+      1.25
+    ],
+    "without_edl_profile_domain": "OHP/RP to bulk solution"
   },
   "target_study_id": "independent_Au2nm_Pd2nm_CH50_Ctot_scan",
   "without_edl_profile_convention": "Hand-drawn/model-defined reference phi_tilde(x)=0 throughout the solution."

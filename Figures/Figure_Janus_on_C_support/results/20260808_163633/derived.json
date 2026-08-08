@@ -1,0 +1,76 @@
+{
+  "C_H_Au_effective_F_per_m2": 0.5000000000000001,
+  "C_H_C_effective_F_per_m2": 0.2,
+  "C_H_Pd_effective_F_per_m2": 0.5000000000000001,
+  "L_full_period_m": 3.6000000000000005e-08,
+  "L_full_period_nm": 36.00000000000001,
+  "L_halfcell_m": 1.8000000000000002e-08,
+  "L_tilde": 5.918681481192325,
+  "L_total_m": 1.8000000000000002e-08,
+  "L_total_nm": 18.000000000000004,
+  "beta_per_V": 38.943368749727554,
+  "edges_m": [
+    0.0,
+    5e-09,
+    9.000000000000001e-09,
+    1.3e-08,
+    1.8000000000000002e-08
+  ],
+  "edges_nm": [
+    0.0,
+    5.0,
+    9.000000000000002,
+    13.0,
+    18.000000000000004
+  ],
+  "epsilon_s": 6.950537433048001e-10,
+  "epsilon_s_F_per_m": 6.950537433048001e-10,
+  "g_Au": 2.187757362874934,
+  "g_C": 0.8751029451499736,
+  "g_Pd": 2.187757362874934,
+  "lambda_D": 3.0412178890177212e-09,
+  "lambda_D_m": 3.0412178890177212e-09,
+  "lambda_D_nm": 3.0412178890177213,
+  "pzc_Au_tilde": 36.217332937246624,
+  "pzc_C_tilde": 19.471684374863777,
+  "pzc_Pd_tilde": 30.375827624787494,
+  "reactive_area_full_period_m2": 1.6000000000000002e-10,
+  "reactive_area_halfcell_m2": 8.000000000000001e-11,
+  "reactive_length_full_period_m": 1.6e-08,
+  "reactive_length_halfcell_m": 8e-09,
+  "segments": [
+    {
+      "faradaic": false,
+      "length_m": 5e-09,
+      "material": "C",
+      "name": "C_left",
+      "x_end_m": 5e-09,
+      "x_start_m": 0.0
+    },
+    {
+      "faradaic": true,
+      "length_m": 4e-09,
+      "material": "Au",
+      "name": "Au",
+      "x_end_m": 9.000000000000001e-09,
+      "x_start_m": 5e-09
+    },
+    {
+      "faradaic": true,
+      "length_m": 4e-09,
+      "material": "Pd",
+      "name": "Pd",
+      "x_end_m": 1.3e-08,
+      "x_start_m": 9.000000000000001e-09
+    },
+    {
+      "faradaic": false,
+      "length_m": 5e-09,
+      "material": "C",
+      "name": "C_right",
+      "x_end_m": 1.8000000000000002e-08,
+      "x_start_m": 1.3e-08
+    }
+  ],
+  "thermal_voltage_V": 0.02567831269109188
+}

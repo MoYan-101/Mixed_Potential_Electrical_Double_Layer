@@ -14,6 +14,13 @@
     "starts_at_M": 10.0
   },
   "i_mix_ratio_unity_crossings_M_log_interpolated": [],
+  "publication_figure_quantity_definitions": {
+    "imix_trend_y": "i_mix_avg_A_per_m2 multiplied by 0.1 and reported in mA/cm^2; the displayed y axis begins at zero",
+    "polarization_csv_source": "csv/ctot_polarization_curves.csv signed I_Au_1e_minus_3_uA and I_Pd_1e_minus_3_uA",
+    "polarization_mixed_marker_y": "+/- i_mix_abs_A multiplied by 10^9 to report 10^-3 uA",
+    "polarization_y": "Signed absolute half-reaction currents I_Au and I_Pd, reported in 10^-3 uA",
+    "profile_side_by_side": "Same analytic Au/Pd profiles as the vertical scheme, arranged as a 1x2 figure whose fixed PNG width matches the half-reaction polarization overlay"
+  },
   "representative_cases": {
     "$10^3$ M": {
       "Au_c_Ox2_star": 1.1310843380455802,

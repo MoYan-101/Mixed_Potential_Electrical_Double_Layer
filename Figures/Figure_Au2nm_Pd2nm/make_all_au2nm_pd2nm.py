@@ -38,9 +38,9 @@ EXPECTED_LEGACY_RP_TYPES = 14
 EXPECTED_LEGACY_OFAT_TYPES = 8
 EXPECTED_SUPPORT_PZC_STUDY_FIGURE_TYPES = 27
 EXPECTED_INDEPENDENT_FIGURE_TYPES = 8
-EXPECTED_INDEPENDENT_CTOT_FIGURE_TYPES = 5
+EXPECTED_INDEPENDENT_CTOT_FIGURE_TYPES = 6
 EXPECTED_INDEPENDENT_POLARIZATION_FIGURE_TYPES = 1
-EXPECTED_INDEPENDENT_UNIFORM_BAR_FIGURE_TYPES = 1
+EXPECTED_INDEPENDENT_UNIFORM_BAR_FIGURE_TYPES = 2
 
 from legacy_au_c_pd_engine import LegacyCase, build_cases, run_convergence_checks  # noqa: E402
 from legacy_au_c_pd_plots import plot_all_cases  # noqa: E402
@@ -560,6 +560,7 @@ def _validate_existing_independent() -> dict[str, Any]:
         for path in INDEPENDENT_DIR.rglob("*")
         if path.is_file()
         and path.name != checksum_path.name
+        and path.name != ".DS_Store"
         and INDEPENDENT_CTOT_DIR not in path.parents
         and INDEPENDENT_POLARIZATION_DIR not in path.parents
         and INDEPENDENT_UNIFORM_BARS_DIR not in path.parents

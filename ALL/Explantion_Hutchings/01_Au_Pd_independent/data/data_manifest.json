@@ -1,0 +1,15 @@
+{
+  "case_key": "au_pd_independent",
+  "files": [
+    "summary.json",
+    "parameters.json",
+    "segments.json",
+    "segments.csv",
+    "surface_profiles.csv",
+    "surface_profiles.npz",
+    "surface_charge_distribution.csv",
+    "surface_charge_distribution.npz",
+    "display_grid_2d.npz"
+  ],
+  "surface_coordinate_convention": "separate Au/Pd half-spaces"
+}

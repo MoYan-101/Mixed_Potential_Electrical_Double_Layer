@@ -1,0 +1,204 @@
+{
+  "artifact_checks": {
+    "all_svg_text_editable": true,
+    "expected": "9 PNG + 9 SVG + 0 PDF",
+    "figure3_png_count": 6,
+    "figure_rp_png_count": 3,
+    "generate_all_figures_return_count": 18,
+    "passed": true,
+    "pdf_count": 0,
+    "png_count": 9,
+    "published": true,
+    "svg_count": 9
+  },
+  "convergence": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "mode_comparison": {
+          "E_mix_lower_V": 0.6109987909420371,
+          "E_mix_upper_V": 0.6109997601404451,
+          "E_tolerance_V_strict": 0.0001,
+          "delta_E_mix_V": 9.691984079740479e-07,
+          "delta_E_mix_mV": 0.0009691984079740479,
+          "delta_i_mix_percent": 0.005200684266790856,
+          "delta_i_mix_relative": 5.200684266790856e-05,
+          "fixed_gl_order": 128,
+          "i_mix_lower_A_per_m2": 0.06458382686959242,
+          "i_mix_upper_A_per_m2": 0.06458046824334107,
+          "i_relative_tolerance_strict": 0.001,
+          "lower_N_modes": 480,
+          "passed": true,
+          "upper_N_modes": 960
+        },
+        "passed": true,
+        "quadrature_comparison": {
+          "E_mix_lower_V": 0.6109994698172095,
+          "E_mix_upper_V": 0.6109997601404451,
+          "E_tolerance_V_strict": 0.0001,
+          "delta_E_mix_V": 2.9032323556332784e-07,
+          "delta_E_mix_mV": 0.00029032323556332784,
+          "delta_i_mix_percent": 0.0013975496228246012,
+          "delta_i_mix_relative": 1.3975496228246012e-05,
+          "fixed_N_modes": 960,
+          "i_mix_lower_A_per_m2": 0.06458137078743142,
+          "i_mix_upper_A_per_m2": 0.06458046824334107,
+          "i_relative_tolerance_strict": 0.001,
+          "lower_gl_order": 64,
+          "passed": true,
+          "upper_gl_order": 128
+        }
+      }
+    ],
+    "escalated": false,
+    "maximum_N_modes": 3840,
+    "maximum_gl_order": 512,
+    "mode": "forced",
+    "passed": true,
+    "performed": true,
+    "requested_N_modes": 960,
+    "requested_gl_order": 128,
+    "selected_N_modes": 960,
+    "selected_gl_order": 128
+  },
+  "geometry": {
+    "boundaries_nm": [
+      0.0,
+      5.0,
+      9.000000000000002,
+      13.0,
+      18.000000000000004
+    ],
+    "covers_without_gaps_or_overlap": true,
+    "default_edges_0_5_9_13_18_nm": true,
+    "default_geometry_requested": true,
+    "full_material_period_nm": 36.00000000000001,
+    "materials": [
+      "C",
+      "Au",
+      "Pd",
+      "C"
+    ],
+    "mirror_material_sequence": [
+      "C",
+      "Au",
+      "Pd",
+      "C",
+      "C",
+      "Pd",
+      "Au",
+      "C",
+      "C",
+      "Au",
+      "Pd",
+      "C"
+    ],
+    "passed": true,
+    "reactive_segments_positive_and_C_segments_nonnegative": true,
+    "segment_names": [
+      "C_left",
+      "Au",
+      "Pd",
+      "C_right"
+    ]
+  },
+  "numerical": {
+    "C_regions_have_no_faradaic_kinetics": true,
+    "current_balance": {
+      "with_edl": {
+        "passed": true,
+        "quadrature_vs_solver_relative_difference": 1.5635407827613732e-16,
+        "recomputed_relative_balance_residual": 5.159684583112558e-15,
+        "reported_relative_balance_residual": 5.2378616222506265e-15,
+        "tolerance": 1e-10
+      },
+      "without_edl": {
+        "passed": true,
+        "quadrature_vs_solver_relative_difference": 5.153482055728006e-16,
+        "recomputed_relative_balance_residual": 2.1472841898866735e-15,
+        "reported_relative_balance_residual": 1.803718719504805e-15,
+        "tolerance": 1e-10
+      }
+    },
+    "debye_huckel": {
+      "caveat": "Linearized PB convergence does not establish strong-field physical validity.",
+      "max_abs_phi_tilde": 7.590510604486912,
+      "threshold_exceeded": true,
+      "warning_threshold": 1.0
+    },
+    "fourier_caveat": "Piecewise Stern data can show Gibbs ringing near material boundaries; interpret boundary-scale oscillations only after mode convergence.",
+    "lateral_neumann_boundaries": {
+      "absolute_tolerance": 1e-10,
+      "max_abs_dphi_tilde_dx_tilde": 1.0517938362117465e-13,
+      "passed": true
+    },
+    "passed": true,
+    "pointwise_stern_charge_relation": {
+      "absolute_tolerance_C_per_m2": 5e-12,
+      "max_abs_difference_C_per_m2": 0.0,
+      "passed": true
+    },
+    "stern_charge_vs_diffuse_normal_displacement": {
+      "caveat": "The pointwise check excludes 2% of each segment at both ends because discontinuous Robin data produce truncated-series Gibbs ringing.",
+      "maximum_segment_rms_relative_difference": 0.010323710553438677,
+      "near_zero_charge_absolute_rms_tolerance_C_per_m2": 0.0005,
+      "near_zero_charge_threshold_C_per_m2": 1e-12,
+      "passed": true,
+      "relation": "sigma_Stern = -epsilon_s*(R*T/F)/lambda_D*d(phi_tilde)/d(y_tilde)",
+      "required_for_this_resolution": true,
+      "rms_relative_tolerance_strict": 0.03,
+      "segments": {
+        "Au": {
+          "criterion": "relative_rms",
+          "interior_trim_fraction_each_side": 0.02,
+          "material": "Au",
+          "max_abs_sigma_difference_C_per_m2": 0.0029168243945926486,
+          "near_zero_stern_charge": false,
+          "passed": true,
+          "rms_relative_to_stern_charge": 0.006233078000752798,
+          "rms_sigma_difference_C_per_m2": 0.00043332655755689317,
+          "sample_count": 257
+        },
+        "C_left": {
+          "criterion": "relative_rms",
+          "interior_trim_fraction_each_side": 0.02,
+          "material": "C",
+          "max_abs_sigma_difference_C_per_m2": 0.001534511979626868,
+          "near_zero_stern_charge": false,
+          "passed": true,
+          "rms_relative_to_stern_charge": 0.010323710553438677,
+          "rms_sigma_difference_C_per_m2": 0.0002060883852548849,
+          "sample_count": 257
+        },
+        "C_right": {
+          "criterion": "relative_rms",
+          "interior_trim_fraction_each_side": 0.02,
+          "material": "C",
+          "max_abs_sigma_difference_C_per_m2": 0.0009752050406580184,
+          "near_zero_stern_charge": false,
+          "passed": true,
+          "rms_relative_to_stern_charge": 0.008019156060875289,
+          "rms_sigma_difference_C_per_m2": 0.00013729801264335758,
+          "sample_count": 257
+        },
+        "Pd": {
+          "criterion": "relative_rms",
+          "interior_trim_fraction_each_side": 0.02,
+          "material": "Pd",
+          "max_abs_sigma_difference_C_per_m2": 0.0018047966865648857,
+          "near_zero_stern_charge": false,
+          "passed": true,
+          "rms_relative_to_stern_charge": 0.009588842473944207,
+          "rms_sigma_difference_C_per_m2": 0.0003026379239060027,
+          "sample_count": 257
+        }
+      }
+    },
+    "y0_surface_back_substitution": {
+      "absolute_tolerance": 5e-11,
+      "max_abs_phi_tilde_difference": 2.4868995751603507e-14,
+      "passed": true
+    }
+  },
+  "passed": true
+}

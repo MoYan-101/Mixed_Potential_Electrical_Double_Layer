@@ -1,0 +1,215 @@
+{
+  "package_source_sha256": "39cf9fe2d6778f98c698ac1666ec767bd52997329d67e4c2251941f5680b99cc",
+  "record_count": 27,
+  "records": [
+    {
+      "case_key": "au_pd_independent",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/summary.json",
+      "role": "summary",
+      "sha256": "85b31a8a6c091d514c5781a5aaa80fb9a5812b95c784c1c1434e8f0c100eff4e",
+      "size_bytes": 4319
+    },
+    {
+      "case_key": "au_pd_independent",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/params.json",
+      "role": "params",
+      "sha256": "8748f63b516dbc38ba861240c5f03aca97bbbf28c364b5fe00118e01042cd402",
+      "size_bytes": 865
+    },
+    {
+      "case_key": "au_pd_independent",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/derived.json",
+      "role": "derived",
+      "sha256": "e27a16e0cff335db76dfa615ae180c4a7767459b02dc2385399eb356d5cc5a28",
+      "size_bytes": 403
+    },
+    {
+      "case_key": "au_pd_independent",
+      "kind": "model_input",
+      "path": "Mixed_Potential_Electrical_Double_Layer/Au_Pd_independent_EDLs/src/au_pd_independent_edls/model.py",
+      "role": "model",
+      "sha256": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e",
+      "size_bytes": 15024
+    },
+    {
+      "case_key": "janus_au_pd",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/legacy_au_c_pd_engine.py",
+      "role": "engine",
+      "sha256": "3e9e4c46bdb4855530f4228f437e079b53e0be495db67a706f20e7f6cfb7a5d6",
+      "size_bytes": 48849
+    },
+    {
+      "case_key": "janus_au_pd",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/summary_compare_L_support_0nm_au2_pd2_20260528_111255.json",
+      "role": "saved_summary",
+      "sha256": "218f0abb6686e4a659132f1cb0cb33969d7e573fd4a80672a20c8554c6563577",
+      "size_bytes": 979
+    },
+    {
+      "case_key": "janus_au_pd",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/params_L_support_0nm_au2_pd2_20260528_111255.json",
+      "role": "saved_params",
+      "sha256": "73a078884e22f1de6940601257de94f76cef16e5a399cd0def8f74c1af4fe671",
+      "size_bytes": 1640
+    },
+    {
+      "case_key": "janus_au_pd",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/overrides_L_support_0nm_au2_pd2_20260528_111255.json",
+      "role": "saved_overrides",
+      "sha256": "9dec87f30b97e6ff47420d58d81d9c38b31176adeb5229fb6ad2eb5f01f20325",
+      "size_bytes": 332
+    },
+    {
+      "case_key": "physical_mixture_c10",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/summary_compare_L_support_10nm_au2_pd2_20260528_111255.json",
+      "role": "saved_summary",
+      "sha256": "a5c8960b0793bf2dadf7a3134e9ff71538f17032103c275ff95bacade8168542",
+      "size_bytes": 983
+    },
+    {
+      "case_key": "physical_mixture_c10",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/params_L_support_10nm_au2_pd2_20260528_111255.json",
+      "role": "saved_params",
+      "sha256": "0dd8a7e4a968bdbb76219de42fd7b5d1564227bfb8867f4fd4fcd2428f7d8f6e",
+      "size_bytes": 1642
+    },
+    {
+      "case_key": "physical_mixture_c10",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/overrides_L_support_10nm_au2_pd2_20260528_111255.json",
+      "role": "saved_overrides",
+      "sha256": "71f1cf65bff828644344dab2ea29a32712a18efdf38bb68a1b58d1c4fb975b23",
+      "size_bytes": 334
+    },
+    {
+      "case_key": "physical_mixture_c10",
+      "kind": "model_input",
+      "path": "Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/summary_compare_L_support_1000nm_au2_pd2_20260528_111255.json",
+      "role": "plateau_reference_1000nm_summary",
+      "sha256": "7aa8e9f68602018140ace84098b63f5e547b1d832839d319ead45d695d706b52",
+      "size_bytes": 994
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/summary.json",
+      "role": "summary",
+      "sha256": "6a42d1e05b6cc31a1b34acf1a27a47bcee929802dcfa2736fa60f5beeb6cd461",
+      "size_bytes": 2271
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/params.json",
+      "role": "params",
+      "sha256": "4bf1e3f675c26d333dd7d5fc61c224281b86ff6534a92b65ff015f3fd0d1b0ef",
+      "size_bytes": 1056
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/derived.json",
+      "role": "derived",
+      "sha256": "1eb7e8385aeafd7db9b63674668519dd37f0fcd6cbb6f4d1d172b1a98417ebf1",
+      "size_bytes": 1951
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/csv/surface_profiles.csv",
+      "role": "surface_profiles",
+      "sha256": "16b4152e532a9005af1f5a757745bc28b27b5f8a3dc305643edf1196690c39d5",
+      "size_bytes": 911570
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/csv/surface_charge_distribution.csv",
+      "role": "surface_charge",
+      "sha256": "65fc4a8d37e60d5d4bc644cb3ab1ccec4356bd798532f01a00a5311443e0d288",
+      "size_bytes": 344950
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/npz/display_grid_2d.npz",
+      "role": "grid_2d",
+      "sha256": "9241658288bebdd6a5ededb6858adb0c2e6318d09cc473ac58063d2f07638b1b",
+      "size_bytes": 14932546
+    },
+    {
+      "case_key": "janus_on_c_support",
+      "kind": "model_input",
+      "path": "Figures/Figure_Janus_on_C_support/results/20260808_163633/validation.json",
+      "role": "validation",
+      "sha256": "0a766f0a3e3d336ad72fc7c92979c3edfc33543cacb5ea88ce3b484987d3d268",
+      "size_bytes": 6794
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/src/hutchings_explanation/__init__.py",
+      "role": "implementation",
+      "sha256": "554811a52b5ae6f79a602d60e2fcd9ba02e50bab74dc70262f6f676705b3aa54",
+      "size_bytes": 192
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/src/hutchings_explanation/cases.py",
+      "role": "implementation",
+      "sha256": "985700ab3dad2ebb6374aecade5d9b7a54c981ed3b86e407da28dacac06a5e2b",
+      "size_bytes": 36476
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/src/hutchings_explanation/figures.py",
+      "role": "implementation",
+      "sha256": "209f4c872f0f2a422bb62a48000fdcdee9ac471559ac7ece1b3411ea93bd525f",
+      "size_bytes": 61041
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/src/hutchings_explanation/io.py",
+      "role": "implementation",
+      "sha256": "a168bb9b4c63246bfa6a6a9ddfec18c93419a74ffe4b4aeb20bbae022f88d1a2",
+      "size_bytes": 9824
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/src/hutchings_explanation/pipeline.py",
+      "role": "implementation",
+      "sha256": "b8b5caeeacc4b7626deb30d4390b6bde0358b27e34245764106f78e10f024419",
+      "size_bytes": 38389
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/src/hutchings_explanation/polarization.py",
+      "role": "implementation",
+      "sha256": "e510f65ad837bc082b43d1b268ef4c4501cb78dcf08c514892b107330bbd70de",
+      "size_bytes": 29040
+    },
+    {
+      "kind": "collection_source",
+      "path": "ALL/Explantion_Hutchings/make_all_explantion_hutchings.py",
+      "role": "implementation",
+      "sha256": "4c06924eae7bcd81fbc02491d72fbb207abd96256e196261fd422cc7cc676fd7",
+      "size_bytes": 1609
+    },
+    {
+      "kind": "interpretive_reference",
+      "path": "MS/s41586-022-04397-7.pdf",
+      "role": "Hutchings 2022 paper",
+      "sha256": "fa9b47a4b4d9c14b09ee6932364e16cbe998b6b5dc35692c32f6fb7308f5fc7f",
+      "size_bytes": 28797365
+    }
+  ],
+  "workspace_root": "/Users/yan/Desktop/EDLs/2026"
+}

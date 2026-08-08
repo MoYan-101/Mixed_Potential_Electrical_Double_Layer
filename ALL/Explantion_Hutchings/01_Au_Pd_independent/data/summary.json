@@ -1,0 +1,66 @@
+{
+  "E_mix_with_edl_V": 0.6249104327868923,
+  "E_mix_without_edl_V": 0.46699999999999986,
+  "case_key": "au_pd_independent",
+  "comparison_I_mix_with_edl_A": 3.4520462501485164e-12,
+  "comparison_I_mix_with_edl_pA": 3.4520462501485163,
+  "comparison_I_mix_without_edl_A": 9.404828326297923e-12,
+  "comparison_I_mix_without_edl_pA": 9.404828326297922,
+  "comparison_reactive_area_m2": 8.000000000000001e-11,
+  "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+  "diagnostics": {
+    "area_rescale_only": true,
+    "comparison_uses": "native Au(2)+Pd(2) one-face currents multiplied by two for the common Au(4)+Pd(4) Summary area",
+    "debye_huckel_threshold": 1.0,
+    "debye_huckel_threshold_exceeded": true,
+    "display_Au_length_nm": 2.0,
+    "display_Pd_length_nm": 2.0,
+    "effective_Au_length_nm": 4.0,
+    "effective_Pd_length_nm": 4.0,
+    "max_abs_phi_tilde_with": 8.154076289311629,
+    "relative_balance_no": 1.7178273519093383e-15,
+    "relative_balance_with": 9.945181526389276e-16,
+    "source_has_neumann_lateral_reflection": false
+  },
+  "display_label": "Independent Au/Pd",
+  "figure_3_panel_a_current_basis": "native/source computational cell",
+  "native_I_mix_with_edl_A": 1.7260231250742582e-12,
+  "native_I_mix_with_edl_pA": 1.7260231250742581,
+  "native_I_mix_without_edl_A": 4.7024141631489615e-12,
+  "native_I_mix_without_edl_pA": 4.702414163148961,
+  "raw_current": {
+    "no_A": 4.7024141631489615e-12,
+    "scale_factor_to_comparison": 2.0,
+    "source_cell": "two independent 2 nm one-face planar interfaces",
+    "source_reactive_area_m2": 4.0000000000000004e-11,
+    "with_A": 1.7260231250742582e-12
+  },
+  "segments": [
+    {
+      "coordinate_system": "independent_Au_half_space",
+      "faradaic": true,
+      "length_nm": 2.0,
+      "material": "Au",
+      "name": "Au",
+      "x_end_nm": 2.0,
+      "x_start_nm": 0.0
+    },
+    {
+      "coordinate_system": "independent_Pd_half_space",
+      "faradaic": true,
+      "length_nm": 2.0,
+      "material": "Pd",
+      "name": "Pd",
+      "x_end_nm": 2.0,
+      "x_start_nm": 0.0
+    }
+  ],
+  "source_paths": {
+    "derived": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/derived.json",
+    "model": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_independent_EDLs/src/au_pd_independent_edls/model.py",
+    "params": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/params.json",
+    "summary": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/summary.json"
+  },
+  "summary_current_basis": "area-matched Au(4 nm)+Pd(4 nm) reference cell",
+  "topology_kind": "independent"
+}

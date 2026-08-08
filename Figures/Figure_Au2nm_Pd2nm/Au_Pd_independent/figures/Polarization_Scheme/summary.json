@@ -98,6 +98,15 @@
     },
     "topology_id": "two_independent_planar_half_spaces"
   },
-  "x_label": "Potential (V vs. RHE)",
+  "x_label": "Electrode potential (V vs. RHE)",
+  "x_limits_V": [
+    0.2,
+    0.8
+  ],
+  "x_ticks_V": [
+    0.25,
+    0.5,
+    0.75
+  ],
   "y_label": "Current (10^-3 uA)"
 }

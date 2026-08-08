@@ -318,10 +318,10 @@ def _plot(
         linespacing=1.12,
     )
 
-    ax.set_xlim(-0.02, 1.02)
-    ax.set_xticks([0.0, 0.25, 0.50, 0.75, 1.00])
+    ax.set_xlim(0.20, 0.80)
+    ax.set_xticks([0.25, 0.50, 0.75])
     ax.set_ylim(-y_limit, y_limit)
-    ax.set_xlabel("Potential (V vs. RHE)", fontsize=10.5)
+    ax.set_xlabel("Electrode potential (V vs. RHE)", fontsize=10.5)
     ax.set_ylabel(r"Current ($10^{-3}\,\mathrm{\mu A}$)", fontsize=10.5)
     ax.tick_params(axis="both", which="major", labelsize=9.2, length=3.5, width=0.85)
     ax.legend(
@@ -421,7 +421,7 @@ def _numeric_validation(
     finite = bool(np.all(np.isfinite(numeric_values)))
     point_count_ok = len(rows) == N_POTENTIAL_POINTS
     root_range_ok = all(
-        0.0 <= float(result["E_mix_V"]) <= 1.0
+        0.20 <= float(result["E_mix_V"]) <= 0.80
         for result in (with_edl, without_edl)
     )
     passed = all_expected and all_balanced and finite and point_count_ok and root_range_ok
@@ -495,7 +495,9 @@ def build_independent_au_pd_polarization(output_dir: str | Path) -> dict[str, An
             "I_mix_drop_fraction": 1.0 - current_ratio,
             "I_mix_drop_percent": 100.0 * (1.0 - current_ratio),
             "plot_current_unit": "10^-3 uA = 10^-9 A",
-            "x_label": "Potential (V vs. RHE)",
+            "x_label": "Electrode potential (V vs. RHE)",
+            "x_limits_V": [0.20, 0.80],
+            "x_ticks_V": [0.25, 0.50, 0.75],
             "y_label": "Current (10^-3 uA)",
             "curve_styles": {
                 "Au": COLORS["au"],

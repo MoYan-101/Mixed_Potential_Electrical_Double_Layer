@@ -1,0 +1,40 @@
+{
+  "checksums_file": "checksums.sha256",
+  "created_at": "2026-08-08T16:36:52+09:00",
+  "electrostatic_backend": "cosine_galerkin_linear_pb_piecewise_stern_robin",
+  "formats": [
+    "png",
+    "svg",
+    "csv",
+    "npz",
+    "json"
+  ],
+  "geometry_name": "C_left_5nm_Au_4nm_Pd_4nm_C_right_5nm_mirror_halfcell",
+  "model_name": "C_supported_Janus_linear_PB",
+  "output_directory": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633",
+  "package_version": "0.1.0",
+  "parameter_provenance": "default_params plus explicit inputs/overrides.json",
+  "result_schema_version": 1,
+  "run_id": "20260808_163633",
+  "source": {
+    "aggregate_sha256": "d0e1a7e212f36097fceb505e247a472a26a778832a9ec1fa71c2a4626b27c517",
+    "files": {
+      "make_all_janus_on_c_support.py": "d74d42ff95c589ab6dbc525475eb0b9a542000a7b85232ebbb99a4bf6b0b43ac",
+      "src/janus_on_c_support/__init__.py": "4e0fc328a102bd6c0953e2b0a3484e33903154b55346664484f6b4f8e7c76f46",
+      "src/janus_on_c_support/__main__.py": "0f7d54f3fbb1f79a85eb8110f11793db99da6f3c61ee979de5abe9a1b5f3fdb3",
+      "src/janus_on_c_support/cli.py": "8e40fe4ec5ff45fb4806b66e1498c775186f4b7720744c965c67c6115a0835f6",
+      "src/janus_on_c_support/electrostatics.py": "525ea31e256135984e7d1e974ed28dbee7e32b92568bf650509c031c4ce8716d",
+      "src/janus_on_c_support/figures.py": "b7a333ba8d2bce1ee276ec9bad48d2e02559791ffd18d5d996e3201b2f9ca411",
+      "src/janus_on_c_support/io.py": "95e1c1cf5fd94f141e919eb7f92d90f94ed3ce6ad6c8fd90dc72475a939c701f",
+      "src/janus_on_c_support/kinetics.py": "bcf3bb8a386786d2b901c942147f1dcb2f44171f8627304c45bd2b68533cc925",
+      "src/janus_on_c_support/parameters.py": "35cc4e6b4ec9dc0eaaa42bbba9fe992669c46fafd448c2b9db652083d2e00ed6",
+      "src/janus_on_c_support/pipeline.py": "e3d76a413f7a3b24729b9b95ddeb8b33907c5a1498186d69058d1bc7153ffc2e",
+      "src/janus_on_c_support/solver.py": "6d084f72c84d5b4f0b96cd5c5fac277cc1f9f774e273029f6797d65df167b1c3",
+      "tests/test_core.py": "389e5662b4ae321330eb9e3c74f4163e7161ff8e67858ef74b54a689a4c06db9",
+      "tests/test_pipeline.py": "a93f301fa6dd30c4e1c4bd0de43a2d655b744788eedd0e66a147054ecf24afb0"
+    },
+    "root": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support"
+  },
+  "topology_id": "flush_coplanar_C_Au_Pd_C_mirror_neumann",
+  "validation_passed": true
+}

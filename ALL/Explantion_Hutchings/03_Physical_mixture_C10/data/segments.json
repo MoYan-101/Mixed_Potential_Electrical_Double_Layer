@@ -1,0 +1,26 @@
+[
+  {
+    "faradaic": true,
+    "length_nm": 2.0,
+    "material": "Au",
+    "name": "Au",
+    "x_end_nm": 2.0,
+    "x_start_nm": 0.0
+  },
+  {
+    "faradaic": false,
+    "length_nm": 10.0,
+    "material": "C",
+    "name": "C",
+    "x_end_nm": 12.0,
+    "x_start_nm": 2.0
+  },
+  {
+    "faradaic": true,
+    "length_nm": 2.0,
+    "material": "Pd",
+    "name": "Pd",
+    "x_end_nm": 14.0,
+    "x_start_nm": 12.0
+  }
+]

@@ -2,16 +2,30 @@
   "artifacts": {
     "passed": true,
     "pdf_count": 0,
-    "png_count": 1,
-    "png_dimensions_px": [
-      6150,
-      3810
-    ],
-    "png_dpi": [
-      599.9988,
-      599.9988
-    ],
-    "svg_count": 1,
+    "png_artifacts": {
+      "figure_3_uniform_interface_bar_comparison_independent_edls.png": {
+        "dimensions_px": [
+          6150,
+          3810
+        ],
+        "dpi": [
+          599.9988,
+          599.9988
+        ]
+      },
+      "figure_3_uniform_interface_bar_comparison_selected_panels_independent_edls.png": {
+        "dimensions_px": [
+          4800,
+          2160
+        ],
+        "dpi": [
+          599.9988,
+          599.9988
+        ]
+      }
+    },
+    "png_count": 2,
+    "svg_count": 2,
     "svg_text_editable": true
   },
   "debye_huckel_applicability": {

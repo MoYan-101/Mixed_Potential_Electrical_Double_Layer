@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-08-08T16:36:51+09:00",
+  "libraries": {
+    "matplotlib": "3.11.0",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0"
+  },
+  "platform": {
+    "machine": "arm64",
+    "release": "25.5.0",
+    "system": "Darwin"
+  },
+  "python": {
+    "executable": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/.venv_macos/bin/python",
+    "implementation": "CPython",
+    "version": "3.14.6"
+  }
+}

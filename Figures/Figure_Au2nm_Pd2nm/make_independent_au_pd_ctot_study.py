@@ -34,12 +34,32 @@ PROJECT_DIR = Path(__file__).resolve().parent
 INDEPENDENT_DIR = PROJECT_DIR / "Au_Pd_independent"
 DEFAULT_OUTPUT = INDEPENDENT_DIR / "C_tot_study"
 CHECKSUM_FILE = "checksums.sha256"
+CHECKSUM_IGNORED_FILENAMES = {CHECKSUM_FILE, ".DS_Store"}
 STUDY_ID = "independent_Au2nm_Pd2nm_CH50_Ctot_scan"
 REFERENCE_RESULT = (
     "Mixed_Potential_Electrical_Double_Layer/Au_Pd_independent_EDLs/"
     "results/20260803_153355_ctot_study"
 )
-EXPECTED_FIGURE_PAIRS = 5
+EXPECTED_FIGURE_PAIRS = 6
+TREND_FIGSIZE_IN = (3.0, 3.45)
+TREND_CANVAS_PX_AT_600_DPI = (1800, 2070)
+TREND_SUBPLOT_ADJUST = {
+    "left": 0.24,
+    "right": 0.975,
+    "bottom": 0.18,
+    "top": 0.965,
+}
+IMIX_A_PER_M2_TO_MA_PER_CM2 = 0.1
+IMIX_TREND_YLIM_MA_PER_CM2 = (0.0, 0.013)
+POLARIZATION_OVERLAY_STEM = (
+    "ctot_half_reaction_polarization_overlay_independent_edls"
+)
+PROFILE_SCHEME_STEM = (
+    "ctot_phi_bar_profiles_0p01M_1M_with_without_edl_independent_edls"
+)
+PROFILE_SCHEME_SIDE_BY_SIDE_STEM = f"{PROFILE_SCHEME_STEM}_au_pd_side_by_side"
+PROFILE_SCHEME_SIDE_BY_SIDE_HEIGHT_IN = 3.45
+PROFILE_SCHEME_SIDE_BY_SIDE_HEIGHT_PX_AT_600_DPI = 2070
 
 if str(MODEL_SRC) not in sys.path:
     sys.path.insert(0, str(MODEL_SRC))
@@ -146,27 +166,92 @@ def _source_hashes() -> dict[str, str]:
     return {name: _sha256(path) for name, path in sources.items()}
 
 
+def _save_fixed_trend_canvas(
+    fig: plt.Figure, directory: Path, stem: str
+) -> list[Path]:
+    """Save the two trend figures on one identical, explicitly sized canvas."""
+
+    directory.mkdir(parents=True, exist_ok=True)
+    fig.set_size_inches(*TREND_FIGSIZE_IN, forward=True)
+    fig.subplots_adjust(**TREND_SUBPLOT_ADJUST)
+    saved: list[Path] = []
+    for suffix in ("png", "svg"):
+        path = directory / f"{stem}.{suffix}"
+        fig.savefig(
+            path,
+            dpi=ctot.DPI,
+            bbox_inches=None,
+            facecolor="white",
+            edgecolor="none",
+        )
+        saved.append(path)
+    plt.close(fig)
+    return saved
+
+
+def _save_fixed_profile_side_by_side_canvas(
+    fig: plt.Figure,
+    directory: Path,
+    *,
+    reference_width_px: int,
+) -> list[Path]:
+    """Save the horizontal Au/Pd scheme at the polarization PNG width."""
+
+    directory.mkdir(parents=True, exist_ok=True)
+    fig.set_size_inches(
+        float(reference_width_px) / float(ctot.DPI),
+        PROFILE_SCHEME_SIDE_BY_SIDE_HEIGHT_IN,
+        forward=True,
+    )
+    fig.subplots_adjust(
+        left=0.025,
+        right=0.995,
+        bottom=0.055,
+        top=0.75,
+        wspace=0.16,
+    )
+    saved: list[Path] = []
+    for suffix in ("png", "svg"):
+        path = directory / f"{PROFILE_SCHEME_SIDE_BY_SIDE_STEM}.{suffix}"
+        fig.savefig(
+            path,
+            dpi=ctot.DPI,
+            bbox_inches=None,
+            facecolor="white",
+            edgecolor="none",
+        )
+        saved.append(path)
+    plt.close(fig)
+    return saved
+
+
+def _remove_formal_high_salt_text_annotation(ax: plt.Axes) -> None:
+    """Remove only the 10^3 M text while retaining its marker and data point."""
+
+    target = ctot.CASE_STYLES[1.0e3]["label"]
+    matching = [artist for artist in ax.texts if artist.get_text() == target]
+    if len(matching) != 1:
+        raise RuntimeError(
+            "Expected exactly one formal-high-salt trend annotation, "
+            f"found {len(matching)}"
+        )
+    matching[0].remove()
+
+
 def _target_plot_ctot_trends(
     rows: list[dict[str, Any]], output_dir: Path
 ) -> list[Path]:
     """Reference trend plots with a conclusion derived from the actual scan."""
 
     concentration = np.asarray([row["C_tot_M"] for row in rows], dtype=float)
-    ratio = np.asarray(
-        [row["i_mix_avg_ratio_with_over_without"] for row in rows], dtype=float
-    )
-    current_title = (
-        r"$\bar{i}_{\mathrm{mix}}$ overshoots before the high-salt limit"
-        if np.any(ratio > 1.0 + 1.0e-10)
-        else r"$\bar{i}_{\mathrm{mix}}$ approaches w/o EDL from below"
-    )
     specifications = (
         {
             "stem": "ctot_emix_high_salt_regime_independent_edls",
             "with_key": "E_mix_with_EDL_V",
             "without_key": "E_mix_without_EDL_V",
+            "display_scale": 1.0,
             "ylabel": r"$E_{\mathrm{mix}}$ (V vs. RHE)",
-            "title": r"$E_{\mathrm{mix}}$ shift fades in the high-salt limit",
+            "ylim": (0.40, 0.67),
             "offsets": {1.0e-2: -0.014, 1.0: 0.010, 1.0e3: 0.008},
             "legend_loc": "lower left",
             "legend_bbox": (0.01, 0.075),
@@ -175,25 +260,27 @@ def _target_plot_ctot_trends(
             "stem": "ctot_imix_avg_high_salt_regime_independent_edls",
             "with_key": "i_mix_avg_with_EDL_A_per_m2",
             "without_key": "i_mix_avg_without_EDL_A_per_m2",
-            "ylabel": r"$\bar{i}_{\mathrm{mix}}$ (A/m$^2$)",
-            "title": current_title,
-            "offsets": {1.0e-2: -0.008, 1.0: 0.006, 1.0e3: -0.006},
+            "display_scale": IMIX_A_PER_M2_TO_MA_PER_CM2,
+            "ylabel": r"$\bar{i}_{\mathrm{mix}}$ (mA/cm$^2$)",
+            "ylim": IMIX_TREND_YLIM_MA_PER_CM2,
+            "offsets": {1.0e-2: -0.0008, 1.0: 0.0006, 1.0e3: -0.0006},
             "legend_loc": "lower right",
             "legend_bbox": None,
         },
     )
     saved: list[Path] = []
     for specification in specifications:
+        display_scale = float(specification["display_scale"])
         y_with = np.asarray(
             [row[str(specification["with_key"])] for row in rows], dtype=float
-        )
+        ) * display_scale
         y_without = np.asarray(
             [row[str(specification["without_key"])] for row in rows], dtype=float
-        )
+        ) * display_scale
         lower = float(min(np.min(y_with), np.min(y_without)))
         upper = float(max(np.max(y_with), np.max(y_without)))
         span = max(upper - lower, 1.0e-6)
-        fig, ax = plt.subplots(figsize=(4.15, 3.45))
+        fig, ax = plt.subplots(figsize=TREND_FIGSIZE_IN)
         ctot._regime_background(ax)
         ctot._split_line(
             ax,
@@ -215,18 +302,31 @@ def _target_plot_ctot_trends(
             linestyle=(0, (4.0, 2.5)),
             label="w/o EDL",
         )
+        marker_key = str(specification["with_key"])
+        marker_rows = [
+            {
+                **row,
+                marker_key: float(row[marker_key]) * display_scale,
+            }
+            for row in rows
+        ]
         ctot._representative_markers(
             ax,
-            rows,
-            str(specification["with_key"]),
+            marker_rows,
+            marker_key,
             specification["offsets"],
         )
+        _remove_formal_high_salt_text_annotation(ax)
         ax.set_xscale("log")
         ax.set_xlim(1.0e-4, 1.0e3)
-        ax.set_ylim(lower - 0.08 * span, upper + 0.15 * span)
-        ax.set_xlabel(r"Electrolyte concentration, $C_{\mathrm{tot}}$ (M)")
-        ax.set_ylabel(str(specification["ylabel"]))
-        ax.set_title(str(specification["title"]), loc="left", fontsize=9.7, pad=5.0)
+        if "ylim" in specification:
+            ax.set_ylim(*specification["ylim"])
+        else:
+            ax.set_ylim(lower - 0.08 * span, upper + 0.15 * span)
+        ax.set_xlabel(
+            r"Electrolyte concentration, $C_{\mathrm{tot}}$ (M)", fontsize=8.8
+        )
+        ax.set_ylabel(str(specification["ylabel"]), fontsize=8.8)
         legend_kwargs: dict[str, Any] = {
             "loc": str(specification["legend_loc"]),
             "fontsize": 7.4,
@@ -236,7 +336,9 @@ def _target_plot_ctot_trends(
             legend_kwargs["bbox_to_anchor"] = specification["legend_bbox"]
         ax.legend(**legend_kwargs)
         ax.tick_params(length=3.2, width=0.85, labelsize=8.0)
-        saved.extend(ctot._save_figure(fig, output_dir, str(specification["stem"])))
+        saved.extend(
+            _save_fixed_trend_canvas(fig, output_dir, str(specification["stem"]))
+        )
     return saved
 
 
@@ -245,7 +347,7 @@ def _target_plot_polarization_overlay(
     cases: Mapping[float, Mapping[str, Any]],
     output_dir: Path,
 ) -> list[Path]:
-    """Reference polarization plot with an absolute-current scale suited to 2 nm."""
+    """Plot signed absolute half-reaction currents for the 2 nm electrodes."""
 
     fig, ax = plt.subplots(figsize=(7.2, 4.35))
     reference = [
@@ -321,7 +423,7 @@ def _target_plot_polarization_overlay(
     ax.set_xlim(0.40, 0.64)
     ax.set_ylim(-y_limit, y_limit)
     ax.set_xlabel("Potential (V vs. RHE)")
-    ax.set_ylabel(r"Half-reaction current (10$^{-3}$ $\mu$A)")
+    ax.set_ylabel(r"Current (10$^{-3}$ $\mu$A)")
     ax.set_title(
         r"Salt-dependent polarization curves explain $I_{\mathrm{mix}}$",
         loc="left",
@@ -377,11 +479,271 @@ def _target_plot_polarization_overlay(
     )
 
 
+def _target_plot_profile_schematic(
+    curves: Mapping[str, Mapping[float, Mapping[str, Any]]],
+    distance_nm: np.ndarray,
+    output_dir: Path,
+    *,
+    include_side_by_side: bool = False,
+) -> list[Path]:
+    """EDL profile schematic with distinct w/o-EDL and Phi=0 references."""
+
+    def compact_tangent_start_tilde(curve_data: Mapping[str, Any]) -> float:
+        phi = np.asarray(curve_data["phi_tilde"], dtype=float)
+        lambda_d_nm = 1.0e9 * float(curve_data["model"].derived["lambda_D"])
+        ohp_slope_per_nm = -float(phi[0]) / lambda_d_nm
+        return float(phi[0]) + ohp_slope_per_nm * (
+            ctot.COMPACT_LEFT_NM - ctot.RP_X_NM
+        )
+
+    curve_data_all = [
+        curves[material][concentration_m]
+        for material in ("Au", "Pd")
+        for concentration_m in ctot.PROFILE_CONCENTRATIONS_M
+    ]
+    all_phi_tilde = np.concatenate(
+        [
+            np.asarray(curve_data["phi_tilde"], dtype=float)
+            for curve_data in curve_data_all
+        ]
+        + [
+            np.asarray([compact_tangent_start_tilde(curve_data)], dtype=float)
+            for curve_data in curve_data_all
+        ]
+    )
+    common_lower = min(float(np.min(all_phi_tilde)) * 1.10, -0.5)
+    common_upper = 0.55
+    def draw_profile_axis(
+        ax: plt.Axes,
+        material: str,
+        *,
+        show_ohp_label: bool,
+    ) -> None:
+        lower = common_lower
+        upper = common_upper
+        metal_color = ctot.COLORS["au"] if material == "Au" else ctot.COLORS["pd"]
+        reaction_label = (
+            r"$\mathrm{Red}_1^-$" if material == "Au" else r"$\mathrm{Ox}_2^+$"
+        )
+        reaction_color = (
+            ctot.COLORS["with_edl"] if material == "Au" else "#D4A923"
+        )
+        ax.axvspan(
+            ctot.METAL_LEFT_NM,
+            ctot.COMPACT_LEFT_NM,
+            color=metal_color,
+            alpha=0.95,
+            zorder=0,
+        )
+        ax.axvspan(
+            ctot.COMPACT_LEFT_NM,
+            ctot.RP_X_NM,
+            color=ctot.COLORS["inner_layer"],
+            alpha=1.0,
+            zorder=0,
+        )
+        ax.axvspan(
+            ctot.RP_X_NM,
+            float(distance_nm[-1]),
+            color=ctot.COLORS["electrolyte"],
+            alpha=0.55,
+            zorder=0,
+        )
+        ax.axvline(ctot.RP_X_NM, color=ctot.COLORS["dark"], linewidth=1.0, zorder=2)
+        ax.axhline(
+            0.0,
+            color="black",
+            linewidth=0.65,
+            linestyle="solid",
+            zorder=2,
+        )
+        for concentration_m, color in (
+            (1.0e-2, ctot.COLORS["profile_low"]),
+            (1.0, ctot.COLORS["profile_high"]),
+        ):
+            style = ctot.CASE_STYLES[concentration_m]
+            curve_data = curves[material][concentration_m]
+            curve = np.asarray(curve_data["phi_tilde"], dtype=float)
+            ax.plot(
+                [ctot.COMPACT_LEFT_NM, ctot.RP_X_NM],
+                [compact_tangent_start_tilde(curve_data), float(curve[0])],
+                color=color,
+                linewidth=1.55,
+                linestyle=style["linestyle"],
+                zorder=3,
+            )
+            ax.plot(
+                distance_nm,
+                curve,
+                color=color,
+                linewidth=1.55,
+                linestyle=style["linestyle"],
+                label=f"with EDL, {style['label']}",
+                zorder=3,
+            )
+            ax.scatter(
+                [0.0],
+                [curve[0]],
+                s=24,
+                color=color,
+                edgecolor="white",
+                linewidth=0.55,
+                zorder=4,
+            )
+        # The w/o-EDL solution-phase curve is defined only from bulk to OHP/RP.
+        # It ends at the reaction plane and does not extend into the compact layer.
+        ax.plot(
+            [ctot.RP_X_NM, float(distance_nm[-1])],
+            [0.0, 0.0],
+            color=ctot.COLORS["without_edl"],
+            linewidth=1.45,
+            linestyle=(0, (2.4, 1.25)),
+            label="w/o EDL",
+            zorder=6,
+        )
+        ax.set_ylim(lower, upper)
+        ax.set_xlim(ctot.METAL_LEFT_NM, float(distance_nm[-1]))
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.tick_params(length=0)
+        ax.text(
+            0.5 * (ctot.METAL_LEFT_NM + ctot.COMPACT_LEFT_NM),
+            0.50 * (lower + upper),
+            material,
+            ha="center",
+            va="center",
+            rotation=90,
+            fontsize=9.0,
+            fontweight="bold",
+            color=ctot.COLORS["dark"],
+        )
+        if show_ohp_label:
+            ax.text(
+                ctot.RP_X_NM,
+                upper + 0.035 * (upper - lower),
+                "OHP/RP",
+                ha="center",
+                va="bottom",
+                fontsize=7.2,
+                fontweight="bold",
+                color=ctot.COLORS["dark"],
+                clip_on=False,
+            )
+        ax.text(
+            0.74 * float(distance_nm[-1]),
+            lower + 0.29 * (upper - lower),
+            reaction_label,
+            ha="center",
+            va="center",
+            fontsize=11.0,
+            color=reaction_color,
+        )
+
+    vertical_fig, vertical_axes = plt.subplots(
+        2,
+        1,
+        figsize=(4.15, 3.45),
+        sharex=True,
+        sharey=True,
+    )
+    for index, (ax, material) in enumerate(
+        zip(vertical_axes, ("Au", "Pd"), strict=True)
+    ):
+        draw_profile_axis(ax, material, show_ohp_label=index == 0)
+    vertical_handles, vertical_labels = vertical_axes[0].get_legend_handles_labels()
+    vertical_fig.legend(
+        vertical_handles,
+        vertical_labels,
+        loc="upper right",
+        bbox_to_anchor=(0.965, 0.825),
+        ncol=3,
+        fontsize=6.1,
+        handlelength=2.2,
+        columnspacing=1.15,
+    )
+    vertical_fig.subplots_adjust(
+        left=0.045,
+        right=0.99,
+        bottom=0.045,
+        top=0.96,
+        hspace=0.30,
+    )
+    saved = ctot._save_figure(
+        vertical_fig,
+        output_dir,
+        PROFILE_SCHEME_STEM,
+    )
+    if not include_side_by_side:
+        return saved
+
+    polarization_png = (
+        output_dir.parent
+        / "Figure_4"
+        / f"{POLARIZATION_OVERLAY_STEM}.png"
+    )
+    if not polarization_png.is_file():
+        raise RuntimeError(
+            "Cannot size the horizontal EDL scheme because the polarization "
+            f"reference PNG is missing: {polarization_png}"
+        )
+    with Image.open(polarization_png) as reference_image:
+        reference_width_px = int(reference_image.width)
+
+    horizontal_fig, horizontal_axes = plt.subplots(
+        1,
+        2,
+        figsize=(
+            float(reference_width_px) / float(ctot.DPI),
+            PROFILE_SCHEME_SIDE_BY_SIDE_HEIGHT_IN,
+        ),
+        sharex=True,
+        sharey=True,
+    )
+    for ax, material in zip(horizontal_axes, ("Au", "Pd"), strict=True):
+        draw_profile_axis(ax, material, show_ohp_label=True)
+    horizontal_handles, horizontal_labels = horizontal_axes[0].get_legend_handles_labels()
+    horizontal_fig.legend(
+        horizontal_handles,
+        horizontal_labels,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.96),
+        ncol=3,
+        fontsize=7.0,
+        handlelength=2.2,
+        columnspacing=1.35,
+    )
+    saved.extend(
+        _save_fixed_profile_side_by_side_canvas(
+            horizontal_fig,
+            output_dir,
+            reference_width_px=reference_width_px,
+        )
+    )
+    return saved
+
+
+def _register_additional_scheme_artifacts(
+    output: Path,
+    paths: list[Path],
+) -> None:
+    """Register wrapper-owned scheme variants in the upstream artifact index."""
+
+    artifact_path = output / "artifacts.json"
+    artifacts = _read_json(artifact_path)
+    scheme_entries = set(str(value) for value in artifacts["EDL_scheme"])
+    for path in paths:
+        relative = path.relative_to(output).as_posix()
+        scheme_entries.add(relative)
+    artifacts["EDL_scheme"] = sorted(scheme_entries)
+    _write_json(artifact_path, artifacts)
+
+
 def _configure_upstream() -> None:
     ctot.DPI = 600
     ctot.COLORS.update(PALETTE)
     ctot.plot_ctot_trends = _target_plot_ctot_trends
     ctot.plot_polarization_overlay = _target_plot_polarization_overlay
+    ctot.plot_profile_schematic = _target_plot_profile_schematic
 
 
 def _scan_checks(rows: list[dict[str, Any]]) -> dict[str, Any]:
@@ -512,6 +874,7 @@ def _artifact_checks(output: Path) -> dict[str, Any]:
     svgs = sorted(output.glob("figures/**/*.svg"))
     pdfs = sorted(output.glob("**/*.pdf"))
     png_dpi: dict[str, list[float] | None] = {}
+    png_dimensions: dict[str, list[int] | None] = {}
     png_decodable = True
     for path in pngs:
         try:
@@ -522,10 +885,15 @@ def _artifact_checks(output: Path) -> dict[str, Any]:
                     if dpi_value is not None
                     else None
                 )
+                png_dimensions[path.relative_to(output).as_posix()] = [
+                    int(image.width),
+                    int(image.height),
+                ]
                 image.verify()
         except Exception:
             png_decodable = False
             png_dpi[path.relative_to(output).as_posix()] = None
+            png_dimensions[path.relative_to(output).as_posix()] = None
     dpi_passed = all(
         value is not None
         and abs(value[0] - 600.0) < 1.0
@@ -545,6 +913,30 @@ def _artifact_checks(output: Path) -> dict[str, Any]:
         svg_helvetica_first = svg_helvetica_first and "Helvetica" in text
     stems_png = {path.relative_to(output).with_suffix("").as_posix() for path in pngs}
     stems_svg = {path.relative_to(output).with_suffix("").as_posix() for path in svgs}
+    trend_stems = (
+        "figures/Figure_4/ctot_emix_high_salt_regime_independent_edls.png",
+        "figures/Figure_4/ctot_imix_avg_high_salt_regime_independent_edls.png",
+    )
+    trend_canvas_expected = list(TREND_CANVAS_PX_AT_600_DPI)
+    trend_canvases_match = all(
+        png_dimensions.get(relative) == trend_canvas_expected
+        for relative in trend_stems
+    )
+    polarization_relative = (
+        f"figures/Figure_4/{POLARIZATION_OVERLAY_STEM}.png"
+    )
+    horizontal_scheme_relative = (
+        f"figures/EDL_scheme/{PROFILE_SCHEME_SIDE_BY_SIDE_STEM}.png"
+    )
+    polarization_dimensions = png_dimensions.get(polarization_relative)
+    horizontal_scheme_dimensions = png_dimensions.get(horizontal_scheme_relative)
+    horizontal_scheme_width_matches_polarization = bool(
+        polarization_dimensions is not None
+        and horizontal_scheme_dimensions is not None
+        and horizontal_scheme_dimensions[0] == polarization_dimensions[0]
+        and horizontal_scheme_dimensions[1]
+        == PROFILE_SCHEME_SIDE_BY_SIDE_HEIGHT_PX_AT_600_DPI
+    )
     checks = {
         "figure4_pair_count": len(list((output / "figures" / "Figure_4").glob("*.png"))),
         "mechanism_pair_count": len(list((output / "figures" / "Mechanism").glob("*.png"))),
@@ -555,6 +947,14 @@ def _artifact_checks(output: Path) -> dict[str, Any]:
         "all_files_nonempty": all(path.stat().st_size > 0 for path in (*pngs, *svgs)),
         "png_decodable": png_decodable,
         "png_dpi": png_dpi,
+        "png_dimensions_px": png_dimensions,
+        "trend_canvas_expected_px": trend_canvas_expected,
+        "trend_canvases_identical_and_expected": trend_canvases_match,
+        "polarization_overlay_dimensions_px": polarization_dimensions,
+        "horizontal_scheme_dimensions_px": horizontal_scheme_dimensions,
+        "horizontal_scheme_width_matches_polarization": (
+            horizontal_scheme_width_matches_polarization
+        ),
         "all_png_600_dpi": dpi_passed,
         "svg_parseable": svg_parseable,
         "svg_text_editable": svg_editable,
@@ -565,13 +965,15 @@ def _artifact_checks(output: Path) -> dict[str, Any]:
     checks["passed"] = bool(
         checks["figure4_pair_count"] == 3
         and checks["mechanism_pair_count"] == 1
-        and checks["edl_scheme_pair_count"] == 1
+        and checks["edl_scheme_pair_count"] == 2
         and len(pngs) == EXPECTED_FIGURE_PAIRS
         and len(svgs) == EXPECTED_FIGURE_PAIRS
         and not pdfs
         and checks["all_files_nonempty"]
         and png_decodable
         and dpi_passed
+        and trend_canvases_match
+        and horizontal_scheme_width_matches_polarization
         and svg_parseable
         and svg_editable
         and svg_helvetica_first
@@ -608,7 +1010,7 @@ def _write_checksums(output: Path) -> dict[str, str]:
     paths = sorted(
         path
         for path in output.rglob("*")
-        if path.is_file() and path.name != CHECKSUM_FILE
+        if path.is_file() and path.name not in CHECKSUM_IGNORED_FILENAMES
     )
     checksums = {
         path.relative_to(output).as_posix(): _sha256(path)
@@ -637,7 +1039,7 @@ def _verify_checksums(output: Path) -> dict[str, str]:
     actual = {
         item.relative_to(output).as_posix()
         for item in output.rglob("*")
-        if item.is_file() and item.name != CHECKSUM_FILE
+        if item.is_file() and item.name not in CHECKSUM_IGNORED_FILENAMES
     }
     if set(checksums) != actual:
         raise RuntimeError("C_tot study checksum coverage is incomplete")
@@ -716,6 +1118,38 @@ def _augment_result(output: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
             "target_scan_checks": scan_checks,
             "artifact_checks": artifact_checks,
             "debye_huckel_applicability_caveat": caveat,
+            "publication_figure_semantics": {
+                "emix_y_axis_V": [0.40, 0.67],
+                "trend_figsize_inches": list(TREND_FIGSIZE_IN),
+                "trend_canvas_px_at_600_dpi": list(TREND_CANVAS_PX_AT_600_DPI),
+                "emix_and_imix_trend_canvases_identical": True,
+                "trend_export_bbox_inches": None,
+                "trend_export_uses_fixed_canvas": True,
+                "formal_high_salt_marker_visible": True,
+                "formal_high_salt_text_annotation_visible": False,
+                "trend_explanatory_titles_visible": False,
+                "imix_trend_source_unit": "A/m^2",
+                "imix_trend_display_unit": "mA/cm^2",
+                "imix_A_per_m2_to_mA_per_cm2": IMIX_A_PER_M2_TO_MA_PER_CM2,
+                "imix_y_axis_mA_per_cm2": list(IMIX_TREND_YLIM_MA_PER_CM2),
+                "polarization_source_currents_are_signed": True,
+                "polarization_display_is_magnitude": False,
+                "polarization_quantity": "signed absolute half-reaction current",
+                "polarization_normalization": "none",
+                "polarization_display_unit": "10^-3 uA",
+                "polarization_y_axis": "signed and symmetric about zero",
+                "polarization_y_label": "Current (10^-3 uA)",
+                "without_edl_profile_segment": "bulk solution to OHP/RP only",
+                "phi_zero_reference": "thin black solid line",
+                "profile_side_by_side_layout": "Au and Pd in one horizontal row",
+                "profile_side_by_side_canvas_px": artifact_checks[
+                    "horizontal_scheme_dimensions_px"
+                ],
+                "profile_side_by_side_width_reference": (
+                    "ctot_half_reaction_polarization_overlay_independent_edls.png"
+                ),
+                "profile_side_by_side_export_bbox_inches": None,
+            },
             "topology_scope_caveat": (
                 "The 2 nm lengths set active areas only. The analytic model uses two "
                 "independent infinite planar half-spaces and does not resolve finite-size "
@@ -747,6 +1181,28 @@ def _augment_result(output: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "active_faces_Pd": 1,
             },
             "current_trend_interpretation": scan_checks["target_trend"]["interpretation"],
+            "publication_figure_quantity_definitions": {
+                "imix_trend_y": (
+                    "i_mix_avg_A_per_m2 multiplied by 0.1 and reported in mA/cm^2; "
+                    "the displayed y axis begins at zero"
+                ),
+                "polarization_y": (
+                    "Signed absolute half-reaction currents I_Au and I_Pd, "
+                    "reported in 10^-3 uA"
+                ),
+                "polarization_mixed_marker_y": (
+                    "+/- i_mix_abs_A multiplied by 10^9 to report 10^-3 uA"
+                ),
+                "polarization_csv_source": (
+                    "csv/ctot_polarization_curves.csv signed "
+                    "I_Au_1e_minus_3_uA and I_Pd_1e_minus_3_uA"
+                ),
+                "profile_side_by_side": (
+                    "Same analytic Au/Pd profiles as the vertical scheme, arranged "
+                    "as a 1x2 figure whose fixed PNG width matches the half-reaction "
+                    "polarization overlay"
+                ),
+            },
         }
     )
     _write_json(summary_path, summary)
@@ -758,9 +1214,33 @@ def _augment_result(output: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
             "target_study_id": STUDY_ID,
             "reference_result_for_layout_and_method_only": REFERENCE_RESULT,
             "target_figure_adaptations": {
-                "current_title_is_data_dependent": True,
-                "polarization_y_axis_uses_absolute_current_and_is_zoomed_for_2_nm": True,
+                "current_trend_interpretation_is_data_dependent": True,
+                "trend_explanatory_titles_visible": False,
+                "emix_y_axis_V": [0.40, 0.67],
+                "trend_figsize_inches": list(TREND_FIGSIZE_IN),
+                "trend_canvas_px_at_600_dpi": list(TREND_CANVAS_PX_AT_600_DPI),
+                "trend_canvases_fixed_and_identical": True,
+                "trend_export_bbox_inches": None,
+                "formal_high_salt_marker_visible": True,
+                "formal_high_salt_text_annotation_visible": False,
+                "imix_trend_display_unit": "mA/cm^2",
+                "imix_trend_unit_conversion": "1 A/m^2 = 0.1 mA/cm^2",
+                "imix_trend_y_axis_mA_per_cm2": list(IMIX_TREND_YLIM_MA_PER_CM2),
+                "polarization_y_axis_uses_signed_absolute_current": True,
+                "polarization_normalization": "none",
+                "polarization_display_unit": "10^-3 uA",
+                "polarization_y_axis_is_symmetric_about_zero": True,
+                "polarization_y_label": "Current (10^-3 uA)",
+                "without_edl_profile_dense_dash": [2.4, 1.25],
+                "without_edl_profile_domain": "OHP/RP to bulk solution",
+                "phi_zero_reference_style": "thin black solid line",
                 "mechanism_Au_Pd_corresponding_metrics_share_y_scale": True,
+                "profile_side_by_side_layout": "1x2 Au/Pd",
+                "profile_side_by_side_height_inches": (
+                    PROFILE_SCHEME_SIDE_BY_SIDE_HEIGHT_IN
+                ),
+                "profile_side_by_side_width_reference": POLARIZATION_OVERLAY_STEM,
+                "profile_side_by_side_export_bbox_inches": None,
                 "dpi_png": 600,
                 "palette": PALETTE,
             },
@@ -807,6 +1287,29 @@ def _augment_result(output: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "10-1000 M is retained only as a mathematical high-salt extension; "
                 "10^3 M is not a physically realizable electrolyte concentration."
             ),
+            "publication_figure_adjustments": {
+                "ctot_emix_high_salt_regime": (
+                    "E_mix axis fixed to 0.40-0.67 V on the shared 3 x 3.45 in "
+                    "fixed canvas; bbox_inches=None; the 10^3 M endpoint remains "
+                    "but its text annotation is omitted; no explanatory title"
+                ),
+                "ctot_imix_avg_high_salt_regime": (
+                    "i_mix converted from A/m^2 to mA/cm^2, y axis fixed to "
+                    "0-0.013 mA/cm^2, on the same 3 x 3.45 in fixed canvas as "
+                    "E_mix; bbox_inches=None; the 10^3 M endpoint remains but its "
+                    "text annotation is omitted; no explanatory title"
+                ),
+                "ctot_half_reaction_polarization_overlay": (
+                    "signed absolute Au/Pd half-reaction currents in 10^-3 uA; "
+                    "y axis is symmetric about zero and labeled Current"
+                ),
+                "ctot_phi_bar_profiles": (
+                    "denser w/o-EDL dash from bulk to OHP/RP, plus a thin black "
+                    "Phi=0 reference; retain the original 2x1 version and add a "
+                    "fixed-canvas 1x2 Au/Pd version whose PNG width matches the "
+                    "half-reaction polarization overlay"
+                ),
+            },
             "validation_passed": True,
         }
     )
@@ -844,6 +1347,25 @@ def build_independent_au_pd_ctot_study(output_dir: str | Path) -> dict[str, Any]
     if not preview_checks["passed"]:
         raise RuntimeError(f"Target C_tot preview regression failed: {preview_checks}")
     ctot.build_ctot_results(params, output)
+    _, profile_curves, distance_nm = ctot.compute_profile_rows(params)
+    with plt.rc_context(ctot.RC):
+        profile_paths = _target_plot_profile_schematic(
+            profile_curves,
+            distance_nm,
+            output / "figures" / "EDL_scheme",
+            include_side_by_side=True,
+        )
+    side_by_side_paths = [
+        path
+        for path in profile_paths
+        if path.stem == PROFILE_SCHEME_SIDE_BY_SIDE_STEM
+    ]
+    if len(side_by_side_paths) != 2:
+        raise RuntimeError(
+            "Expected one PNG/SVG pair for the horizontal EDL scheme, "
+            f"got {side_by_side_paths}"
+        )
+    _register_additional_scheme_artifacts(output, side_by_side_paths)
     rows = _read_scan_csv(output)
     return _augment_result(output, rows)
 
@@ -918,7 +1440,7 @@ def main() -> int:
             f"i_mix_avg={float(row['i_mix_avg_with_EDL_A_per_m2']):.12g} A/m^2, "
             f"I_mix={float(row['i_mix_abs_with_EDL_A']):.12g} A"
         )
-    print("figures = 5 PNG + 5 SVG; PDF = 0")
+    print("figures = 6 PNG + 6 SVG; PDF = 0")
     return 0
 
 

@@ -1,0 +1,341 @@
+{
+  "case_validation": {
+    "C10_vs_C1000_plateau": {
+      "E_tolerance_mV_strict": 0.3,
+      "I_tolerance_percent_strict": 0.05,
+      "delta_E_mV": 0.23908237313841063,
+      "delta_I_percent": 0.026130548934322206,
+      "interpretation": "plateau-equivalent at the stated plotting precision, not bit-identical",
+      "passed": true
+    },
+    "case_checks": [
+      {
+        "C_has_no_faradaic_current": true,
+        "case_key": "au_pd_independent",
+        "comparison_reactive_area_m2": 8.000000000000001e-11,
+        "current_scale_factor": 2.0,
+        "display_segments": [
+          {
+            "material": "Au",
+            "name": "Au",
+            "x_end_nm": 2.0,
+            "x_start_nm": 0.0
+          },
+          {
+            "material": "Pd",
+            "name": "Pd",
+            "x_end_nm": 2.0,
+            "x_start_nm": 0.0
+          }
+        ],
+        "effective_Au_length_nm": 4.0,
+        "effective_Pd_length_nm": 4.0,
+        "passed": true,
+        "relative_balance_with": 9.945181526389276e-16,
+        "relative_balance_without": 1.7178273519093383e-15,
+        "reported_current_equals_raw_times_scale": true,
+        "source_reactive_area_m2": 4.0000000000000004e-11
+      },
+      {
+        "C_has_no_faradaic_current": true,
+        "case_key": "janus_au_pd",
+        "comparison_reactive_area_m2": 8.000000000000001e-11,
+        "current_scale_factor": 2.0,
+        "display_segments": [
+          {
+            "material": "Au",
+            "name": "Au",
+            "x_end_nm": 2.0,
+            "x_start_nm": 0.0
+          },
+          {
+            "material": "Pd",
+            "name": "Pd",
+            "x_end_nm": 4.0,
+            "x_start_nm": 2.0
+          }
+        ],
+        "effective_Au_length_nm": 4.0,
+        "effective_Pd_length_nm": 4.0,
+        "passed": true,
+        "relative_balance_with": 5.309790236404263e-13,
+        "relative_balance_without": 1.7950514385510672e-15,
+        "reported_current_equals_raw_times_scale": true,
+        "source_reactive_area_m2": 4.0000000000000004e-11
+      },
+      {
+        "C_has_no_faradaic_current": true,
+        "case_key": "physical_mixture_c10",
+        "comparison_reactive_area_m2": 8.000000000000001e-11,
+        "current_scale_factor": 2.0,
+        "display_segments": [
+          {
+            "material": "Au",
+            "name": "Au",
+            "x_end_nm": 2.0,
+            "x_start_nm": 0.0
+          },
+          {
+            "material": "C",
+            "name": "C",
+            "x_end_nm": 12.0,
+            "x_start_nm": 2.0
+          },
+          {
+            "material": "Pd",
+            "name": "Pd",
+            "x_end_nm": 14.0,
+            "x_start_nm": 12.0
+          }
+        ],
+        "effective_Au_length_nm": 4.0,
+        "effective_Pd_length_nm": 4.0,
+        "passed": true,
+        "relative_balance_with": 2.893797796348427e-15,
+        "relative_balance_without": 6.0134223191460756e-15,
+        "reported_current_equals_raw_times_scale": true,
+        "source_reactive_area_m2": 4.0000000000000004e-11
+      },
+      {
+        "C_has_no_faradaic_current": true,
+        "case_key": "janus_on_c_support",
+        "comparison_reactive_area_m2": 8.000000000000001e-11,
+        "current_scale_factor": 1.0,
+        "display_segments": [
+          {
+            "material": "C",
+            "name": "C_left",
+            "x_end_nm": 5.0,
+            "x_start_nm": 0.0
+          },
+          {
+            "material": "Au",
+            "name": "Au",
+            "x_end_nm": 9.000000000000002,
+            "x_start_nm": 5.0
+          },
+          {
+            "material": "Pd",
+            "name": "Pd",
+            "x_end_nm": 13.0,
+            "x_start_nm": 9.000000000000002
+          },
+          {
+            "material": "C",
+            "name": "C_right",
+            "x_end_nm": 18.000000000000004,
+            "x_start_nm": 13.0
+          }
+        ],
+        "effective_Au_length_nm": 4.0,
+        "effective_Pd_length_nm": 4.0,
+        "passed": true,
+        "relative_balance_with": 5.2378616222506265e-15,
+        "relative_balance_without": 1.803718719504805e-15,
+        "reported_current_equals_raw_times_scale": true,
+        "source_reactive_area_m2": 8.000000000000001e-11
+      }
+    ],
+    "common_area": {
+      "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+      "effective_Au_length_nm": 4.0,
+      "effective_Pd_length_nm": 4.0,
+      "out_of_plane_width_m": 0.01,
+      "passed": true,
+      "reactive_area_m2": 8.000000000000001e-11
+    },
+    "common_without_edl_baseline": {
+      "E_mix_V": 0.4669999999999999,
+      "I_mix_A": 9.40482832629793e-12,
+      "case_count": 4,
+      "passed": true,
+      "summary_bar_count_per_metric": 1
+    },
+    "passed": true
+  },
+  "checksum_validation": {
+    "algorithm": "SHA-256",
+    "complete": true,
+    "passed": true,
+    "scope": "all generated files except checksums.sha256 itself"
+  },
+  "created_at": "2026-08-08T22:47:10+09:00",
+  "figure_validation": {
+    "all_svg_text_editable": true,
+    "case_counts": [
+      {
+        "Figure_3_png": 6,
+        "Figure_3_svg": 6,
+        "Figure_RP_png": 3,
+        "Figure_RP_svg": 3,
+        "case_key": "au_pd_independent",
+        "passed": true
+      },
+      {
+        "Figure_3_png": 6,
+        "Figure_3_svg": 6,
+        "Figure_RP_png": 3,
+        "Figure_RP_svg": 3,
+        "case_key": "janus_au_pd",
+        "passed": true
+      },
+      {
+        "Figure_3_png": 6,
+        "Figure_3_svg": 6,
+        "Figure_RP_png": 3,
+        "Figure_RP_svg": 3,
+        "case_key": "physical_mixture_c10",
+        "passed": true
+      },
+      {
+        "Figure_3_png": 6,
+        "Figure_3_svg": 6,
+        "Figure_RP_png": 3,
+        "Figure_RP_svg": 3,
+        "case_key": "janus_on_c_support",
+        "passed": true
+      }
+    ],
+    "expected": "40 PNG + 40 editable-text SVG + 0 PDF",
+    "passed": true,
+    "pdf_count": 0,
+    "png_count": 40,
+    "polarization_figure_layout": {
+      "current_unit_upright": true,
+      "obsolete_half_reaction_title_absent": true,
+      "passed": true,
+      "reaction_legend_labels": [
+        "Oxidation on Au",
+        "Reduction on Pd"
+      ],
+      "variant_count": 2,
+      "variants": [
+        {
+          "stem": "summary_half_reaction_polarization_overlay",
+          "variant_key": "xmin040V",
+          "x_max_V": 0.64,
+          "x_min_V": 0.4
+        },
+        {
+          "stem": "summary_half_reaction_polarization_overlay_xmin045V",
+          "variant_key": "xmin045V",
+          "x_max_V": 0.75,
+          "x_min_V": 0.45
+        }
+      ],
+      "x_axis_label": "Electrode potential (V vs. RHE)",
+      "y_axis_label": "Current (10$^{-3}$ µA)"
+    },
+    "returned_path_count": 80,
+    "summary_bar_layout": {
+      "passed": true,
+      "with_edl_case_bars_per_figure": 4,
+      "without_edl_common_bars_per_figure": 1
+    },
+    "summary_pairs": 4,
+    "svg_count": 40,
+    "visible_word_Local_absent": true
+  },
+  "passed": true,
+  "physical_caveats": {
+    "Fourier_Gibbs": "Cosine/Fourier material discontinuities may retain boundary ringing.",
+    "geometry": "The spatial models are coplanar stripe surrogates, not curved 3D particles.",
+    "linear_Debye_Huckel": "All with-EDL cases exceed the weak-potential |phi_tilde| <= 1 regime."
+  },
+  "polarization_validation": {
+    "common_reactive_area_m2": 8.000000000000001e-11,
+    "csv_row_count": 7005,
+    "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+    "curve_count": 5,
+    "figure_variant_count": 2,
+    "half_reaction_curve_count": 10,
+    "marker_checks": [
+      {
+        "Au_magnitude_error_A": 0.0,
+        "E_mix_V": 0.6249104327868923,
+        "Pd_magnitude_error_A": 6.866245319043687e-27,
+        "computed_I_Au_A": 3.4520462501485164e-12,
+        "computed_I_Pd_A": -3.4520462501485232e-12,
+        "condition_key": "au_pd_independent",
+        "expected_I_mix_A": 3.4520462501485164e-12,
+        "passed": true,
+        "relative_balance_residual": 9.945181526389276e-16
+      },
+      {
+        "Au_magnitude_error_A": 8.077935669463161e-28,
+        "E_mix_V": 0.6249104327869085,
+        "Pd_magnitude_error_A": 5.6489004136555884e-24,
+        "computed_I_Au_A": 5.319995190264643e-12,
+        "computed_I_Pd_A": -5.319995190258993e-12,
+        "condition_key": "janus_au_pd",
+        "expected_I_mix_A": 5.319995190264642e-12,
+        "passed": true,
+        "relative_balance_residual": 5.309880935197321e-13
+      },
+      {
+        "Au_magnitude_error_A": 0.0,
+        "E_mix_V": 0.5976004686075482,
+        "Pd_magnitude_error_A": 2.5849394142282115e-26,
+        "computed_I_Au_A": 4.521278834428626e-12,
+        "computed_I_Pd_A": -4.521278834428652e-12,
+        "condition_key": "physical_mixture_c10",
+        "expected_I_mix_A": 4.521278834428626e-12,
+        "passed": true,
+        "relative_balance_residual": 2.858637466179272e-15
+      },
+      {
+        "Au_magnitude_error_A": 0.0,
+        "E_mix_V": 0.6109997601404451,
+        "Pd_magnitude_error_A": 5.412216898540318e-26,
+        "computed_I_Au_A": 5.1664374594672866e-12,
+        "computed_I_Pd_A": -5.1664374594672324e-12,
+        "condition_key": "janus_on_c_support",
+        "expected_I_mix_A": 5.1664374594672866e-12,
+        "passed": true,
+        "relative_balance_residual": 5.2378616222506265e-15
+      },
+      {
+        "Au_magnitude_error_A": 6.462348535570529e-27,
+        "E_mix_V": 0.4669999999999999,
+        "Pd_magnitude_error_A": 1.7771458472818954e-26,
+        "computed_I_Au_A": 9.404828326297923e-12,
+        "computed_I_Pd_A": -9.404828326297947e-12,
+        "condition_key": "without_edl_common",
+        "expected_I_mix_A": 9.40482832629793e-12,
+        "passed": true,
+        "relative_balance_residual": 1.288370513932004e-15
+      }
+    ],
+    "maximum_marker_magnitude_error_A": 5.6489004136555884e-24,
+    "maximum_marker_relative_balance_residual": 5.309880935197321e-13,
+    "passed": true,
+    "potential_point_count_per_condition": 1401,
+    "without_edl_cross_case_curve_checks": [
+      {
+        "case_key": "au_pd_independent",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      },
+      {
+        "case_key": "janus_au_pd",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      },
+      {
+        "case_key": "physical_mixture_c10",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      },
+      {
+        "case_key": "janus_on_c_support",
+        "max_absolute_difference_A": 0.0,
+        "max_relative_difference": 0.0,
+        "passed": true
+      }
+    ]
+  },
+  "schema_version": "1.0"
+}

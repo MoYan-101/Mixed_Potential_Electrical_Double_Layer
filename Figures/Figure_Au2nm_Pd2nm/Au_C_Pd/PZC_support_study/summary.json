@@ -47,6 +47,26 @@
       "linestyle": "(0, (5.0, 2.5))"
     }
   },
+  "profile_shared_y_axis_ranges": {
+    "phi_RP_mV": {
+      "definition": "Global min/max over PZC_C=0.10/0.50/0.90 V at L_support=15 nm, including zero, plus the original 5% margin.",
+      "limits": [
+        -222.2703260481316,
+        235.65521834289248
+      ],
+      "reference_L_support_nm": 15.0
+    },
+    "surface_charge_uC_per_cm2": {
+      "definition": "Global min/max over PZC_C=0.10/0.50/0.90 V at L_support=1 nm, including zero, plus the original 5% margin.",
+      "limits": [
+        -13.48708784378943,
+        12.883279124075642
+      ],
+      "reference_L_support_nm": 1.0
+    }
+  },
+  "publication_length_trend_convergence_check_count": 18,
+  "publication_length_trend_point_count": 18,
   "reference_15nm_vs_1000nm": {
     "pzc_0.10_V": {
       "active_RP_RMS_1000_vs_15_mV": 0.03777708967505648,
@@ -97,6 +117,42 @@
   "representative_profile_count": 12,
   "scan_point_count": 164,
   "study_id": "Au2nm_C_Pd2nm_support_PZC_study",
+  "trend_figure_encoding": {
+    "branch_metrics": {
+      "0.10_V": {
+        "E_mix_1nm_minus_1000nm_mV": 27.888231047539016,
+        "E_mix_max_minus_min_mV": 27.888231047539016,
+        "E_mix_monotonic_nonincreasing_with_length": true,
+        "separated_minus_1000nm_mV": 52.44178860428905
+      },
+      "0.50_V": {
+        "E_mix_1nm_minus_1000nm_mV": 14.526612597964617,
+        "E_mix_max_minus_min_mV": 14.526612597964617,
+        "E_mix_monotonic_nonincreasing_with_length": true,
+        "separated_minus_1000nm_mV": 27.532644949468388
+      },
+      "0.90_V": {
+        "E_mix_1nm_minus_1000nm_mV": 1.9574877171086857,
+        "E_mix_max_minus_min_mV": 1.9574877171086857,
+        "E_mix_monotonic_nonincreasing_with_length": true,
+        "separated_minus_1000nm_mV": 3.724212994301923
+      }
+    },
+    "line_color_and_style": "PZC_C = 0.10, 0.50, 0.90 V",
+    "mixed_potential_y_axis_V": [
+      0.46,
+      0.645
+    ],
+    "separated_electrodes_E_mix_with_V": 0.6249104327868923,
+    "separated_electrodes_source": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_Pd_independent/summary.json",
+    "separated_label_axes_fraction": [
+      0.035,
+      0.965
+    ],
+    "separated_label_overlap_avoidance": "opaque white label in reserved top headroom",
+    "x": "L_support_nm",
+    "x_scale": "logarithmic with ticks at 1, 2, 3, 6, 10, 1000 nm"
+  },
   "trend_figure_panels": [
     "Mixed potential",
     "Mixed current density",
