@@ -1,0 +1,81 @@
+{
+  "far_gap_ringing_check": {
+    "definition": "surface Phi_s over x=75-975 nm, at least 50 nm from either metal/substrate junction",
+    "max_abs_phi_s_mV": 0.004810954696404654,
+    "passed": true,
+    "peak_to_peak_phi_s_mV": 0.009465452173630724,
+    "sample_count": 3601,
+    "visibility_threshold_mV": 0.02,
+    "x_range_nm": [
+      75.0,
+      975.0
+    ]
+  },
+  "levels": [
+    {
+      "E_mix_with_EDL_V": 0.5987365133993439,
+      "L_total_nm": 1050.0,
+      "N_modes": 960,
+      "Nx": 5001,
+      "active_surface_max_abs_delta_vs_previous_mV": null,
+      "affine_phi_m_relative_l2": 7.550605992904762e-16,
+      "affine_phi_pzc_relative_l2": 7.564649570765114e-16,
+      "delta_E_vs_previous_uV": null,
+      "elapsed_s": 0.060876833013026044,
+      "i_mix_avg_with_EDL_A_per_m2": 0.08265349133629327,
+      "level": "baseline_long_domain",
+      "max_abs_phi_tilde": 6.0281588847644425,
+      "n_coefficients": 961,
+      "relative_current_balance_residual": 2.023329415802807e-11,
+      "relative_delta_i_vs_previous_percent": null,
+      "shortest_cosine_wavelength_nm": 2.1875,
+      "surface_points_per_shortest_wavelength": 10.416666666666668,
+      "surface_target_dx_nm": 0.21
+    },
+    {
+      "E_mix_with_EDL_V": 0.5987736210749701,
+      "L_total_nm": 1050.0,
+      "N_modes": 1920,
+      "Nx": 10001,
+      "active_surface_max_abs_delta_vs_previous_mV": 3.7094725720051542,
+      "affine_phi_m_relative_l2": 1.5046383936885614e-15,
+      "affine_phi_pzc_relative_l2": 9.649462586934238e-16,
+      "delta_E_vs_previous_uV": 37.10767562625783,
+      "elapsed_s": 0.2160867920028977,
+      "i_mix_avg_with_EDL_A_per_m2": 0.08256835596139289,
+      "level": "intermediate",
+      "max_abs_phi_tilde": 6.021329623306205,
+      "n_coefficients": 1921,
+      "relative_current_balance_residual": 2.019694357721796e-11,
+      "relative_delta_i_vs_previous_percent": -0.10300275708134965,
+      "shortest_cosine_wavelength_nm": 1.09375,
+      "surface_points_per_shortest_wavelength": 10.416666666666668,
+      "surface_target_dx_nm": 0.105
+    },
+    {
+      "E_mix_with_EDL_V": 0.5987841470159301,
+      "L_total_nm": 1050.0,
+      "N_modes": 3840,
+      "Nx": 20001,
+      "active_surface_max_abs_delta_vs_previous_mV": 1.8563034720781246,
+      "affine_phi_m_relative_l2": 1.6395001604820308e-15,
+      "affine_phi_pzc_relative_l2": 1.539781254274356e-15,
+      "delta_E_vs_previous_uV": 10.525940959960067,
+      "elapsed_s": 1.1020458339771722,
+      "i_mix_avg_with_EDL_A_per_m2": 0.0825441910814434,
+      "level": "production",
+      "max_abs_phi_tilde": 6.019730740675451,
+      "n_coefficients": 3841,
+      "relative_current_balance_residual": 2.0183988464736767e-11,
+      "relative_delta_i_vs_previous_percent": -0.029266514596459903,
+      "shortest_cosine_wavelength_nm": 0.546875,
+      "surface_points_per_shortest_wavelength": 10.416666666666668,
+      "surface_target_dx_nm": 0.0525
+    }
+  ],
+  "production_selection": {
+    "N_modes": 3840,
+    "Nx": 20001,
+    "reason": "Fourfold mode refinement and approximately fourfold Nx refinement relative to 20260802_144648; about ten surface points per shortest retained cosine wavelength."
+  }
+}

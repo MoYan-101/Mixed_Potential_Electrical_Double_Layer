@@ -1,0 +1,55 @@
+{
+  "active_windows_nm": [
+    [
+      0.0,
+      30.0
+    ],
+    [
+      1020.0,
+      1050.0
+    ]
+  ],
+  "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+  "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "grid": {
+    "lambda_D_nm": 3.0412178890177213,
+    "n_x_per_window": 601,
+    "n_y": 241,
+    "y_max_over_lambda_D": 5.0
+  },
+  "potential_and_reactants": {
+    "c_Ox2_limits": [
+      0.1,
+      1000.0
+    ],
+    "c_Red1_limits": [
+      0.001,
+      10.0
+    ],
+    "figure_type": "phi_s_reactants_2d_active_zoom",
+    "phi_s_limit_mV": [
+      -160.0,
+      160.0
+    ],
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/phi_s_reactants_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/phi_s_reactants_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ]
+  },
+  "potential_only": {
+    "figure_type": "solution_phase_potential_2d_active_zoom",
+    "phi_s_limit_mV": [
+      -160.0,
+      160.0
+    ],
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/solution_phase_potential_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/solution_phase_potential_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ]
+  },
+  "result_schema_version": 2,
+  "separation_nm": 1000.0,
+  "source_field_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/fields/active_window_fields_d1000nm.npz",
+  "substrate_bc": "homogeneous Neumann"
+}

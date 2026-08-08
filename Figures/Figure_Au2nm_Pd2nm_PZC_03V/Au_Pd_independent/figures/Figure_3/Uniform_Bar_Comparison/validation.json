@@ -1,0 +1,80 @@
+{
+  "artifacts": {
+    "passed": true,
+    "pdf_count": 0,
+    "png_count": 1,
+    "png_dimensions_px": [
+      6018,
+      3636
+    ],
+    "png_dpi": [
+      599.9988,
+      599.9988
+    ],
+    "svg_count": 1,
+    "svg_text_editable": true
+  },
+  "debye_huckel_applicability": {
+    "max_abs_phi_tilde": 8.872972834983754,
+    "threshold": 1.0,
+    "threshold_exceeded": true
+  },
+  "numerical": {
+    "all_bar_values_finite": true,
+    "current_balance_checks": {
+      "with_edl": {
+        "passed": true,
+        "relative_balance_residual": 1.3547432182511538e-15,
+        "threshold": 1e-10
+      },
+      "without_edl": {
+        "passed": true,
+        "relative_balance_residual": 1.7178273519093383e-15,
+        "threshold": 1e-10
+      }
+    },
+    "expected_result_checks": {
+      "with_edl.E_mix_V": {
+        "absolute_tolerance": 5e-11,
+        "actual": 0.5918979952021372,
+        "expected": 0.5918979952021372,
+        "passed": true
+      },
+      "with_edl.i_mix_abs_A": {
+        "absolute_tolerance": 5e-22,
+        "actual": 6.335375245416762e-13,
+        "expected": 6.335375245416762e-13,
+        "passed": true
+      },
+      "with_edl.i_mix_avg_A_per_m2": {
+        "absolute_tolerance": 5e-12,
+        "actual": 0.015838438113541905,
+        "expected": 0.015838438113541905,
+        "passed": true
+      },
+      "without_edl.E_mix_V": {
+        "absolute_tolerance": 5e-11,
+        "actual": 0.46699999999999986,
+        "expected": 0.46699999999999986,
+        "passed": true
+      },
+      "without_edl.i_mix_abs_A": {
+        "absolute_tolerance": 5e-22,
+        "actual": 4.7024141631489615e-12,
+        "expected": 4.7024141631489615e-12,
+        "passed": true
+      },
+      "without_edl.i_mix_avg_A_per_m2": {
+        "absolute_tolerance": 5e-12,
+        "actual": 0.11756035407872402,
+        "expected": 0.11756035407872402,
+        "passed": true
+      }
+    },
+    "passed": true,
+    "signed_local_current_direction_correct": true,
+    "uniformity_basis": "Each electrode is an analytic planar half-space; all RP quantities are constant over its 2 nm active length and are represented by one bar.",
+    "without_edl_phi_zero_and_concentration_unity": true
+  },
+  "passed": true
+}

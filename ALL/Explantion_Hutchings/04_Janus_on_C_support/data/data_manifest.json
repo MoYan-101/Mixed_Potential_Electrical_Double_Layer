@@ -1,0 +1,15 @@
+{
+  "case_key": "janus_on_c_support",
+  "files": [
+    "summary.json",
+    "parameters.json",
+    "segments.json",
+    "segments.csv",
+    "surface_profiles.csv",
+    "surface_profiles.npz",
+    "surface_charge_distribution.csv",
+    "surface_charge_distribution.npz",
+    "display_grid_2d.npz"
+  ],
+  "surface_coordinate_convention": "one continuous Neumann computational half-cell"
+}

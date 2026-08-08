@@ -1,0 +1,7 @@
+quantity,value_V,reference_or_unit
+PZC_Au_input,0.51,SHE
+PZC_Pd_input,0.21,SHE
+SHE_to_RHE_offset_at_pH7,0.4138855001102359,V
+PZC_Au_model,0.9238855001102359,RHE
+PZC_Pd_model,0.6238855001102359,RHE
+PZC_Au_minus_PZC_Pd,0.3,V

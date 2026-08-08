@@ -1,0 +1,24 @@
+{
+  "coordinate_and_normals": "Au at x=0 with outward normal -x; Pd at x=d with outward normal +x",
+  "created_local": "2026-08-03T14:20:45.211905+09:00",
+  "debye_huckel_caveat": "All retained cases exceed the configured small-potential threshold; interpret as linear-model geometry comparisons.",
+  "distances_nm": [
+    3.0,
+    10.0,
+    1000.0
+  ],
+  "electrolyte_domain": "finite positive-width slit; grand-canonical bulk concentration reference",
+  "electronic_constraint": "ideal wire; shared E_mix; I_Au + I_Pd = 0",
+  "electrostatic_backend": "analytic_linear_pb_finite_slit",
+  "figure3_panel_count": 6,
+  "figure_counts": {
+    "pdf": 0,
+    "png": 12,
+    "svg": 12
+  },
+  "model_id": "facing_au_electrolyte_pd_shared_mixed_potential",
+  "output_path_policy": "artifact paths are relative to run root",
+  "python": "3.14.6",
+  "result_schema_version": 1,
+  "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+}

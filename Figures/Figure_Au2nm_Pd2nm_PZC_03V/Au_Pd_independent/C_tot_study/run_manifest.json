@@ -1,0 +1,77 @@
+{
+  "checksums_file": "checksums.sha256",
+  "content_sha256": {
+    "params.json": "840cff0e604c806be60f3d823fac698d6dba1de36249984ba0f5cabab58ed5da",
+    "scan_config.json": "890efda2a485bea60412b8dc4b59ff8c1fc9988da1d4053335c4c3655018efaf",
+    "source": {
+      "ctot_study.py": "68dab3748b072d3e9e4ac5983da46977fcf0a9e96f3d9c1888ffafe239d22188",
+      "model.py": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e"
+    }
+  },
+  "created_local": "2026-08-07T10:46:11.309577+09:00",
+  "electrolyte_reference": "separate local half-spaces with a common bulk solution-potential reference",
+  "electronic_constraint": "ideal wire; shared E_mix; I_Au + I_Pd = 0",
+  "electrostatic_backend": "analytic_independent_planar_linear_pb",
+  "execution": {
+    "argv": [
+      "Figures/Figure_Au2nm_Pd2nm_PZC_03V/make_all_au2nm_pd2nm.py"
+    ],
+    "atomic_output_staging": true
+  },
+  "export": {
+    "dpi_png": 600,
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "pdf_enabled": false,
+    "svg_fonttype": "none"
+  },
+  "figure_counts": {
+    "pdf": 0,
+    "png": 5,
+    "svg": 5
+  },
+  "formal_high_salt_extension_starts_M": 10.0,
+  "formal_high_salt_note": "10-1000 M is retained only as a mathematical high-salt extension; 10^3 M is not a physically realizable electrolyte concentration.",
+  "model_id": "independent_planar_edls_shared_mixed_potential",
+  "output_path_policy": "artifact paths are relative to run root",
+  "parameter_provenance": "Figures/Figure_Au2nm_Pd2nm/make_independent_au_pd.py::independent_params",
+  "parent_study_id": "independent_Au2nm_Pd2nm_CH50_PZC03V",
+  "reference_result_for_layout_and_method_only": "Mixed_Potential_Electrical_Double_Layer/Au_Pd_independent_EDLs/results/20260803_153355_ctot_study",
+  "result_schema_version": 1,
+  "scan_points": 36,
+  "scan_range_M": [
+    0.0001,
+    1000.0
+  ],
+  "software": {
+    "matplotlib": "3.11.0",
+    "numpy": "2.5.1",
+    "python": "3.14.6",
+    "scipy": "1.18.0"
+  },
+  "source_sha256": {
+    "ctot_study": "68dab3748b072d3e9e4ac5983da46977fcf0a9e96f3d9c1888ffafe239d22188",
+    "independent_model": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e",
+    "parameter_wrapper": "6e98e4fdd66571f3c525649dac773fd8088841e9f7001b204899ffe82c04dae7",
+    "study_wrapper": "4a80897388ec8b4c28a0aa1741b7070ef2a02fb93bf0b8aa8e8261e3a7eab0e5"
+  },
+  "study": "electrolyte_concentration_C_tot",
+  "study_id": "independent_Au2nm_Pd2nm_CH50_PZC03V_Ctot_scan",
+  "study_parameters": {
+    "C_H_Au_uF_per_cm2": 50.0,
+    "C_H_Pd_uF_per_cm2": 50.0,
+    "L_Au_nm": 2.0,
+    "L_Pd_nm": 2.0,
+    "active_faces_Au": 1,
+    "active_faces_Pd": 1,
+    "alpha1": 0.5,
+    "alpha2": 0.5,
+    "equal_i0_A_per_m2": 0.0001852573885166257,
+    "out_of_plane_width_m": 0.01
+  },
+  "target_result_interpretation": "For C_H,Au=C_H,Pd=50 uF/cm^2, i_mix with EDL remains below the w/o-EDL value over the sampled grid and approaches it from below.",
+  "topology_id": "two_independent_planar_half_spaces",
+  "validation_passed": true
+}

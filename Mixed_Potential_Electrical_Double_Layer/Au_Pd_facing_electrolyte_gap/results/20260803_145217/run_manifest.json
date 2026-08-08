@@ -1,0 +1,29 @@
+{
+  "coordinate_and_normals": "Au at x=0 with outward normal -x; Pd at x=d with outward normal +x",
+  "created_local": "2026-08-03T14:52:24.687747+09:00",
+  "distances_nm": [
+    1.0,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+    1000.0
+  ],
+  "electrolyte_domain": "finite positive-width slit; grand-canonical bulk concentration reference",
+  "electronic_constraint": "ideal wire; shared E_mix; I_Au + I_Pd = 0",
+  "electrostatic_backend": "nonlinear_pb_finite_slit_with_gc_planar_asymptote",
+  "figure3_panel_count": 6,
+  "figure_counts": {
+    "pdf": 0,
+    "png": 18,
+    "svg": 18
+  },
+  "governing_equation": "d2(psi)/d(x/lambda_D)2 = sinh(psi)",
+  "large_gap_method": "independent nonlinear Gouy-Chapman-asinh/Stern asymptote when d/lambda_D exceeds the configured switch",
+  "model_id": "facing_au_electrolyte_pd_shared_mixed_potential_nonlinear_pb",
+  "nonlinear_pb_caveat": "Mean-field point-ion continuum model with a grand-canonical bulk chemical-potential reference; finite ion size, dielectric saturation, ion correlations, ion-number conservation/Donnan shifts, transport, and solution resistance are not included.",
+  "output_path_policy": "artifact paths are relative to run root",
+  "python": "3.14.6",
+  "result_schema_version": 2,
+  "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+}

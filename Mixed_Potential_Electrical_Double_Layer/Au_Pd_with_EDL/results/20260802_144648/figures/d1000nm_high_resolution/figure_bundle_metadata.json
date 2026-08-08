@@ -1,0 +1,311 @@
+{
+  "N_modes": 3840,
+  "Nx": 20001,
+  "active_zoom_figure3": {
+    "canonical_filenames": false,
+    "dpi": 600,
+    "figure_type": "figure_3_broken_x_axis_spatial_panels",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "omitted_interval_nm": [
+      30.0,
+      1020.0
+    ],
+    "omitted_width_nm": 990.0,
+    "panels": [
+      "b",
+      "c",
+      "d",
+      "e"
+    ],
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_b_solution_potential_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_b_solution_potential_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_c_reactant_concentration_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_c_reactant_concentration_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_d_local_overpotential_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_d_local_overpotential_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_e_local_current_density_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_e_local_current_density_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separation_nm": 1000.0,
+    "windows_nm": [
+      [
+        0.0,
+        30.0
+      ],
+      [
+        1020.0,
+        1050.0
+      ]
+    ]
+  },
+  "all_png": [
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_b_solution_potential_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_c_reactant_concentration_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_d_local_overpotential_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_e_local_current_density_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_a_emix_imix_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/phi_s_reactants_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/solution_phase_potential_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png"
+  ],
+  "all_svg": [
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_b_solution_potential_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_c_reactant_concentration_y0_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_d_local_overpotential_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/active_zoom/figure_3_panel_e_local_current_density_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_a_emix_imix_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Polarization_Scheme/polarization_scheme_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/phi_s_reactants_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/solution_phase_potential_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+  ],
+  "canonical_figure3": {
+    "E_mix_with_EDL_V": 0.5987841470159301,
+    "E_mix_without_EDL_V": 0.46699999999999997,
+    "comparison_basis": "length-matched against legacy Au|C|Pd 25|10|25 nm Figure 3; the middle span is now an ideal uncharged insulating boundary",
+    "condition_line_styles": {
+      "with_EDL": "solid",
+      "without_EDL": "dashed"
+    },
+    "dpi": 600,
+    "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+    "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "figure_type": "figure_3_style_flush_au_insulating_substrate_pd",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "geometry_nm": {
+      "L_Au": 25.0,
+      "L_Pd": 25.0,
+      "insulating_substrate_gap": 1000.0
+    },
+    "i_mix_with_EDL_A_per_m2": 0.0825441910814434,
+    "i_mix_without_EDL_A_per_m2": 0.11756035407872421,
+    "omitted_interval_nm": [
+      30.0,
+      1020.0
+    ],
+    "omitted_width_nm": 990.0,
+    "panel_count": 6,
+    "panel_f_pzc_layout": {
+      "marker_y": -0.35,
+      "text_y": -0.5
+    },
+    "pdf_count": 0,
+    "result_schema_version": 2,
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_a_emix_imix_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_a_emix_imix_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separation_nm": 1000.0,
+    "source_profile": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/csv/top_surface_profiles_d1000nm.csv",
+    "source_summary": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/csv/summary_cases.csv",
+    "spatial_axis_layout": "broken_x_axis_two_active_windows",
+    "spatial_panel_rendering": {
+      "canonical_filenames": true,
+      "dpi": 600,
+      "figure_type": "figure_3_broken_x_axis_spatial_panels",
+      "formats": [
+        "png",
+        "svg"
+      ],
+      "omitted_interval_nm": [
+        30.0,
+        1020.0
+      ],
+      "omitted_width_nm": 990.0,
+      "panels": [
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "saved_paths": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "separation_nm": 1000.0,
+      "windows_nm": [
+        [
+          0.0,
+          30.0
+        ],
+        [
+          1020.0,
+          1050.0
+        ]
+      ]
+    },
+    "spatial_panels": [
+      "b",
+      "c",
+      "d",
+      "e"
+    ],
+    "spatial_windows_nm": [
+      [
+        0.0,
+        30.0
+      ],
+      [
+        1020.0,
+        1050.0
+      ]
+    ],
+    "species_color_mapping": {
+      "Ox2_and_i2": "#0072B2",
+      "Red1_and_i1": "#009E73"
+    },
+    "substrate_bc": "homogeneous_neumann",
+    "topology_id": "flush_coplanar_on_uncharged_insulating_substrate"
+  },
+  "cut_axis_figure3": {
+    "canonical_filenames": true,
+    "dpi": 600,
+    "figure_type": "figure_3_broken_x_axis_spatial_panels",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "omitted_interval_nm": [
+      30.0,
+      1020.0
+    ],
+    "omitted_width_nm": 990.0,
+    "panels": [
+      "b",
+      "c",
+      "d",
+      "e"
+    ],
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_d_local_overpotential_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/Figure_3/figure_3_panel_e_local_current_density_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separation_nm": 1000.0,
+    "windows_nm": [
+      [
+        0.0,
+        30.0
+      ],
+      [
+        1020.0,
+        1050.0
+      ]
+    ]
+  },
+  "d_Au_Pd_nm": 1000.0,
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "far_gap_ringing_check": {
+    "definition": "surface Phi_s over x=75-975 nm, at least 50 nm from either metal/substrate junction",
+    "max_abs_phi_s_mV": 0.004810954696404654,
+    "passed": true,
+    "peak_to_peak_phi_s_mV": 0.009465452173630724,
+    "sample_count": 3601,
+    "visibility_threshold_mV": 0.02,
+    "x_range_nm": [
+      75.0,
+      975.0
+    ]
+  },
+  "figure_counts": {
+    "pdf": 0,
+    "png": 13,
+    "svg": 13
+  },
+  "output_dir": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution",
+  "result_schema_version": 2,
+  "rp_2d": {
+    "active_windows_nm": [
+      [
+        0.0,
+        30.0
+      ],
+      [
+        1020.0,
+        1050.0
+      ]
+    ],
+    "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+    "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "grid": {
+      "lambda_D_nm": 3.0412178890177213,
+      "n_x_per_window": 601,
+      "n_y": 241,
+      "y_max_over_lambda_D": 5.0
+    },
+    "potential_and_reactants": {
+      "c_Ox2_limits": [
+        0.1,
+        1000.0
+      ],
+      "c_Red1_limits": [
+        0.001,
+        10.0
+      ],
+      "figure_type": "phi_s_reactants_2d_active_zoom",
+      "phi_s_limit_mV": [
+        -160.0,
+        160.0
+      ],
+      "saved_paths": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/phi_s_reactants_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/phi_s_reactants_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ]
+    },
+    "potential_only": {
+      "figure_type": "solution_phase_potential_2d_active_zoom",
+      "phi_s_limit_mV": [
+        -160.0,
+        160.0
+      ],
+      "saved_paths": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/solution_phase_potential_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/figures/rp_2d/solution_phase_potential_2d_active_zoom_d1000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ]
+    },
+    "result_schema_version": 2,
+    "separation_nm": 1000.0,
+    "source_field_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/d1000nm_high_resolution/fields/active_window_fields_d1000nm.npz",
+    "substrate_bc": "homogeneous Neumann"
+  },
+  "source_result": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648"
+}

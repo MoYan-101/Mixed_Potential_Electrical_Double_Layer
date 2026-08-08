@@ -1,0 +1,118 @@
+{
+  "debye_huckel_validity": {
+    "interpretation": "When max_abs_phi_tilde > 1, results are linearized-PB internal geometry sensitivity and are not claimed as absolute quantitative predictions.",
+    "max_abs_phi_tilde_over_scan": 6.032021542733347,
+    "threshold": 1.0,
+    "threshold_exceeded": true
+  },
+  "definition": {
+    "formula": "l_GC = 2 epsilon_s R T / (F |sigma|)",
+    "paper_formula": "l_GC = 2 epsilon_s k_B T / (e |sigma|)",
+    "representative_length_definition": "l_GC,M,mean = 2 epsilon_s R T / (F <|sigma_M|>_boundary)",
+    "surface_charge_definition": "sigma_M = C_H,M,eff (E_mix - PZC_M - phi_s)",
+    "surface_charge_sign_convention": "positive sigma denotes positive charge on the metal side"
+  },
+  "interpretation": {
+    "comparison_rule": "Compare the empirical overlap decay lengths with both the Debye length and the Au/Pd charge-derived Gouy-Chapman ranges; do not attribute the overlap range to one GC scalar alone.",
+    "gap_topology": "The Au-Pd gap is open electrolyte and contains no charged support surface, unlike the support-charge context of the paper.",
+    "role_in_this_model": "The Au/Pd Gouy-Chapman lengths are charge-derived diagnostics, not independent screening lengths in the linearized-PB equation."
+  },
+  "model_length_scales": {
+    "debye_length_m": 3.0412178890177212e-09,
+    "debye_length_nm": 3.0412178890177213,
+    "gouy_chapman_by_metal": {
+      "Au": {
+        "any_local_max_length_infinite": false,
+        "any_mean_length_infinite": false,
+        "charge_signs": [
+          "negative"
+        ],
+        "local_max_gouy_chapman_length_nm_range": [
+          1.0080125798307475,
+          1.0160831953461633
+        ],
+        "local_min_gouy_chapman_length_nm_range": [
+          0.6615111582959858,
+          0.9044395931107546
+        ],
+        "mean_abs_sigma_C_per_m2_range": [
+          0.035359361183907694,
+          0.036321994732648716
+        ],
+        "mean_gouy_chapman_length_nm_range": [
+          0.9827548012748166,
+          1.0095096042525358
+        ],
+        "n_separations": 31
+      },
+      "Pd": {
+        "any_local_max_length_infinite": false,
+        "any_mean_length_infinite": false,
+        "charge_signs": [
+          "negative"
+        ],
+        "local_max_gouy_chapman_length_nm_range": [
+          1.3485669900645225,
+          1.8852439584519776
+        ],
+        "local_min_gouy_chapman_length_nm_range": [
+          0.6838468075484729,
+          1.368392882068272
+        ],
+        "mean_abs_sigma_C_per_m2_range": [
+          0.025773777450879106,
+          0.027478188302878633
+        ],
+        "mean_gouy_chapman_length_nm_range": [
+          1.2990527003430439,
+          1.384958599235969
+        ],
+        "n_separations": 31
+      }
+    }
+  },
+  "overlap_exponential_fits": {
+    "current_density": {
+      "amplitude_A_per_m2": 0.0023524552599658907,
+      "decay_length_m": 2.723231561368659e-09,
+      "decay_length_nm": 2.723231561368659,
+      "fit_equation": "response = amplitude * exp(-d_nm / decay_length_nm)",
+      "fit_range_nm": [
+        0.0,
+        20.0
+      ],
+      "n_points": 27,
+      "offset_fixed_to_zero": true,
+      "r_squared": 0.9970263764334563,
+      "response_definition": "i_mix(100 nm) - i_mix(d)",
+      "status": "fitted"
+    },
+    "plateau_reference_separation_nm": 100.0,
+    "potential": {
+      "amplitude_V": 0.0025490581683861807,
+      "amplitude_mV": 2.5490581683861806,
+      "decay_length_m": 2.136686617808696e-09,
+      "decay_length_nm": 2.136686617808696,
+      "fit_equation": "response = amplitude * exp(-d_nm / decay_length_nm)",
+      "fit_range_nm": [
+        0.0,
+        20.0
+      ],
+      "n_points": 27,
+      "offset_fixed_to_zero": true,
+      "r_squared": 0.9977427919354827,
+      "response_definition": "E_mix(d) - E_mix(100 nm)",
+      "status": "fitted"
+    }
+  },
+  "paper_benchmark": {
+    "epsilon_s_F_per_m": 6.950537433048001e-10,
+    "gouy_chapman_length_m": 3.569561471538913e-10,
+    "gouy_chapman_length_nm": 0.35695614715389135,
+    "sigma_C_per_m2": 0.1,
+    "sigma_uC_per_cm2": 10.0,
+    "source_pdf": "MS/cs5c06754.pdf",
+    "temperature_K": 298.0
+  },
+  "schema_version": 1
+}

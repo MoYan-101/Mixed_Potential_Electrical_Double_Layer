@@ -1,0 +1,51 @@
+{
+  "E_mix_with_EDL_V": 0.5988338455785036,
+  "E_mix_without_EDL_V": 0.46699999999999997,
+  "comparison_basis": "length-matched against legacy Au|C|Pd 25|10|25 nm Figure 3; the middle span is now an ideal uncharged insulating boundary",
+  "condition_line_styles": {
+    "with_EDL": "solid",
+    "without_EDL": "dashed"
+  },
+  "dpi": 600,
+  "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+  "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "figure_type": "figure_3_style_flush_au_insulating_substrate_pd",
+  "formats": [
+    "png",
+    "svg"
+  ],
+  "geometry_nm": {
+    "L_Au": 25.0,
+    "L_Pd": 25.0,
+    "insulating_substrate_gap": 10.0
+  },
+  "i_mix_with_EDL_A_per_m2": 0.08248951169562958,
+  "i_mix_without_EDL_A_per_m2": 0.11756035407872421,
+  "panel_count": 6,
+  "pdf_count": 0,
+  "result_schema_version": 2,
+  "saved_paths": [
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_a_emix_imix_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_a_emix_imix_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_d_local_overpotential_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_d_local_overpotential_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_e_local_current_density_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_e_local_current_density_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+    "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+  ],
+  "separation_nm": 10.0,
+  "source_profile": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/csv/top_surface_profiles_d010nm.csv",
+  "source_summary": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648/csv/summary_cases.csv",
+  "species_color_mapping": {
+    "Ox2_and_i2": "#0072B2",
+    "Red1_and_i1": "#009E73"
+  },
+  "substrate_bc": "homogeneous_neumann",
+  "topology_id": "flush_coplanar_on_uncharged_insulating_substrate"
+}

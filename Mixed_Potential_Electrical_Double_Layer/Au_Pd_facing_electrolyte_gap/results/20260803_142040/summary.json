@@ -1,0 +1,201 @@
+{
+  "cases": [
+    {
+      "E_mix_V": 0.6242900341334899,
+      "I_Au_A": 4.0651072512803565e-11,
+      "I_Pd_A": -4.065107251280341e-11,
+      "closed_form_minus_brent_V": -3.1086244689504383e-15,
+      "debye_huckel_validity": {
+        "max_abs_phi_tilde": 6.862962706236977,
+        "threshold": 1.0,
+        "threshold_exceeded": true
+      },
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "analytic_linear_pb_finite_slit",
+      "gap_nm": 3.0,
+      "gap_over_lambda_D": 0.9864469135320542,
+      "i_mix_abs_A": 4.0651072512803565e-11,
+      "i_mix_avg_A_per_m2": 0.08130214502560712,
+      "j_Au_A_per_m2": 0.16260429005121424,
+      "j_Pd_A_per_m2": -0.16260429005121363,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential",
+      "overlap_factor_exp_minus_d_over_lambda": 0.37289928338582184,
+      "phi_RP_Au_V": -0.17622930235805523,
+      "phi_RP_Au_tilde": -6.862962706236977,
+      "phi_RP_Pd_V": -0.13835076590892453,
+      "phi_RP_Pd_tilde": -5.387844893598484,
+      "relative_balance_residual": 1.907654033049724e-15,
+      "residual_A": 1.550963648536927e-25,
+      "result_schema_version": 1,
+      "robin_residuals": {
+        "Au": 1.7763568394002505e-15,
+        "Pd": 1.7763568394002505e-15
+      },
+      "root": {
+        "bracket_V": [
+          -0.15,
+          1.084
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 17,
+        "iterations": 16,
+        "method": "brentq"
+      },
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.6035802257161148,
+      "I_Au_A": 3.969149206962399e-11,
+      "I_Pd_A": -3.969149206962403e-11,
+      "closed_form_minus_brent_V": 2.631228568361621e-14,
+      "debye_huckel_validity": {
+        "max_abs_phi_tilde": 6.104229721401284,
+        "threshold": 1.0,
+        "threshold_exceeded": true
+      },
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "analytic_linear_pb_finite_slit",
+      "gap_nm": 10.0,
+      "gap_over_lambda_D": 3.2881563784401804,
+      "i_mix_abs_A": 3.969149206962399e-11,
+      "i_mix_avg_A_per_m2": 0.07938298413924798,
+      "j_Au_A_per_m2": 0.15876596827849596,
+      "j_Pd_A_per_m2": -0.1587659682784961,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential",
+      "overlap_factor_exp_minus_d_over_lambda": 0.03732259474688248,
+      "phi_RP_Au_V": -0.15674631952439882,
+      "phi_RP_Au_tilde": -6.104229721401284,
+      "phi_RP_Pd_V": -0.11641413190783088,
+      "phi_RP_Pd_tilde": -4.533558466566083,
+      "relative_balance_residual": 4.884433563924531e-16,
+      "residual_A": -3.877409121342317e-26,
+      "result_schema_version": 1,
+      "robin_residuals": {
+        "Au": 0.0,
+        "Pd": 1.7763568394002505e-15
+      },
+      "root": {
+        "bracket_V": [
+          -0.15,
+          1.084
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 18,
+        "iterations": 17,
+        "method": "brentq"
+      },
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    },
+    {
+      "E_mix_V": 0.6008249905513603,
+      "I_Au_A": 3.9975712922642774e-11,
+      "I_Pd_A": -3.997571292264313e-11,
+      "closed_form_minus_brent_V": 1.7863488466218769e-13,
+      "debye_huckel_validity": {
+        "max_abs_phi_tilde": 5.982661115191937,
+        "threshold": 1.0,
+        "threshold_exceeded": true
+      },
+      "electronic_constraint": "shared E_mix; I_Au + I_Pd = 0",
+      "electrostatic_backend": "analytic_linear_pb_finite_slit",
+      "gap_nm": 1000.0,
+      "gap_over_lambda_D": 328.81563784401806,
+      "i_mix_abs_A": 3.9975712922642774e-11,
+      "i_mix_avg_A_per_m2": 0.07995142584528554,
+      "j_Au_A_per_m2": 0.15990285169057109,
+      "j_Pd_A_per_m2": -0.1599028516905725,
+      "model_id": "facing_au_electrolyte_pd_shared_mixed_potential",
+      "overlap_factor_exp_minus_d_over_lambda": 1.5746459512180734e-143,
+      "phi_RP_Au_V": -0.15362464284073502,
+      "phi_RP_Au_tilde": -5.982661115191937,
+      "phi_RP_Pd_V": -0.11402533826198605,
+      "phi_RP_Pd_tilde": -4.440530794748941,
+      "relative_balance_residual": 4.445563862040066e-15,
+      "residual_A": -3.554291694563791e-25,
+      "result_schema_version": 1,
+      "robin_residuals": {
+        "Au": 0.0,
+        "Pd": 0.0
+      },
+      "root": {
+        "bracket_V": [
+          -0.15,
+          1.084
+        ],
+        "bracket_expansions": 0,
+        "function_calls": 18,
+        "iterations": 17,
+        "method": "brentq"
+      },
+      "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+    }
+  ],
+  "derived": {
+    "area_Au_m2": 2.5e-10,
+    "area_Pd_m2": 2.5e-10,
+    "beta_per_V": 38.943368749727554,
+    "epsilon_s": 6.950537433048001e-10,
+    "g_Au": 0.8751029451499736,
+    "g_Pd": 1.750205890299947,
+    "lambda_D": 3.0412178890177212e-09,
+    "reactive_area_m2": 5e-10,
+    "thermal_voltage_V": 0.02567831269109188
+  },
+  "effective_reaction": {
+    "E1_eq_eff": 0.1,
+    "E2_eq_eff": 0.834,
+    "it0_1_eff": 0.0001852573885166257,
+    "it0_2_eff": 0.0001852573885166257
+  },
+  "electrostatic_backend": "analytic_linear_pb_finite_slit",
+  "model_id": "facing_au_electrolyte_pd_shared_mixed_potential",
+  "params": {
+    "C_H_Au": 0.2,
+    "C_H_Pd": 0.4,
+    "C_tot": 10.0,
+    "E1_eq": 0.1,
+    "E1_eq_pH_slope_V_per_pH": 0.0,
+    "E2_eq": 0.834,
+    "E2_eq_pH_slope_V_per_pH": -0.059126500015747985,
+    "F": 96485.0,
+    "L_face": 2.5e-08,
+    "R": 8.314,
+    "T": 298.0,
+    "alpha1": 0.5,
+    "alpha2": 0.5,
+    "dh_warn_threshold": 1.0,
+    "epsilon0": 8.8541878128e-12,
+    "epsilon_r": 78.5,
+    "epsilon_s": null,
+    "g_Au": null,
+    "g_Pd": null,
+    "gap_distances_nm": [
+      3.0,
+      10.0,
+      1000.0
+    ],
+    "it0_1": 0.0001852573885166257,
+    "it0_1_pH_order": 0.0,
+    "it0_2": 0.0001852573885166257,
+    "it0_2_pH_order": 1.0,
+    "lambda_D": null,
+    "large_gap_window_lambda_D": 5.0,
+    "max_bracket_expands": 12,
+    "out_of_plane_width": 0.01,
+    "pH": 7.0,
+    "pH_ref": 7.0,
+    "plot_face_points": 161,
+    "profile_points_large": 4001,
+    "profile_points_small": 1201,
+    "pzc_Au": 0.93,
+    "pzc_Pd": 0.78,
+    "root_bracket_padding_V": 0.25,
+    "root_maxiter": 200,
+    "root_rtol": 1e-12,
+    "root_xtol_V": 1e-10,
+    "z_O2": 1.0,
+    "z_R1": -1.0
+  },
+  "result_schema_version": 1,
+  "topology_id": "parallel_facing_Au_electrolyte_Pd_slit"
+}

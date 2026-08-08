@@ -1,0 +1,33 @@
+# Local environments and caches
+.venv/
+**/.venv/
+**/.venv_macos/
+**/__pycache__/
+**/.pytest_cache/
+**/*.egg-info/
+*.py[cod]
+.matplotlib-cache/
+.DS_Store
+
+# Local assistant/project memory
+AGENTS.md
+**/.agents/
+**/.codex/
+
+# Private manuscript and working notes
+MS/
+Z-thinking/
+
+# Generated and source image assets (not published)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.tif
+*.tiff
+*.svg
+*.eps
+*.ai
+*.pdf
+**/figures.zip

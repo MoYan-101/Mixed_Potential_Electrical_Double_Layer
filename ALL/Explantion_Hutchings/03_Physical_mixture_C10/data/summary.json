@@ -1,0 +1,94 @@
+{
+  "E_mix_with_edl_V": 0.5976004686075482,
+  "E_mix_without_edl_V": 0.46699999999999964,
+  "case_key": "physical_mixture_c10",
+  "comparison_I_mix_with_edl_A": 4.521278834428626e-12,
+  "comparison_I_mix_with_edl_pA": 4.521278834428626,
+  "comparison_I_mix_without_edl_A": 9.404828326297881e-12,
+  "comparison_I_mix_without_edl_pA": 9.404828326297881,
+  "comparison_reactive_area_m2": 8.000000000000001e-11,
+  "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+  "diagnostics": {
+    "C10_vs_C1000_plateau": {
+      "E_C1000_V": 0.5973613862344098,
+      "E_C10_V": 0.5976004686075482,
+      "I_C1000_A_on_comparison_area": 4.5200977080851355e-12,
+      "I_C10_A_on_comparison_area": 4.521278834428626e-12,
+      "delta_E_C10_minus_C1000_mV": 0.23908237313841063,
+      "delta_I_C10_minus_C1000_A": 1.1811263434908012e-15,
+      "delta_I_C10_minus_C1000_percent": 0.026130548934322206,
+      "plateau_equivalent_at_0p3mV_0p1percent": true,
+      "reference_source": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/summary_compare_L_support_1000nm_au2_pd2_20260528_111255.json",
+      "strictly_identical": false
+    },
+    "debye_huckel_threshold": 1.0,
+    "debye_huckel_threshold_exceeded": true,
+    "display_Au_length_nm": 2.0,
+    "display_Pd_length_nm": 2.0,
+    "display_domain": "Neumann computational half-cell",
+    "display_sequence": "Au(2 nm)|C(10 nm)|Pd(2 nm)",
+    "effective_Au_length_nm": 4.0,
+    "effective_Pd_length_nm": 4.0,
+    "even_extension_sequence": "Au(2)|C(10)|Pd(2)|Pd(2)|C(10)|Au(2) nm",
+    "full_even_period_nm": 28.0,
+    "max_abs_phi_tilde_with": 7.527735131811358,
+    "phi_2d_surface_max_error_halfcell": 1.865174681370263e-14,
+    "relative_balance_no": 6.0134223191460756e-15,
+    "relative_balance_with": 2.893797796348427e-15,
+    "saved_source_agreement": {
+      "delta_E_no_V": 0.0,
+      "delta_E_with_V": 0.0,
+      "delta_raw_I_no_A": 0.0,
+      "delta_raw_I_with_A": 0.0
+    },
+    "source_halfcell_length_nm": 14.0
+  },
+  "display_label": "Physical mixture (C = 10 nm)",
+  "figure_3_panel_a_current_basis": "native/source computational cell",
+  "native_I_mix_with_edl_A": 2.260639417214313e-12,
+  "native_I_mix_with_edl_pA": 2.260639417214313,
+  "native_I_mix_without_edl_A": 4.7024141631489405e-12,
+  "native_I_mix_without_edl_pA": 4.702414163148941,
+  "raw_current": {
+    "no_A": 4.7024141631489405e-12,
+    "scale_factor_to_comparison": 2.0,
+    "source_cell": "Au(2)|C|Pd(2) Neumann computational half-cell",
+    "source_reactive_area_m2": 4.0000000000000004e-11,
+    "with_A": 2.260639417214313e-12
+  },
+  "segments": [
+    {
+      "faradaic": true,
+      "length_nm": 2.0,
+      "material": "Au",
+      "name": "Au",
+      "x_end_nm": 2.0,
+      "x_start_nm": 0.0
+    },
+    {
+      "faradaic": false,
+      "length_nm": 10.0,
+      "material": "C",
+      "name": "C",
+      "x_end_nm": 12.0,
+      "x_start_nm": 2.0
+    },
+    {
+      "faradaic": true,
+      "length_nm": 2.0,
+      "material": "Pd",
+      "name": "Pd",
+      "x_end_nm": 14.0,
+      "x_start_nm": 12.0
+    }
+  ],
+  "source_paths": {
+    "engine": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/legacy_au_c_pd_engine.py",
+    "plateau_reference_1000nm_summary": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/summary_compare_L_support_1000nm_au2_pd2_20260528_111255.json",
+    "saved_overrides": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/overrides_L_support_10nm_au2_pd2_20260528_111255.json",
+    "saved_params": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/params_L_support_10nm_au2_pd2_20260528_111255.json",
+    "saved_summary": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Au2nm_Pd2nm/Au_C_Pd/inputs/summary_compare_L_support_10nm_au2_pd2_20260528_111255.json"
+  },
+  "summary_current_basis": "area-matched Au(4 nm)+Pd(4 nm) reference cell",
+  "topology_kind": "continuous"
+}

@@ -1,0 +1,28 @@
+{
+  "data_files": [
+    "csv/uniform_interface_bar_values.csv"
+  ],
+  "dpi_png": 600,
+  "figure_files": [
+    "figure_3_uniform_interface_bar_comparison_independent_edls.png",
+    "figure_3_uniform_interface_bar_comparison_independent_edls.svg",
+    "figure_3_uniform_interface_bar_comparison_selected_panels_independent_edls.png",
+    "figure_3_uniform_interface_bar_comparison_selected_panels_independent_edls.svg"
+  ],
+  "formats": [
+    "png",
+    "svg"
+  ],
+  "metadata_files": [
+    "summary.json",
+    "validation.json",
+    "manifest.json"
+  ],
+  "pdf_enabled": false,
+  "source_sha256": {
+    "bar_wrapper": "3bb564e705637bb606e7611f8cbc3ea508870d1d96ad602b456b6811a3979337",
+    "independent_model": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e",
+    "parameter_wrapper": "5fcc7a230200475f90ef7f13fdeb3951c95603e24f6909d15feb6d062aa7c684"
+  },
+  "study_id": "independent_Au2nm_Pd2nm_CH50_uniform_bar_comparison"
+}

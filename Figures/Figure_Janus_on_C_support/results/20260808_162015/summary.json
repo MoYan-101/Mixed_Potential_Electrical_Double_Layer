@@ -1,0 +1,76 @@
+{
+  "condition_results": {
+    "with_edl": {
+      "E_mix_V": 0.6109997601404451,
+      "I_Au_A": 5.1664374594672866e-12,
+      "I_Pd_A": -5.1664374594672324e-12,
+      "i_mix_abs_full_period_A": 1.0332874918934573e-11,
+      "i_mix_abs_halfcell_A": 5.1664374594672866e-12,
+      "i_mix_avg_A_per_m2": 0.06458046824334107,
+      "relative_balance_residual": 5.2378616222506265e-15
+    },
+    "without_edl": {
+      "E_mix_V": 0.4670000000000001,
+      "I_Au_A": 9.404828326297955e-12,
+      "I_Pd_A": -9.404828326297921e-12,
+      "i_mix_abs_full_period_A": 1.880965665259591e-11,
+      "i_mix_abs_halfcell_A": 9.404828326297955e-12,
+      "i_mix_avg_A_per_m2": 0.11756035407872444,
+      "relative_balance_residual": 1.803718719504805e-15
+    }
+  },
+  "delta_E_with_minus_without_V": 0.14399976014044502,
+  "delta_i_with_minus_without_A_per_m2": -0.052979885835383364,
+  "electrostatic_backend": "cosine_galerkin_linear_pb_piecewise_stern_robin",
+  "geometry": {
+    "full_mirror_period_nm": 36.00000000000001,
+    "halfcell_length_nm": 18.000000000000004,
+    "reactive_area_full_period_m2": 1.6000000000000002e-10,
+    "reactive_area_halfcell_m2": 8.000000000000001e-11,
+    "segments": [
+      {
+        "faradaic": false,
+        "length_m": 5e-09,
+        "material": "C",
+        "name": "C_left",
+        "x_end_m": 5e-09,
+        "x_start_m": 0.0
+      },
+      {
+        "faradaic": true,
+        "length_m": 4e-09,
+        "material": "Au",
+        "name": "Au",
+        "x_end_m": 9.000000000000001e-09,
+        "x_start_m": 5e-09
+      },
+      {
+        "faradaic": true,
+        "length_m": 4e-09,
+        "material": "Pd",
+        "name": "Pd",
+        "x_end_m": 1.3e-08,
+        "x_start_m": 9.000000000000001e-09
+      },
+      {
+        "faradaic": false,
+        "length_m": 5e-09,
+        "material": "C",
+        "name": "C_right",
+        "x_end_m": 1.8000000000000002e-08,
+        "x_start_m": 1.3e-08
+      }
+    ]
+  },
+  "geometry_name": "C_left_5nm_Au_4nm_Pd_4nm_C_right_5nm_mirror_halfcell",
+  "model_name": "C_supported_Janus_linear_PB",
+  "numerical": {
+    "N_modes": 960,
+    "Nx": 5000,
+    "Nx_2d": 1601,
+    "Ny_2d": 320,
+    "gl_order": 128,
+    "y_max_lambda_D": 5.0
+  },
+  "topology_id": "flush_coplanar_C_Au_Pd_C_mirror_neumann"
+}

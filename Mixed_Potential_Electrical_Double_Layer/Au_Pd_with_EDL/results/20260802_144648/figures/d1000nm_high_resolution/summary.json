@@ -1,0 +1,55 @@
+{
+  "debye_huckel_caveat": "max_abs_phi_tilde exceeds 1; this is a linearized-PB internal geometry-sensitivity result, not an absolute quantitative prediction.",
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "far_gap_ringing_check": {
+    "definition": "surface Phi_s over x=75-975 nm, at least 50 nm from either metal/substrate junction",
+    "max_abs_phi_s_mV": 0.004810954696404654,
+    "passed": true,
+    "peak_to_peak_phi_s_mV": 0.009465452173630724,
+    "sample_count": 3601,
+    "visibility_threshold_mV": 0.02,
+    "x_range_nm": [
+      75.0,
+      975.0
+    ]
+  },
+  "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+  "model": "flush Au|uncharged insulating substrate|Pd",
+  "production_resolution": {
+    "N_modes": 3840,
+    "Nx": 20001
+  },
+  "result_schema_version": 2,
+  "retained_cases": {
+    "1000.0": {
+      "E_mix_V": 0.5987841470159301,
+      "I_Au_A": 4.12720955407217e-11,
+      "I_Pd_A": -4.127209554238777e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 1000.0000000000001,
+      "dh_threshold_exceeded": true,
+      "electrostatic_backend": "semi_infinite_cosine_fourier",
+      "i_mix_abs_A": 4.12720955407217e-11,
+      "i_mix_avg_A_per_m2": 0.0825441910814434,
+      "max_abs_phi_tilde": 6.019730740675451,
+      "relative_balance_residual": 2.0183988464736767e-11,
+      "result_schema_version": 2
+    }
+  },
+  "source_result": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144648",
+  "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+  "without_edl_reference": {
+    "E_mix_V": 0.46699999999999997,
+    "I_Au_A": 5.878017703936211e-11,
+    "I_Pd_A": -5.878017703936211e-11,
+    "condition": "w/o EDL",
+    "d_Au_Pd_nm": 1000.0000000000001,
+    "dh_threshold_exceeded": false,
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "i_mix_abs_A": 5.878017703936211e-11,
+    "i_mix_avg_A_per_m2": 0.11756035407872421,
+    "max_abs_phi_tilde": 0.0,
+    "relative_balance_residual": 0.0,
+    "result_schema_version": 2
+  }
+}

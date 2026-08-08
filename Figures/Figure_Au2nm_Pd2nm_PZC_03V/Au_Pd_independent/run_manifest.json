@@ -1,0 +1,51 @@
+{
+  "checksums_file": "checksums.sha256",
+  "created_local": "2026-08-07T10:46:08.223552+09:00",
+  "debye_huckel_caveat": {
+    "max_abs_phi_tilde": 8.872972834983754,
+    "threshold": 1.0,
+    "threshold_exceeded": true
+  },
+  "electrolyte_reference": "separate local half-spaces with a common bulk solution-potential reference",
+  "electronic_constraint": "ideal wire; shared E_mix; I_Au + I_Pd = 0",
+  "electrostatic_backend": "analytic_independent_planar_linear_pb",
+  "export": {
+    "dpi_png": 600,
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "pdf_enabled": false,
+    "svg_fonttype": "none"
+  },
+  "figure_counts": {
+    "pdf": 0,
+    "png": 8,
+    "svg": 8
+  },
+  "model_id": "independent_planar_edls_shared_mixed_potential",
+  "output_path_policy": "artifact paths are relative to run root",
+  "parameter_provenance": "au_pd_independent_edls.default_params plus locked Au=Pd=2 nm, C_H, equal-i0, and alpha overrides",
+  "python": "3.14.6",
+  "result_schema_version": 1,
+  "source_sha256": {
+    "independent_figures": "82e70530e5247b1344e2693a0e69fe528473972938726b9d51eef3daffc7d18c",
+    "independent_model": "24d12bb214e8bf4d1429856fd65e9ef54b54e50560eab58a49f9436122f0e04e",
+    "study_wrapper": "6e98e4fdd66571f3c525649dac773fd8088841e9f7001b204899ffe82c04dae7"
+  },
+  "study_id": "independent_Au2nm_Pd2nm_CH50_PZC03V",
+  "study_parameters": {
+    "C_H_Au_uF_per_cm2": 50.0,
+    "C_H_Pd_uF_per_cm2": 50.0,
+    "C_tot_mM": 10.0,
+    "L_Au_nm": 2.0,
+    "L_Pd_nm": 2.0,
+    "active_faces_Au": 1,
+    "active_faces_Pd": 1,
+    "alpha1": 0.5,
+    "alpha2": 0.5,
+    "equal_i0_A_per_m2": 0.0001852573885166257
+  },
+  "topology_id": "two_independent_planar_half_spaces",
+  "validation_passed": true
+}

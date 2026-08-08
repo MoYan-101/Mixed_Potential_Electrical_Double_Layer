@@ -1,0 +1,145 @@
+{
+  "debye_huckel_caveat": "Linearized-PB applicability warnings are retained in the scan CSV through max_abs_phi_tilde_with_edl.",
+  "fourier_caveat": "Material-mean overlap diagnostics are used near interfaces to reduce sensitivity to Fourier/Gibbs ringing.",
+  "main_scan_points": 18,
+  "max_relative_current_balance_residual": 5.309790236404263e-13,
+  "overlap": {
+    "absolute_tolerances": {
+      "abs_delta_E_mix_mV": 0.1,
+      "abs_delta_i_mix_avg_percent_of_reference": 0.1,
+      "delta_phi_RP_active_rms_mV": 0.1
+    },
+    "combined_absolute_L_GC_C_nm": 2.354782792676201,
+    "combined_absolute_continuous_nm": 12.756741795576227,
+    "combined_absolute_first_sampled_nm": 15.0,
+    "combined_absolute_over_lambda_D": 4.194616190323841,
+    "combined_five_percent_L_GC_C_nm": 1.7353393695368096,
+    "combined_five_percent_continuous_nm": 5.739643603584199,
+    "combined_five_percent_first_sampled_nm": 6.0,
+    "combined_five_percent_over_lambda_D": 1.8872845725098764,
+    "definitions": {
+      "delta_E_mix": "E_mix_with(L_support) - E_mix_with(1000 nm)",
+      "delta_i_mix_avg": "i_mix_avg_with(L_support) - i_mix_avg_with(1000 nm)",
+      "delta_phi_RP_active_rms": "length-weighted RMS of Au/Pd material-mean differences from 1000 nm",
+      "five_percent_boundary": "all three overlap magnitudes are <=5% of their L_support=0 values"
+    },
+    "lambda_D_nm": 3.0412178890177213,
+    "metrics": {
+      "E_mix": {
+        "absolute_tolerance": 0.1,
+        "absolute_tolerance_continuous_nm": 12.756741795576227,
+        "absolute_tolerance_first_sampled_nm": 15.0,
+        "contact_overlap_magnitude": 27.54904655249868,
+        "five_percent_continuous_nm": 5.722231752234347,
+        "five_percent_first_sampled_nm": 6.0,
+        "units": "mV"
+      },
+      "i_mix_avg": {
+        "absolute_tolerance": 0.1,
+        "absolute_tolerance_continuous_nm": 8.732368922004381,
+        "absolute_tolerance_first_sampled_nm": 9.0,
+        "contact_overlap_magnitude": 17.696464409358303,
+        "five_percent_continuous_nm": 4.884946170648981,
+        "five_percent_first_sampled_nm": 5.0,
+        "units": "% of 1000 nm reference"
+      },
+      "phi_RP_active_rms": {
+        "absolute_tolerance": 0.1,
+        "absolute_tolerance_continuous_nm": 11.887662065714101,
+        "absolute_tolerance_first_sampled_nm": 12.0,
+        "contact_overlap_magnitude": 27.89570399815544,
+        "five_percent_continuous_nm": 5.739643603584199,
+        "five_percent_first_sampled_nm": 6.0,
+        "units": "mV"
+      }
+    },
+    "model_caveat": "Operational overlap boundaries for this Au=Pd=2 nm linearized-PB parameter set, not universal transitions.",
+    "numerical_caveat": "Material-mean reaction-plane potentials are used to avoid pointwise Fourier/Gibbs contamination at material boundaries.",
+    "reference": {
+      "E_mix_no_V": 0.4670000000000165,
+      "E_mix_with_V": 0.5973613862344098,
+      "L_GC_C_midpoint_nm": 3.437379586559194,
+      "L_GC_C_nm": 3.4174132757677205,
+      "L_gap_m": 1.0000000000000002e-06,
+      "L_support_nm": 1000.0,
+      "L_support_over_L_GC_C": 292.6189838059169,
+      "L_support_over_lambda_D": 328.815637844018,
+      "N_modes": 7680,
+      "delta_E_mix_V": 0.1303613862343933,
+      "delta_i_mix_avg_A_per_m2": -0.06105913272769794,
+      "gl_order": 128,
+      "i_mix_avg_no_A_per_m2": 0.11756035407876213,
+      "i_mix_avg_with_A_per_m2": 0.05650122135106419,
+      "include_2d": false,
+      "lambda_D_nm": 3.0412178890177213,
+      "max_abs_phi_tilde_with_edl": 7.528284332243354,
+      "overlap_abs_delta_E_mix_vs_1000_mV": 0.0,
+      "overlap_abs_delta_i_mix_avg_vs_1000_percent": 0.0,
+      "overlap_delta_E_mix_vs_1000_V": 0.0,
+      "overlap_delta_i_mix_avg_vs_1000_A_per_m2": 0.0,
+      "overlap_delta_i_mix_avg_vs_1000_percent": 0.0,
+      "overlap_delta_phi_RP_Au_mean_vs_1000_mV": 0.0,
+      "overlap_delta_phi_RP_Pd_mean_vs_1000_mV": 0.0,
+      "overlap_delta_phi_RP_active_max_material_mean_vs_1000_mV": 0.0,
+      "overlap_delta_phi_RP_active_rms_vs_1000_mV": 0.0,
+      "overlap_fraction_E_mix": 0.0,
+      "overlap_fraction_i_mix_avg": 0.0,
+      "overlap_fraction_phi_RP_active_rms": 0.0,
+      "overlap_reference_L_support_nm": 1000.0,
+      "phi_RP_Au_mean_mV": -173.44973724585105,
+      "phi_RP_Pd_mean_mV": -91.12929596535264,
+      "relative_balance_no": 3.033636931151246e-13,
+      "relative_balance_with": 4.015026462861269e-15,
+      "sigma_C_max_C_per_m2": 0.040131751800831325,
+      "sigma_C_mean_abs_C_per_m2": 0.010445214504344701,
+      "sigma_C_midpoint_C_per_m2": 0.010384542590223596,
+      "sigma_C_min_C_per_m2": 0.010383538442223979,
+      "sigma_C_sign_change": false,
+      "sigma_C_signed_mean_C_per_m2": 0.010445214504344701,
+      "support_charge_status": "defined"
+    }
+  },
+  "overlap_scan_points": 21,
+  "passed": true,
+  "pdf_count": 0,
+  "plateau": {
+    "E_inf_V": 0.5974237417906718,
+    "LGC_definition": "2 * epsilon_s * R * T / (F * mean_support_abs_sigma_C)",
+    "L_support_equals_L_GC_C_nm": 0.8637698317372073,
+    "amplitude_V": 0.01897680165853787,
+    "debye_huckel_caveat": "L_GC is a charge-derived diagnostic within the linearized-PB model; max_abs_phi_tilde may exceed 1.",
+    "decay_length_nm": 2.14436390286999,
+    "fit_covariance": [
+      [
+        2.7145020488442037e-11,
+        1.2925742886844955e-09,
+        -7.412757361565638e-08
+      ],
+      [
+        1.2925742886844955e-09,
+        7.954342487465467e-08,
+        -4.282484194429926e-06
+      ],
+      [
+        -7.412757361565638e-08,
+        -4.282484194429926e-06,
+        0.00023484470470914038
+      ]
+    ],
+    "fit_r_squared": 0.9999879154240982,
+    "fit_range_nm": [
+      5.0,
+      10.0
+    ],
+    "lambda_D_nm": 3.0412178890177213,
+    "max_fit_residual_V": 3.07581204916918e-06,
+    "model": "E_mix_with(L) = E_inf + amplitude * exp(-L/decay_length)",
+    "plateau_continuous_nm": 11.24890922416457,
+    "plateau_first_sampled_nm": null,
+    "plateau_tolerance_V": 0.0001
+  },
+  "png_count": 8,
+  "reference_support_nm": 1000.0,
+  "svg_count": 8,
+  "svg_text_editable": true
+}

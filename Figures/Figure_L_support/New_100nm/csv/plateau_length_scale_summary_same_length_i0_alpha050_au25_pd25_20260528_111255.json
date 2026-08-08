@@ -1,0 +1,38 @@
+{
+  "E_inf_V": 0.5979894485521063,
+  "LGC_definition": "2 * epsilon_s * R * T / (F * mean_support_abs_sigma_C)",
+  "L_support_equals_L_GC_C_nm": 2.3849100539222006,
+  "amplitude_V": 0.0023671597135138593,
+  "debye_huckel_caveat": "L_GC is a charge-derived diagnostic within the current linearized-PB model; max_abs_phi_tilde exceeds 1.",
+  "decay_length_nm": 2.3922404769956502,
+  "fit_covariance": [
+    [
+      1.9689334561303204e-13,
+      6.0100647901489654e-12,
+      -3.5689230724814256e-09
+    ],
+    [
+      6.0100647901489654e-12,
+      2.2972583512049062e-10,
+      -1.2784036476868762e-07
+    ],
+    [
+      -3.5689230724814256e-09,
+      -1.2784036476868762e-07,
+      7.267253585128964e-05
+    ]
+  ],
+  "fit_r_squared": 0.999997409866161,
+  "fit_range_nm": [
+    5.0,
+    10.0
+  ],
+  "lambda_D_nm": 3.0412178890177213,
+  "max_fit_residual_V": 2.1847775921735035e-07,
+  "model": "E_mix_with(L) = E_inf + amplitude * exp(-L/decay_length)",
+  "paper_source": "Zhang et al., ACS Catalysis 2026, PDF page 6 / journal page 3180",
+  "plateau_continuous_nm": 7.569708879580739,
+  "plateau_first_sampled_nm": 8.0,
+  "plateau_over_lambda_D": 2.630525102752144,
+  "plateau_tolerance_V": 0.0001
+}

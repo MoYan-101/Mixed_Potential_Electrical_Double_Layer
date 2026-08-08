@@ -1,0 +1,922 @@
+{
+  "command": "scan",
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "figure_3_count": {
+    "pdf": 0,
+    "png": 6,
+    "svg": 6
+  },
+  "figure_3_metadata": {
+    "E_mix_with_EDL_V": 0.5988338455785036,
+    "E_mix_without_EDL_V": 0.46699999999999997,
+    "comparison_basis": "length-matched against legacy Au|C|Pd 25|10|25 nm Figure 3; the middle span is now an ideal uncharged insulating boundary",
+    "dpi": 600,
+    "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+    "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "figure_type": "figure_3_style_flush_au_insulating_substrate_pd",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "geometry_nm": {
+      "L_Au": 25.0,
+      "L_Pd": 25.0,
+      "insulating_substrate_gap": 10.0
+    },
+    "i_mix_with_EDL_A_per_m2": 0.08248951169562958,
+    "i_mix_without_EDL_A_per_m2": 0.11756035407872421,
+    "panel_count": 6,
+    "pdf_count": 0,
+    "result_schema_version": 2,
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_a_emix_imix_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_a_emix_imix_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_b_solution_potential_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_c_reactant_concentration_y0_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_d_local_overpotential_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_d_local_overpotential_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_e_local_current_density_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_e_local_current_density_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/Figure_3/figure_3_panel_f_pzc_potential_reference_map_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separation_nm": 10.0,
+    "source_profile": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/csv/top_surface_profiles_d010nm.csv",
+    "source_summary": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/csv/summary_cases.csv",
+    "substrate_bc": "homogeneous_neumann",
+    "topology_id": "flush_coplanar_on_uncharged_insulating_substrate"
+  },
+  "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+  "gouy_chapman_metadata": {
+    "analysis_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/gouy_chapman_analysis.json",
+    "csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/csv/gouy_chapman_length_vs_separation.csv",
+    "n_rows": 62
+  },
+  "model": "flush Au|uncharged insulating substrate|Pd",
+  "n_separations": 31,
+  "output_dir": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007",
+  "plateau_check": {
+    "E_tolerance_V": 0.0001,
+    "checked": true,
+    "delta_E_75_vs_100_V": 3.9939608276196026e-07,
+    "delta_i_relative_75_vs_100": 1.1109442237023541e-05,
+    "i_relative_tolerance": 0.005,
+    "passed": true
+  },
+  "result_schema_version": 2,
+  "rp_figure_count": {
+    "pdf": 0,
+    "png": 4,
+    "svg": 4
+  },
+  "rp_metadata": {
+    "cases": [
+      {
+        "E_mix_V": 0.600694994124757,
+        "d_nm": 0.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 5.985005902647429,
+        "x_range_nm": [
+          0.0,
+          50.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      },
+      {
+        "E_mix_V": 0.5996672633567894,
+        "d_nm": 2.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 6.003680794162154,
+        "x_range_nm": [
+          0.0,
+          52.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      },
+      {
+        "E_mix_V": 0.5993920655357766,
+        "d_nm": 3.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 6.008670575942186,
+        "x_range_nm": [
+          0.0,
+          53.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      },
+      {
+        "E_mix_V": 0.5988338455785036,
+        "d_nm": 10.0,
+        "lambda_D_nm": 3.0412178890177213,
+        "max_abs_phi_tilde": 6.018783864480344,
+        "x_range_nm": [
+          0.0,
+          60.0
+        ],
+        "y_range_nm": [
+          0.0,
+          15.206089445088605
+        ]
+      }
+    ],
+    "dpi": 600,
+    "electrolyte_domain_description": "semi-infinite strip 0 <= x_tilde <= L_tilde, y_tilde >= 0",
+    "electrolyte_domain_id": "semi_infinite_upper_half_strip_y_ge_0",
+    "figure_type": "phi_s_reactants_2d_batch",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "grid": {
+      "n_x": 600,
+      "n_y": 320,
+      "y_max_over_lambda": 5.0
+    },
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d002nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d002nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d003nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d003nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "saved_paths_by_separation": {
+      "000": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d000nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "002": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d002nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d002nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "003": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d003nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d003nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ],
+      "010": [
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+        "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/rp_2d/phi_s_reactants_2d_d010nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+      ]
+    },
+    "shared_color_limits": {
+      "c_Ox2_over_c_bulk": [
+        1.0,
+        1000.0
+      ],
+      "c_Red1_over_c_bulk": [
+        0.001,
+        1.0
+      ],
+      "phi_s_mV": [
+        -160.0,
+        160.0
+      ]
+    },
+    "shared_contour_levels": {
+      "c_Ox2_over_c_bulk": [
+        1.0,
+        2.371373705661655,
+        5.623413251903491,
+        13.33521432163324,
+        31.622776601683793,
+        74.98942093324558,
+        177.82794100389228,
+        421.6965034285823,
+        1000.0
+      ],
+      "c_Red1_over_c_bulk": [
+        0.001,
+        0.0023713737056616554,
+        0.005623413251903491,
+        0.01333521432163324,
+        0.03162277660168379,
+        0.07498942093324558,
+        0.1778279410038923,
+        0.4216965034285822,
+        1.0
+      ],
+      "phi_s_mV": [
+        -160.0,
+        -128.0,
+        -96.0,
+        -64.0,
+        -32.0,
+        0.0,
+        32.0,
+        64.0,
+        96.0,
+        128.0,
+        160.0
+      ]
+    },
+    "substrate_bc": "homogeneous_neumann",
+    "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+    "topology_id": "flush_coplanar_on_uncharged_insulating_substrate"
+  },
+  "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+  "trend_figure_count": {
+    "pdf": 0,
+    "png": 2,
+    "svg": 2
+  },
+  "trend_metadata": {
+    "dpi": 600,
+    "figure_type": "emix_imix_vs_separation",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "reference_100nm": {
+      "E_mix_with_EDL_V": 0.5987867356929933,
+      "i_mix_avg_with_EDL_A_per_m2": 0.08253824808408368
+    },
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/trends/emix_imix_vs_separation_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/trends/emix_imix_vs_separation_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separations_nm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5000000000000002,
+      2.0,
+      2.5,
+      3.0000000000000004,
+      3.0412178890180006,
+      3.5000000000000004,
+      4.0,
+      4.500000000000001,
+      5.0,
+      5.500000000000001,
+      6.000000000000001,
+      6.082435778035001,
+      6.5,
+      7.000000000000001,
+      7.500000000000001,
+      8.0,
+      8.5,
+      9.000000000000002,
+      9.123653667053,
+      9.5,
+      10.0,
+      15.000000000000002,
+      15.206089445089003,
+      20.0,
+      30.000000000000004,
+      50.00000000000001,
+      75.00000000000001,
+      100.00000000000001
+    ],
+    "series": {
+      "E_mix_with_EDL_V": [
+        0.600694994124757,
+        0.6003451280188611,
+        0.6000719080148094,
+        0.599849800076273,
+        0.5996672633567894,
+        0.5995166176256477,
+        0.5993920655357766,
+        0.5993828141510273,
+        0.5992890074621228,
+        0.5992036968959431,
+        0.5991330554801538,
+        0.5990745439536022,
+        0.59902606361074,
+        0.5989858793135454,
+        0.5989799473449062,
+        0.5989525573439884,
+        0.5989249139728341,
+        0.5989019687671986,
+        0.5988829114796129,
+        0.5988670782273406,
+        0.5988539121625946,
+        0.5988510136933565,
+        0.5988429618021132,
+        0.5988338455785036,
+        0.5987955328242827,
+        0.5987949886887632,
+        0.5987891100755631,
+        0.5987877265925168,
+        0.5987874678141972,
+        0.5987871350890761,
+        0.5987867356929933
+      ],
+      "E_mix_without_EDL_V": [
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997
+      ],
+      "i_mix_avg_with_EDL_A_per_m2": [
+        0.0815880735947346,
+        0.08153192523788871,
+        0.08159113232749958,
+        0.08168633008696305,
+        0.0817905769552944,
+        0.08189199223359513,
+        0.08198528290444994,
+        0.08199253015989673,
+        0.08206839565462593,
+        0.08214096811456112,
+        0.08220349050126696,
+        0.08225685128013553,
+        0.08230208913705943,
+        0.08234025572663385,
+        0.0823459395117476,
+        0.08237234246981232,
+        0.08239924594763527,
+        0.08242176422728231,
+        0.08244059082399802,
+        0.08245630850769847,
+        0.08246943226211627,
+        0.08247232674473456,
+        0.08248037716227329,
+        0.08248951169562958,
+        0.08252804389100521,
+        0.08252859287963511,
+        0.08253453353991749,
+        0.08253602936836921,
+        0.08253656777409894,
+        0.08253733113018424,
+        0.08253824808408368
+      ],
+      "i_mix_avg_without_EDL_A_per_m2": [
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421
+      ]
+    },
+    "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM"
+  },
+  "trend_zoom_0_20nm_metadata": {
+    "dpi": 600,
+    "figure_type": "emix_imix_vs_separation",
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "n_visible_points": 27,
+    "reference_100nm": {
+      "E_mix_with_EDL_V": 0.5987867356929933,
+      "i_mix_avg_with_EDL_A_per_m2": 0.08253824808408368
+    },
+    "saved_paths": [
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/trends/emix_imix_vs_separation_0_20nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.png",
+      "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/figures/trends/emix_imix_vs_separation_0_20nm_flush_au25_pd25_equal_i0_alpha050_ctot10mM.svg"
+    ],
+    "separations_nm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5000000000000002,
+      2.0,
+      2.5,
+      3.0000000000000004,
+      3.0412178890180006,
+      3.5000000000000004,
+      4.0,
+      4.500000000000001,
+      5.0,
+      5.500000000000001,
+      6.000000000000001,
+      6.082435778035001,
+      6.5,
+      7.000000000000001,
+      7.500000000000001,
+      8.0,
+      8.5,
+      9.000000000000002,
+      9.123653667053,
+      9.5,
+      10.0,
+      15.000000000000002,
+      15.206089445089003,
+      20.0
+    ],
+    "series": {
+      "E_mix_with_EDL_V": [
+        0.600694994124757,
+        0.6003451280188611,
+        0.6000719080148094,
+        0.599849800076273,
+        0.5996672633567894,
+        0.5995166176256477,
+        0.5993920655357766,
+        0.5993828141510273,
+        0.5992890074621228,
+        0.5992036968959431,
+        0.5991330554801538,
+        0.5990745439536022,
+        0.59902606361074,
+        0.5989858793135454,
+        0.5989799473449062,
+        0.5989525573439884,
+        0.5989249139728341,
+        0.5989019687671986,
+        0.5988829114796129,
+        0.5988670782273406,
+        0.5988539121625946,
+        0.5988510136933565,
+        0.5988429618021132,
+        0.5988338455785036,
+        0.5987955328242827,
+        0.5987949886887632,
+        0.5987891100755631
+      ],
+      "E_mix_without_EDL_V": [
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997,
+        0.46699999999999997
+      ],
+      "i_mix_avg_with_EDL_A_per_m2": [
+        0.0815880735947346,
+        0.08153192523788871,
+        0.08159113232749958,
+        0.08168633008696305,
+        0.0817905769552944,
+        0.08189199223359513,
+        0.08198528290444994,
+        0.08199253015989673,
+        0.08206839565462593,
+        0.08214096811456112,
+        0.08220349050126696,
+        0.08225685128013553,
+        0.08230208913705943,
+        0.08234025572663385,
+        0.0823459395117476,
+        0.08237234246981232,
+        0.08239924594763527,
+        0.08242176422728231,
+        0.08244059082399802,
+        0.08245630850769847,
+        0.08246943226211627,
+        0.08247232674473456,
+        0.08248037716227329,
+        0.08248951169562958,
+        0.08252804389100521,
+        0.08252859287963511,
+        0.08253453353991749
+      ],
+      "i_mix_avg_without_EDL_A_per_m2": [
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421,
+        0.11756035407872421
+      ]
+    },
+    "source_row_count": 31,
+    "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+    "visible_row_count": 27,
+    "x_range_nm": [
+      0.0,
+      20.0
+    ],
+    "x_ticks_nm": [
+      0.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0
+    ]
+  },
+  "validation": {
+    "adjacent_legacy_reference": {
+      "E_tolerance_V": 0.0005,
+      "computed": {
+        "E_mix_V": 0.600694994124757,
+        "d_Au_Pd_nm": 0.0,
+        "i_mix_abs_A": 4.0794036797367303e-11,
+        "i_mix_avg_A_per_m2": 0.0815880735947346,
+        "relative_balance_residual": 1.4908504545479562e-11
+      },
+      "delta_E_V": 7.733480522631453e-12,
+      "description": "d=0 semi-infinite spectral solve versus legacy N_modes=960/Nx=5000 spectral reference",
+      "i_relative_tolerance": 0.01,
+      "passed": true,
+      "reference": {
+        "E_mix_V": 0.6006949941170235,
+        "i_mix_avg_A_per_m2": 0.0815880733807085
+      },
+      "relative_delta_i_mix_avg": 2.6232523152950124e-09
+    },
+    "affine_direct_solve": {
+      "absolute_tolerance": 1e-10,
+      "description": "affine spectral coefficients versus direct dense solve",
+      "direct_relative_residual": 1.9832014167735584e-16,
+      "max_abs_error_phi_tilde_coefficient": 5.662137425588298e-15,
+      "passed": true,
+      "relative_l2_error": 1.2797479172730833e-15,
+      "relative_l2_tolerance": 1e-11,
+      "test_potential_V": 0.600694994124757
+    },
+    "archived_finite_H10_Q1_reference": {
+      "computed": {
+        "E_mix_V": 0.600694994124757,
+        "d_Au_Pd_nm": 0.0,
+        "i_mix_abs_A": 4.0794036797367303e-11,
+        "i_mix_avg_A_per_m2": 0.0815880735947346,
+        "relative_balance_residual": 1.4908504545479562e-11
+      },
+      "delta_E_V": 1.2942973533824897e-05,
+      "description": "Archived finite-height Q1 H=10 lambda_D d=0 regression reference; retained only to quantify the previous finite-domain approximation",
+      "not_a_pass_fail_check": true,
+      "reference": {
+        "E_mix_V": 0.6006820511512232,
+        "i_mix_avg_A_per_m2": 0.08160527647541833
+      },
+      "relative_delta_i_mix_avg": -0.00021080598494032648
+    },
+    "cache": {
+      "homogeneous_electrostatic_solves": 1,
+      "unique_mixed_potential_spectral_solves": 12
+    },
+    "debye_huckel_violation_action": "ignore",
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+    "homogeneous_robin": {
+      "absolute_tolerance_phi_tilde": 2e-10,
+      "analytic_phi_tilde_surface": -5.99765508116855,
+      "common_g": 0.8751029451499737,
+      "common_pzc_V": 0.93,
+      "description": "semi-infinite homogeneous Robin surface solution",
+      "max_abs_error_phi_tilde": 3.6415315207705135e-14,
+      "max_relative_error": 6.071592099726111e-15,
+      "old_finite_H10_reference": {
+        "H_over_lambda_D": 10.0,
+        "absolute_truncation_error_vs_infinite": 1.3185504244006552e-08,
+        "interpretation": "Analytic homogeneous estimate only; the production spectral model imposes y_tilde -> infinity exactly.",
+        "phi_tilde_surface": -5.997655067983046
+      },
+      "passed": true,
+      "relative_tolerance": 2e-10,
+      "spectral_phi_tilde_surface_max": -5.997655081168514,
+      "spectral_phi_tilde_surface_min": -5.99765508116856,
+      "spectral_surface_spread": 4.618527782440651e-14,
+      "test_potential_V": 0.6
+    },
+    "model": "flush Au|uncharged insulating substrate|Pd",
+    "passed": true,
+    "result_schema_version": 2,
+    "runtime_seconds": 0.44997070799581707,
+    "semi_infinite_farfield": {
+      "description": "No finite top boundary: every mode contains exp(-gamma_n y_tilde), so phi_tilde -> 0 is imposed analytically as y_tilde -> infinity.",
+      "finite_H_control_applicable": false,
+      "passed": true
+    },
+    "spectral_mode_convergence": {
+      "N_modes": [
+        240,
+        480,
+        960
+      ],
+      "cases": [
+        {
+          "comparison_N240_vs_N960": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.358661648742654e-07,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 2.1652399791095603e-05
+          },
+          "comparison_N480_vs_N960": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 2.7396841795201965e-08,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 4.347495261320204e-06
+          },
+          "d_Au_Pd_m": 0.0,
+          "d_Au_Pd_nm": 0.0,
+          "label": "d0",
+          "passed": true,
+          "results": {
+            "N240": {
+              "E_mix_V": 0.6006948582585921,
+              "d_Au_Pd_nm": 0.0,
+              "i_mix_abs_A": 4.0794920086161135e-11,
+              "i_mix_avg_A_per_m2": 0.08158984017232226,
+              "relative_balance_residual": 1.493043843951179e-11
+            },
+            "N480": {
+              "E_mix_V": 0.6006949667279152,
+              "d_Au_Pd_nm": 0.0,
+              "i_mix_abs_A": 4.079421414924897e-11,
+              "i_mix_avg_A_per_m2": 0.08158842829849794,
+              "relative_balance_residual": 1.491255847847067e-11
+            },
+            "N960": {
+              "E_mix_V": 0.600694994124757,
+              "d_Au_Pd_nm": 0.0,
+              "i_mix_abs_A": 4.0794036797367303e-11,
+              "i_mix_avg_A_per_m2": 0.0815880735947346,
+              "relative_balance_residual": 1.4908504545479562e-11
+            }
+          }
+        },
+        {
+          "comparison_N240_vs_N960": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.3710632086327834e-06,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 3.6829373396500496e-05
+          },
+          "comparison_N480_vs_N960": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 2.7747718667203713e-07,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 7.502907679356574e-06
+          },
+          "d_Au_Pd_m": 3.0412178890177212e-09,
+          "d_Au_Pd_nm": 3.0412178890177213,
+          "label": "one_lambda_D",
+          "passed": true,
+          "results": {
+            "N240": {
+              "E_mix_V": 0.5993814430878188,
+              "d_Au_Pd_nm": 3.0412178890177213,
+              "i_mix_abs_A": 4.0997774946702765e-11,
+              "i_mix_avg_A_per_m2": 0.08199554989340553,
+              "relative_balance_residual": 1.8195729776410062e-11
+            },
+            "N480": {
+              "E_mix_V": 0.5993825366738408,
+              "d_Au_Pd_nm": 3.0412178890177213,
+              "i_mix_abs_A": 4.099657267114037e-11,
+              "i_mix_avg_A_per_m2": 0.08199314534228073,
+              "relative_balance_residual": 1.819192852441951e-11
+            },
+            "N960": {
+              "E_mix_V": 0.5993828141510275,
+              "d_Au_Pd_nm": 3.0412178890177213,
+              "i_mix_abs_A": 4.0996265079948276e-11,
+              "i_mix_avg_A_per_m2": 0.08199253015989655,
+              "relative_balance_residual": 1.8193641342945727e-11
+            }
+          }
+        },
+        {
+          "comparison_N240_vs_N960": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.390696433600791e-05,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 0.00039374888564759814
+          },
+          "comparison_N480_vs_N960": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 2.8860138963082704e-06,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 8.21615869653854e-05
+          },
+          "d_Au_Pd_m": 1e-07,
+          "d_Au_Pd_nm": 100.0,
+          "label": "d100nm",
+          "passed": true,
+          "results": {
+            "N240": {
+              "E_mix_V": 0.5987728287286574,
+              "d_Au_Pd_nm": 100.0,
+              "i_mix_abs_A": 4.128537371364513e-11,
+              "i_mix_avg_A_per_m2": 0.08257074742729024,
+              "relative_balance_residual": 2.0191193171415427e-11
+            },
+            "N480": {
+              "E_mix_V": 0.5987838496790971,
+              "d_Au_Pd_nm": 100.0,
+              "i_mix_abs_A": 4.127251477876589e-11,
+              "i_mix_avg_A_per_m2": 0.08254502955753176,
+              "relative_balance_residual": 2.0182452530744435e-11
+            },
+            "N960": {
+              "E_mix_V": 0.5987867356929935,
+              "d_Au_Pd_nm": 100.0,
+              "i_mix_abs_A": 4.126912404204192e-11,
+              "i_mix_avg_A_per_m2": 0.08253824808408383,
+              "relative_balance_residual": 2.017863008916315e-11
+            }
+          }
+        }
+      ],
+      "description": "cosine truncation convergence at N_modes=240/480/960",
+      "pass_comparison": "N480 versus N960",
+      "passed": true
+    },
+    "surface_quadrature_convergence": {
+      "cases": [
+        {
+          "coarse": {
+            "E_mix_V": 0.600694992762999,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.079408800684765e-11,
+            "i_mix_avg_A_per_m2": 0.0815881760136953,
+            "relative_balance_residual": 1.4909911555241326e-11
+          },
+          "comparison_Nx2501_vs_Nx5000": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.361758039664096e-09,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 1.2553177955413971e-06
+          },
+          "d_Au_Pd_m": 0.0,
+          "d_Au_Pd_nm": 0.0,
+          "label": "d0",
+          "passed": true,
+          "production": {
+            "E_mix_V": 0.600694994124757,
+            "d_Au_Pd_nm": 0.0,
+            "i_mix_abs_A": 4.0794036797367303e-11,
+            "i_mix_avg_A_per_m2": 0.0815880735947346,
+            "relative_balance_residual": 1.4908504545479562e-11
+          }
+        },
+        {
+          "coarse": {
+            "E_mix_V": 0.5993826913750968,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.0996382803572645e-11,
+            "i_mix_avg_A_per_m2": 0.08199276560714529,
+            "relative_balance_residual": 1.8192564489724544e-11
+          },
+          "comparison_Nx2501_vs_Nx5000": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.2277593064435877e-07,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 2.8715694988323584e-06
+          },
+          "d_Au_Pd_m": 3.0412178890177212e-09,
+          "d_Au_Pd_nm": 3.0412178890177213,
+          "label": "one_lambda_D",
+          "passed": true,
+          "production": {
+            "E_mix_V": 0.5993828141510275,
+            "d_Au_Pd_nm": 3.0412178890177213,
+            "i_mix_abs_A": 4.0996265079948276e-11,
+            "i_mix_avg_A_per_m2": 0.08199253015989655,
+            "relative_balance_residual": 1.8193641342945727e-11
+          }
+        },
+        {
+          "coarse": {
+            "E_mix_V": 0.5987857241842739,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.1270191578568575e-11,
+            "i_mix_avg_A_per_m2": 0.08254038315713715,
+            "relative_balance_residual": 2.018217937332292e-11
+          },
+          "comparison_Nx2501_vs_Nx5000": {
+            "E_tolerance_V": 0.0005,
+            "delta_E_V": 1.0115087195616823e-06,
+            "i_relative_tolerance": 0.01,
+            "passed": true,
+            "relative_delta_i_mix_avg": 2.5867680776779704e-05
+          },
+          "d_Au_Pd_m": 1e-07,
+          "d_Au_Pd_nm": 100.0,
+          "label": "d100nm",
+          "passed": true,
+          "production": {
+            "E_mix_V": 0.5987867356929935,
+            "d_Au_Pd_nm": 100.0,
+            "i_mix_abs_A": 4.126912404204192e-11,
+            "i_mix_avg_A_per_m2": 0.08253824808408383,
+            "relative_balance_residual": 2.017863008916315e-11
+          }
+        }
+      ],
+      "coarse_Nx": 2501,
+      "description": "surface trapezoidal convergence at Nx=2501/5000",
+      "passed": true,
+      "production_Nx": 5000
+    },
+    "thresholds": {
+      "E_mix_absolute_V": 0.0005,
+      "affine_coefficient_absolute": 1e-10,
+      "affine_coefficient_relative_l2": 1e-11,
+      "homogeneous_surface_absolute_phi_tilde": 2e-10,
+      "homogeneous_surface_relative": 2e-10,
+      "i_mix_relative": 0.01
+    },
+    "validation": "semi-infinite linear-PB cosine/Fourier spectral validation"
+  }
+}

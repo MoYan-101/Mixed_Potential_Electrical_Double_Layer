@@ -1,0 +1,112 @@
+{
+  "debye_huckel_caveat": "Runs with max_abs_phi_tilde > 1 are linearized-PB internal geometry sensitivity results and are not claimed as absolute quantitative predictions.",
+  "electrostatic_backend": "semi_infinite_cosine_fourier",
+  "geometry": "flush_coplanar_on_uncharged_insulating_substrate",
+  "gouy_chapman_analysis": {
+    "analysis_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/gouy_chapman_analysis.json",
+    "csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260802_144007/csv/gouy_chapman_length_vs_separation.csv",
+    "interpretation": {
+      "comparison_rule": "Compare the empirical overlap decay lengths with both the Debye length and the Au/Pd charge-derived Gouy-Chapman ranges; do not attribute the overlap range to one GC scalar alone.",
+      "gap_topology": "The Au-Pd gap exposes a flush ideal uncharged insulating substrate with a homogeneous-Neumann electrostatic boundary, unlike the charged-support context of the paper.",
+      "role_in_this_model": "The Au/Pd Gouy-Chapman lengths are charge-derived diagnostics, not independent screening lengths in the linearized-PB equation."
+    },
+    "n_rows": 62
+  },
+  "model": "flush Au|uncharged insulating substrate|Pd",
+  "no_overlap_100nm_reference": {
+    "E_mix_V": 0.5987867356929933,
+    "I_Au_A": 4.1269124042041844e-11,
+    "I_Pd_A": -4.126912404370756e-11,
+    "condition": "with EDL",
+    "d_Au_Pd_nm": 100.00000000000001,
+    "dh_threshold_exceeded": true,
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "i_mix_abs_A": 4.1269124042041844e-11,
+    "i_mix_avg_A_per_m2": 0.08253824808408368,
+    "max_abs_phi_tilde": 6.019778353320444,
+    "relative_balance_residual": 2.018113553552206e-11,
+    "result_schema_version": 2
+  },
+  "plateau_check": {
+    "E_tolerance_V": 0.0001,
+    "checked": true,
+    "delta_E_75_vs_100_V": 3.9939608276196026e-07,
+    "delta_i_relative_75_vs_100": 1.1109442237023541e-05,
+    "i_relative_tolerance": 0.005,
+    "passed": true
+  },
+  "result_schema_version": 2,
+  "retained_cases": {
+    "0.0": {
+      "E_mix_V": 0.600694994124757,
+      "I_Au_A": 4.0794036797367303e-11,
+      "I_Pd_A": -4.079403679858366e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 0.0,
+      "dh_threshold_exceeded": true,
+      "electrostatic_backend": "semi_infinite_cosine_fourier",
+      "i_mix_abs_A": 4.0794036797367303e-11,
+      "i_mix_avg_A_per_m2": 0.0815880735947346,
+      "max_abs_phi_tilde": 5.985007073554398,
+      "relative_balance_residual": 1.4908504545479562e-11,
+      "result_schema_version": 2
+    },
+    "10.0": {
+      "E_mix_V": 0.5988338455785036,
+      "I_Au_A": 4.12447558478148e-11,
+      "I_Pd_A": -4.1244755849466154e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 10.0,
+      "dh_threshold_exceeded": true,
+      "electrostatic_backend": "semi_infinite_cosine_fourier",
+      "i_mix_abs_A": 4.12447558478148e-11,
+      "i_mix_avg_A_per_m2": 0.08248951169562958,
+      "max_abs_phi_tilde": 6.0187860170772005,
+      "relative_balance_residual": 2.0018984220650293e-11,
+      "result_schema_version": 2
+    },
+    "2.0": {
+      "E_mix_V": 0.5996672633567894,
+      "I_Au_A": 4.08952884776472e-11,
+      "I_Pd_A": -4.089528847905983e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 2.0,
+      "dh_threshold_exceeded": true,
+      "electrostatic_backend": "semi_infinite_cosine_fourier",
+      "i_mix_abs_A": 4.08952884776472e-11,
+      "i_mix_avg_A_per_m2": 0.0817905769552944,
+      "max_abs_phi_tilde": 6.003685126800331,
+      "relative_balance_residual": 1.7271312519683416e-11,
+      "result_schema_version": 2
+    },
+    "3.0": {
+      "E_mix_V": 0.5993920655357766,
+      "I_Au_A": 4.099264145222497e-11,
+      "I_Pd_A": -4.0992641453713954e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 3.0000000000000004,
+      "dh_threshold_exceeded": true,
+      "electrostatic_backend": "semi_infinite_cosine_fourier",
+      "i_mix_abs_A": 4.099264145222497e-11,
+      "i_mix_avg_A_per_m2": 0.08198528290444994,
+      "max_abs_phi_tilde": 6.00867057594219,
+      "relative_balance_residual": 1.8161592068183367e-11,
+      "result_schema_version": 2
+    }
+  },
+  "tag": "flush_au25_pd25_equal_i0_alpha050_ctot10mM",
+  "without_edl_reference": {
+    "E_mix_V": 0.46699999999999997,
+    "I_Au_A": 5.878017703936211e-11,
+    "I_Pd_A": -5.878017703936211e-11,
+    "condition": "w/o EDL",
+    "d_Au_Pd_nm": 0.0,
+    "dh_threshold_exceeded": false,
+    "electrostatic_backend": "semi_infinite_cosine_fourier",
+    "i_mix_abs_A": 5.878017703936211e-11,
+    "i_mix_avg_A_per_m2": 0.11756035407872421,
+    "max_abs_phi_tilde": 0.0,
+    "relative_balance_residual": 0.0,
+    "result_schema_version": 2
+  }
+}

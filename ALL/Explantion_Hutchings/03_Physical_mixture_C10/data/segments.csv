@@ -1,0 +1,4 @@
+name,material,x_start_nm,x_end_nm,length_nm,faradaic
+Au,Au,0.0,2.0,2.0,True
+C,C,2.0,12.0,10.0,False
+Pd,Pd,12.0,14.0,2.0,True

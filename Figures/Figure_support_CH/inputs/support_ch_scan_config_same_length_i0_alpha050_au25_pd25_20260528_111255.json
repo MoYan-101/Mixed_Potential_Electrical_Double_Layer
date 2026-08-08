@@ -1,0 +1,31 @@
+{
+  "C_D_F_per_m2": 0.2285445399406402,
+  "C_D_uF_per_cm2": 22.85445399406402,
+  "N_modes": 960,
+  "Nx": 5000,
+  "baseline_F_per_m2": 0.1,
+  "baseline_uF_per_cm2": 10.0,
+  "mode": "FULL",
+  "note": "C_H,support=0 is distinct from L_gap=0 and from w/o EDL: the 10 nm support remains, but its local compact-layer charging coefficient is zero.",
+  "output_tag": "same_length_i0_alpha050_au25_pd25_20260528_111255",
+  "representative_F_per_m2": [
+    0.0,
+    0.1,
+    1.0
+  ],
+  "representative_uF_per_cm2": [
+    0.0,
+    10.0,
+    100.0
+  ],
+  "scan_max_F_per_m2": 1.0,
+  "scan_max_uF_per_cm2": 100.0,
+  "scan_min_F_per_m2": 0.0,
+  "scan_min_uF_per_cm2": 0.0,
+  "scan_parameter_display": "C_H,support",
+  "scan_parameter_internal": "Cdl_C",
+  "scan_points": 41,
+  "scan_scale": "linear",
+  "source_helper": "Figures/Figure_same_length_i0_alpha/same_length_i0_alpha_common.py",
+  "source_result_params": "Mixed_Potential_Electrical_Double_Layer/results/20260528_111255/params.json"
+}

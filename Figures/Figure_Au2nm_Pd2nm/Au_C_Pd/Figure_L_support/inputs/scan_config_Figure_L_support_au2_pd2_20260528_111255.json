@@ -1,0 +1,52 @@
+{
+  "main_support_nm": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+    5.0,
+    6.0,
+    7.0,
+    8.0,
+    9.0,
+    10.0
+  ],
+  "model": "Au|C|Pd linear-PB support-length OFAT",
+  "numerical": {
+    "balance": "absolute current I_Au + I_Pd = 0",
+    "gauss_legendre_order_per_active_segment": 128,
+    "include_2d": false,
+    "reference_N_modes": 7680,
+    "short_N_modes": 960
+  },
+  "overlap_extra_support_nm": [
+    11.0,
+    12.0,
+    15.0
+  ],
+  "physical_overrides": {
+    "C_H_Au_F_per_m2": 0.5,
+    "C_H_Pd_F_per_m2": 0.5,
+    "C_H_support_F_per_m2": 0.2,
+    "C_tot_mol_per_m3": 10.0,
+    "L_Au": 2e-09,
+    "L_Pd_len": 2e-09,
+    "alpha1": 0.5,
+    "alpha2": 0.5,
+    "it0_1": 0.0001852573885166257,
+    "it0_2": 0.0001852573885166257
+  },
+  "reference_support_nm": 1000.0,
+  "source_sha256": {
+    "figure_l_support_ofat.py": "fa114e33971970c89c307ceca3de3f629a66997201d788305633e6b753e1ee91",
+    "legacy_au_c_pd_engine.py": "abd2deb9c343d91a6f16bd9e9d1935266926ecb317a84280d5cac354126c5ca1"
+  }
+}

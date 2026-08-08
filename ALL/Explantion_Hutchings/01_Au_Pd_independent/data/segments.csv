@@ -1,0 +1,3 @@
+name,material,x_start_nm,x_end_nm,length_nm,faradaic,coordinate_system
+Au,Au,0.0,2.0,2.0,True,independent_Au_half_space
+Pd,Pd,0.0,2.0,2.0,True,independent_Pd_half_space

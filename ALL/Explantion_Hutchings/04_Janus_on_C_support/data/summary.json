@@ -1,0 +1,86 @@
+{
+  "E_mix_with_edl_V": 0.6109997601404451,
+  "E_mix_without_edl_V": 0.4670000000000001,
+  "case_key": "janus_on_c_support",
+  "comparison_I_mix_with_edl_A": 5.1664374594672866e-12,
+  "comparison_I_mix_with_edl_pA": 5.166437459467287,
+  "comparison_I_mix_without_edl_A": 9.404828326297955e-12,
+  "comparison_I_mix_without_edl_pA": 9.404828326297956,
+  "comparison_reactive_area_m2": 8.000000000000001e-11,
+  "current_definition": "I_mix = |I_Au| = |I_Pd| at I_Au + I_Pd = 0",
+  "diagnostics": {
+    "comparison_uses": "the native 18 nm half-cell current; it already contains the common Au(4)+Pd(4) Summary area",
+    "debye_huckel_threshold": 1.0,
+    "debye_huckel_threshold_exceeded": true,
+    "display_Au_length_nm": 4.0,
+    "display_Pd_length_nm": 4.0,
+    "effective_Au_length_nm": 4.0,
+    "effective_Pd_length_nm": 4.0,
+    "max_abs_phi_tilde_with": 7.590509027834635,
+    "relative_balance_no": 1.803718719504805e-15,
+    "relative_balance_with": 5.2378616222506265e-15,
+    "source_Au_length_nm": 4.0,
+    "source_Pd_length_nm": 4.0,
+    "source_full_period_nm": 36.00000000000001,
+    "source_halfcell_length_nm": 18.000000000000004,
+    "validation_passed": true
+  },
+  "display_label": "C-supported Janus",
+  "figure_3_panel_a_current_basis": "native/source computational cell",
+  "native_I_mix_with_edl_A": 5.1664374594672866e-12,
+  "native_I_mix_with_edl_pA": 5.166437459467287,
+  "native_I_mix_without_edl_A": 9.404828326297955e-12,
+  "native_I_mix_without_edl_pA": 9.404828326297956,
+  "raw_current": {
+    "no_A": 9.404828326297955e-12,
+    "scale_factor_to_comparison": 1.0,
+    "source_cell": "18 nm C5|Au4|Pd4|C5 Neumann half-cell",
+    "source_reactive_area_m2": 8.000000000000001e-11,
+    "with_A": 5.1664374594672866e-12
+  },
+  "segments": [
+    {
+      "faradaic": false,
+      "length_nm": 5.0,
+      "material": "C",
+      "name": "C_left",
+      "x_end_nm": 5.0,
+      "x_start_nm": 0.0
+    },
+    {
+      "faradaic": true,
+      "length_nm": 4.0,
+      "material": "Au",
+      "name": "Au",
+      "x_end_nm": 9.000000000000002,
+      "x_start_nm": 5.0
+    },
+    {
+      "faradaic": true,
+      "length_nm": 4.0,
+      "material": "Pd",
+      "name": "Pd",
+      "x_end_nm": 13.0,
+      "x_start_nm": 9.000000000000002
+    },
+    {
+      "faradaic": false,
+      "length_nm": 5.0,
+      "material": "C",
+      "name": "C_right",
+      "x_end_nm": 18.000000000000004,
+      "x_start_nm": 13.0
+    }
+  ],
+  "source_paths": {
+    "derived": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/derived.json",
+    "grid_2d": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/npz/display_grid_2d.npz",
+    "params": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/params.json",
+    "summary": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/summary.json",
+    "surface_charge": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/csv/surface_charge_distribution.csv",
+    "surface_profiles": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/csv/surface_profiles.csv",
+    "validation": "/Users/yan/Desktop/EDLs/2026/Figures/Figure_Janus_on_C_support/results/20260808_163633/validation.json"
+  },
+  "summary_current_basis": "area-matched Au(4 nm)+Pd(4 nm) reference cell",
+  "topology_kind": "continuous"
+}

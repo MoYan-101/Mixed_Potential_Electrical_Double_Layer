@@ -1,0 +1,3 @@
+result_schema_version,electrostatic_backend,d_Au_Pd_nm,condition,E_mix_V,I_Au_A,I_Pd_A,i_mix_abs_A,i_mix_avg_A_per_m2,relative_balance_residual,max_abs_phi_tilde,dh_threshold_exceeded
+2,semi_infinite_cosine_fourier,1000.0000000000001,w/o EDL,0.46699999999999997,5.878017703936211e-11,-5.878017703936211e-11,5.878017703936211e-11,0.11756035407872421,0.0,0.0,False
+2,semi_infinite_cosine_fourier,1000.0000000000001,with EDL,0.5987841470159301,4.12720955407217e-11,-4.127209554238777e-11,4.12720955407217e-11,0.0825441910814434,2.0183988464736767e-11,6.019730740675451,True

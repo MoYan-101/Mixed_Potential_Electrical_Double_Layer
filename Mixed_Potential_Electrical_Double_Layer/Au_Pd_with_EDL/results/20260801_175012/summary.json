@@ -1,0 +1,87 @@
+{
+  "debye_huckel_caveat": "Runs with max_abs_phi_tilde > 1 are linearized-PB internal geometry sensitivity results and are not claimed as absolute quantitative predictions.",
+  "model": "Au|electrolyte gap|Pd",
+  "no_overlap_100nm_reference": {
+    "E_mix_V": 0.5980484934361089,
+    "I_Au_A": 4.191917335830553e-11,
+    "I_Pd_A": -4.1919173360453746e-11,
+    "condition": "with EDL",
+    "d_Au_Pd_nm": 100.00000000000001,
+    "dh_threshold_exceeded": true,
+    "i_mix_abs_A": 4.191917335830553e-11,
+    "i_mix_avg_A_per_m2": 0.08383834671661106,
+    "max_abs_phi_tilde": 6.032021542733347,
+    "relative_balance_residual": 2.5623285575998612e-11
+  },
+  "plateau_check": {
+    "E_tolerance_V": 0.0001,
+    "checked": true,
+    "delta_E_75_vs_100_V": 1.0674271466726282e-09,
+    "delta_i_relative_75_vs_100": 2.175796386743795e-08,
+    "i_relative_tolerance": 0.005,
+    "passed": true
+  },
+  "retained_cases": {
+    "0.0": {
+      "E_mix_V": 0.6006820511512232,
+      "I_Au_A": 4.080263823770917e-11,
+      "I_Pd_A": -4.0802638238944324e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 0.0,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.080263823770917e-11,
+      "i_mix_avg_A_per_m2": 0.08160527647541833,
+      "max_abs_phi_tilde": 5.984230304518736,
+      "relative_balance_residual": 1.513572640496472e-11
+    },
+    "10.0": {
+      "E_mix_V": 0.5980889874770864,
+      "I_Au_A": 4.189299275488256e-11,
+      "I_Pd_A": -4.189299275702205e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 10.0,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.189299275488256e-11,
+      "i_mix_avg_A_per_m2": 0.08378598550976511,
+      "max_abs_phi_tilde": 6.031287756380227,
+      "relative_balance_residual": 2.5535174129656192e-11
+    },
+    "2.0": {
+      "E_mix_V": 0.5990159460552742,
+      "I_Au_A": 4.1338578000341686e-11,
+      "I_Pd_A": -4.133857800221848e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 2.0,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.1338578000341686e-11,
+      "i_mix_avg_A_per_m2": 0.08267715600068337,
+      "max_abs_phi_tilde": 6.014474189325147,
+      "relative_balance_residual": 2.2700288113953466e-11
+    },
+    "3.0": {
+      "E_mix_V": 0.598673672101125,
+      "I_Au_A": 4.152981252132282e-11,
+      "I_Pd_A": -4.152981252330845e-11,
+      "condition": "with EDL",
+      "d_Au_Pd_nm": 3.0000000000000004,
+      "dh_threshold_exceeded": true,
+      "i_mix_abs_A": 4.152981252132282e-11,
+      "i_mix_avg_A_per_m2": 0.08305962504264564,
+      "max_abs_phi_tilde": 6.020684196992661,
+      "relative_balance_residual": 2.3906129297712467e-11
+    }
+  },
+  "tag": "au25_pd25_equal_i0_alpha050_ctot10mM",
+  "without_edl_reference": {
+    "E_mix_V": 0.46699999999999997,
+    "I_Au_A": 5.878017703936211e-11,
+    "I_Pd_A": -5.878017703936211e-11,
+    "condition": "w/o EDL",
+    "d_Au_Pd_nm": 0.0,
+    "dh_threshold_exceeded": false,
+    "i_mix_abs_A": 5.878017703936211e-11,
+    "i_mix_avg_A_per_m2": 0.11756035407872421,
+    "max_abs_phi_tilde": 0.0,
+    "relative_balance_residual": 0.0
+  }
+}

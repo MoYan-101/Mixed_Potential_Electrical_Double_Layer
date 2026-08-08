@@ -1,0 +1,30 @@
+{
+  "0.0": {
+    "display_grid_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/display_grid_d000nm.csv",
+    "display_grid_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/display_grid_d000nm.npz",
+    "fem_metadata_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_metadata_d000nm.json",
+    "full_fem_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_field_d000nm.npz",
+    "top_surface_profiles_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/top_surface_profiles_d000nm.csv"
+  },
+  "10.0": {
+    "display_grid_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/display_grid_d010nm.csv",
+    "display_grid_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/display_grid_d010nm.npz",
+    "fem_metadata_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_metadata_d010nm.json",
+    "full_fem_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_field_d010nm.npz",
+    "top_surface_profiles_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/top_surface_profiles_d010nm.csv"
+  },
+  "2.0": {
+    "display_grid_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/display_grid_d002nm.csv",
+    "display_grid_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/display_grid_d002nm.npz",
+    "fem_metadata_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_metadata_d002nm.json",
+    "full_fem_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_field_d002nm.npz",
+    "top_surface_profiles_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/top_surface_profiles_d002nm.csv"
+  },
+  "3.0": {
+    "display_grid_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/display_grid_d003nm.csv",
+    "display_grid_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/display_grid_d003nm.npz",
+    "fem_metadata_json": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_metadata_d003nm.json",
+    "full_fem_npz": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/fields/fem_field_d003nm.npz",
+    "top_surface_profiles_csv": "/Users/yan/Desktop/EDLs/2026/Mixed_Potential_Electrical_Double_Layer/Au_Pd_with_EDL/results/20260801_175012/csv/top_surface_profiles_d003nm.csv"
+  }
+}

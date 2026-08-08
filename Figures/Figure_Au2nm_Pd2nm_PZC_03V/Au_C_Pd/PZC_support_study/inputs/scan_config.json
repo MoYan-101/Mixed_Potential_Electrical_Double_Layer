@@ -1,0 +1,156 @@
+{
+  "far_field_anchor": {
+    "L_support_nm": 1000.0,
+    "pzc_support_V": [
+      0.1,
+      0.5,
+      0.9
+    ]
+  },
+  "main_L_support_nm": [
+    1.0,
+    3.0,
+    6.0,
+    15.0
+  ],
+  "model": "FULL linear-PB piecewise-Robin with absolute-current balance",
+  "negative_control": {
+    "L_support_nm": 0.0,
+    "pzc_support_V": [
+      0.1,
+      0.9
+    ]
+  },
+  "numerics": {
+    "convergence_GL_order": 64,
+    "mode_and_GL_thresholds": {
+      "1000nm": {
+        "E_mix_mV": 0.03,
+        "i_mix_percent": 0.1
+      },
+      "short": {
+        "E_mix_mV": 0.002,
+        "i_mix_percent": 0.005
+      }
+    },
+    "original_requested_mode_pairs": {
+      "1000nm": {
+        "high_N_modes": 7680,
+        "low_N_modes": 5760
+      },
+      "short": {
+        "high_N_modes": 960,
+        "low_N_modes": 480
+      }
+    },
+    "production_GL_order": 128,
+    "production_N_modes_by_L_support_nm": {
+      "1": 960,
+      "1000": 11520,
+      "15": 3840,
+      "3": 960,
+      "6": 1920
+    },
+    "production_convergence_low_N_modes_by_L_support_nm": {
+      "1": 480,
+      "1000": 9600,
+      "15": 1920,
+      "3": 480,
+      "6": 960
+    }
+  },
+  "overlap_definition": "Equal-active-length RMS of Au and Pd material-mean reaction-plane potential differences relative to L_support=15 nm at the same support PZC.",
+  "overlap_metric_visibility": "Retained in CSV and validation metadata; omitted from the trend figure.",
+  "pzc_support_V": {
+    "count": 41,
+    "start": 0.1,
+    "stop": 0.9,
+    "values": [
+      0.1,
+      0.12,
+      0.14,
+      0.16,
+      0.18,
+      0.2,
+      0.22,
+      0.24,
+      0.26,
+      0.28,
+      0.3,
+      0.32,
+      0.34,
+      0.36,
+      0.38,
+      0.4,
+      0.42,
+      0.44,
+      0.46,
+      0.48,
+      0.5,
+      0.52,
+      0.54,
+      0.56,
+      0.58,
+      0.6,
+      0.62,
+      0.64,
+      0.66,
+      0.68,
+      0.7,
+      0.72,
+      0.74,
+      0.76,
+      0.78,
+      0.8,
+      0.82,
+      0.84,
+      0.86,
+      0.88,
+      0.9
+    ]
+  },
+  "representative_pzc_support_V": [
+    0.1,
+    0.5,
+    0.9
+  ],
+  "resolution_policy": "The original requested mode pairs are preserved in a separate audit. Production modes are raised only where that audit exceeds the stated E_mix or i_mix convergence tolerance.",
+  "study_id": "Au2nm_C_Pd2nm_PZC03V_support_PZC_study",
+  "trend_figure_metrics": [
+    "E_mix_with_V",
+    "i_mix_avg_with_A_per_m2",
+    "sigma_support_signed_mean_uC_per_cm2"
+  ],
+  "two_dimensional_reactants": {
+    "case_count": 12,
+    "dense_field_svg_policy": "Rasterized pcolormesh with editable SVG text and vector annotations",
+    "output": "solution-phase-potential-plus-Red1-plus-Ox2 composite",
+    "reactant_color_scale": "one shared reciprocal LogNorm for Red1 and Ox2 across all cases",
+    "reactant_definition": "c_i/c_bulk = exp(-z_i F Phi_s / RT)",
+    "source_cases": "same 12 representative 2-D solution-potential fields",
+    "species": [
+      "Red1",
+      "Ox2"
+    ]
+  },
+  "two_dimensional_solution_potential": {
+    "L_support_nm": [
+      1.0,
+      3.0,
+      6.0,
+      15.0
+    ],
+    "Ny": 320,
+    "case_count": 12,
+    "color_scale": "shared symmetric TwoSlopeNorm centered at 0 mV",
+    "dense_field_svg_policy": "Rasterized pcolormesh with editable SVG text and vector annotations",
+    "main_scan_include_2d": false,
+    "pzc_support_V": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "representative_cases_include_2d": true,
+    "y_max_lambda_D": 5.0
+  }
+}
